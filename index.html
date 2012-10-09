@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="maximum-scale=1.5, minimum-scale=.8, initial-scale=1, user-scalable=1" />
+	<title>LibJS</title>
+		
+    
+    
+	
+<script type="application/javascript" src="index.build/script.js"></script><link rel="stylesheet" href="index.build/style.css" /></head>
+<body>
+<noscript>Please enable Javascript in your browser</noscript>
+
+<script type="text/template" id="layout">
+	html.tao source='tao-svg';
+	div.webkit;
+	
+    div.footer;
+    menu {
+		section {
+			h3 > 'About'
+			ul > li data-view='aboutView' > 'About'
+		}
+		
+		section#libraries {
+            h3 > 'Library'
+            ul > list value='libraries' > li data-view='#{id}'> '#{name}'
+        }
+		
+        section#components {
+            h3 > 'Components'
+            ul > list value='components' > li data-view='#{id}'> '#{name}'
+			div style='text-align:right; opacity:.3' > '... more in near future'
+        }
+    }
+	
+	
+	viewsManager#views;	
+	
+	pageActivity;
+	
+</script>
+
+
+
+<script type="text/source" id="tao-svg">
+	<svg style='left:0; top:0; width:100%; height:100%; position:absolute;' xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 300 300" preserveAspectRatio="xMaxYMin meet">		
+		<filter id="dropshadow" height="130%">
+			<feGaussianBlur in="SourceAlpha" stdDeviation="1"/> 
+			<feOffset dx="1" dy="-1" /> 
+			<feMerge> <feMergeNode/> <feMergeNode in="SourceGraphic"/>  </feMerge>
+		</filter>
+
+		<path style="fill:rgba(72,57,43,0.3);" 
+			d="M 148.85445,172.92677 C 145.33884,162.50356 171.00158,169.97469 173.48929,178.56699 C 185.55826,189.28748 178.23485,207.13101 166.29147,214.31901 C 156.0791,221.84134 163.16001,237.04172 160.96289,247.96507 C 160.38331,262.29656 161.5666,277.62281 156.15361,291.05389 C 141.19611,298.79666 146.00065,271.93986 144.36854,263.17008 C 143.9803,250.2672 143.92636,237.28383 141.72719,224.52554 C 127.17115,220.0289 110.18517,223.12248 97.431075,213.26612 C 85.469759,201.01609 115.94714,207.46211 121.66652,210.57644 C 129.89459,214.13001 143.89477,212.38115 133.42808,202.19363 C 129.94465,192.50134 110.34556,182.08256 117.33534,172.50889 C 132.23988,172.9239 143.22678,185.39951 147.77548,198.69788 C 150.97142,208.93517 161.67533,206.85834 160.09023,195.88219 C 161.36037,186.68754 155.76273,178.39681 148.85445,172.92677 z M 160.93298,166.07289 C 147.6462,170.86905 136.58696,163.01921 125.22861,157.20093 C 110.47197,150.26376 111.68167,131.86413 106.29421,118.94042 C 96.029578,111.98414 80.319787,101.67878 87.337126,86.240217 C 92.21995,74.75302 110.15631,73.721396 104.82344,57.678054 C 107.35742,47.065748 100.03464,26.056383 112.29873,22.683245 C 125.82376,31.180933 117.81589,48.397302 118.69639,60.947833 C 121.08775,71.798903 137.9297,66.920805 143.15633,62.603393 C 144.73763,48.363335 137.27655,26.713759 149.14245,17.401504 C 168.42265,15.710384 163.60337,37.131467 160.36395,48.698658 C 156.29628,68.48338 180.98307,60.921854 187.16061,50.705433 C 196.94775,39.502406 185.61334,22.475425 195.56423,12.112987 C 212.62724,15.151197 204.26617,39.388811 203.45744,51.520463 C 204.20065,69.428093 184.48104,71.000681 171.55961,73.88777 C 150.86479,82.190896 126.71466,76.918742 107.12706,88.3449 C 91.454701,101.14483 120.86889,111.85108 130.49045,102.39659 C 141.28587,97.407843 148.44689,78.777195 159.09842,93.301871 C 168.06631,98.728836 183.07918,105.16078 187.80451,93.254868 C 206.6247,96.122612 197.51559,118.93783 197.03803,131.53107 C 196.48678,147.74053 182.38079,157.49426 169.48605,164.29803 C 166.75648,165.3529 163.8488,165.90182 160.93298,166.07289 z M 169.07939,148.72346 C 181.2598,138.54679 152.78776,145.96865 147.04898,145.89697 C 132.54495,147.63478 142.95859,155.08818 151.23011,152.87291 C 157.36935,152.66855 163.52568,151.39678 169.07939,148.72346 z M 140.56082,136.93739 C 153.26795,133.52909 171.71005,136.80613 180.94253,130.01073 C 170.02854,123.32835 155.65132,130.09977 143.35516,128.81757 C 137.15348,127.26192 117.90432,131.53119 127.5872,138.58105 C 131.95529,138.42972 136.23399,137.46252 140.56082,136.93739 z M 163.105,117.12043 C 168.19045,116.21729 190.80001,117.36997 175.58728,111.61806 C 161.56851,108.05181 144.91668,102.9159 133.31798,114.94986 C 129.3826,126.68716 158.04888,115.69009 163.105,117.12043 z M 252.06328,203.0582 C 225.58325,190.46243 217.57491,157.93038 219.37463,130.96056 C 217.77865,123.64114 211.45592,103.65547 226.16369,111.57395 C 238.00018,120.69139 246.39513,135.27591 262.40567,137.7229 C 273.00371,138.06064 281.81671,156.38063 266.13488,154.01262 C 256.61294,152.11551 239.44323,141.6443 242.98876,159.16135 C 243.57885,175.66899 256.56257,187.72139 261.40426,202.67181 C 261.70359,208.10667 254.44964,204.06406 252.06328,203.0582 z M 26.291302,194.50552 C 19.405646,178.68949 44.286919,173.21557 49.356316,160.34511 C 55.909275,152.44525 65.71078,129.14594 52.118299,127.8764 C 46.012232,131.89728 23.70839,140.06667 29.718133,126.02558 C 41.814875,119.26146 51.91757,109.01128 61.400133,100.47875 C 76.845884,101.80625 76.324019,121.91233 78.499319,133.64436 C 83.692131,148.26426 79.18542,161.30003 67.440315,171.39872 C 57.154814,181.61907 43.97177,189.32554 31.572404,195.91668 C 29.725122,195.91835 27.925773,195.32655 26.291302,194.50552 z M 252.1235,104.8888 C 240.82964,95.682054 227.88664,85.468935 223.63162,71.085088 C 217.39151,55.592268 220.06019,39.033012 224.86808,23.62228 C 225.0343,10.06655 242.94342,-2.2824668 241.4583,17.916016 C 242.06177,32.793914 238.60727,47.721273 241.77098,62.500976 C 243.31312,78.594167 256.00229,89.29683 267.12897,99.26913 C 279.32577,114.64434 259.69073,110.50737 252.1235,104.8888 z M 33.460575,90.474525 C 22.267946,78.954964 47.789179,69.865615 54.189221,61.507479 C 60.468658,54.790844 70.537031,28.606481 77.345076,48.00805 C 79.847482,65.01231 62.830229,74.355555 51.580311,83.451845 C 46.314059,87.30181 40.165566,90.601851 33.460575,90.474525 z "
+		/>
+	</svg>
+</script>
+<div id="build.release.xhr" style="display: none;"><script type="include/lazy" data-appuri="framework.animation" data-id="framework.animation"> 
+include.js({
+    framework: 'ruqq.base'
+}).done(function() {
+    var w = window,
+        r = ruqq,
+        prfx = r.info.cssprefix;
+
+    r.animate = (function() {
+        function Animate(element, property, valueTo, duration, callback, valueFrom, timing) {
+            
+            
+            var data = typeof property === 'string' ? {
+                property: property,
+                valueFrom: valueFrom,
+                valueTo: valueTo,
+                duration: duration,
+                timing: timing,
+                callback: callback
+            } : property,
+                $this = $(element);
+
+            if (data.timing == null) data.timing = 'linear';
+            if (data.duration == null) data.duration = 300;
+
+            if (typeof data.duration == 'string') {
+                var speeds = {
+                    slow: 600,
+                    fast: 200
+                }
+                data.duration = speeds[data.duration] || 400;
+            }
+            if (data.valueFrom != null) {
+                var css = {};
+                css[data.property] = data.valueFrom;
+                css[prfx + 'transition-property'] = 'none';
+                css[prfx + 'transition-duration'] = '0ms';
+
+                $this.css(css);
+            }
+            setTimeout(function() {
+                var css = {};
+                css[data.property] = data.valueTo;
+                css[prfx + 'transition-property'] = data.property;
+                css[prfx + 'transition-duration'] = data.duration + 'ms';
+                css[prfx + 'transition-timing-function'] = data.timing;
+
+                $this.css(css);
+
+                if (data.callback) {
+                    var timeout = setTimeout(data.callback.bind($this), data.duration);
+                    $this.data('cssAnimationCallback', timeout);
+                }
+
+                element = null;
+                data = null;
+            }, 0);
+
+            return this;
+        }
+
+        function AnimateModel(model, ondone) {
+            var isarray = model instanceof Array,
+                length = isarray ? model.length : 1,
+                x = null;
+
+            for (var i = 0; x = isarray ? model[i] : model, isarray ? i < length : i < 1; i++) {
+                var callback = x.onComplete ? scopeModel(x.onComplete) : ondone;
+                Animate(x.element, x.prop, x.to, x.duration, callback, x.from, x.timing);
+            }
+        }
+
+        function scopeModel(model, callback) {
+            return function() {
+                AnimateModel(model, callback);
+            }
+        }
+
+        return function(argument, property, valueTo, duration, callback, valueFrom, timing) {
+            if (argument instanceof HTMLElement) {
+                Animate(argument, property, valueTo, duration, callback, valueFrom, timing);
+                return this;
+            }
+            AnimateModel(argument, property);
+            return this;
+        }
+    })();
+
+
+
+
+    r.spriteAnimation = (function() {
+        var keyframes = {},
+            prfx = r.info.cssprefix,
+            vendor = null,
+            initVendorStrings = function(){
+                var prfx = r.info.prefix;
+                vendor = {
+                    keyframes: "@" + prfx+ "keyframes",
+                    AnimationIterationCount: prfx + 'AnimationIterationCount',
+                    AnimationDuration: prfx + 'AnimationDuration',
+                    AnimationTimingFunction: prfx + 'AnimationTimingFunction',
+                    AnimationFillMode: prfx + 'AnimationFillMode',
+                    AnimationName: prfx + 'AnimationFillMode'
+                }
+            }
+        return {
+            /**
+             * {id, frameWidth, frames, frameStart?, property?}
+             */
+            create: function(data) {
+                if (vendor == null) {
+                    initVendorStrings();
+                }
+                if (keyframes[data.id] == null) {
+                    
+                    var pos = document.styleSheets[0].insertRule(vendor.keyframes + " " + data.id + " {}", 0),
+                        keyFrameAnimation = document.styleSheets[0].cssRules[pos],
+                        frames = data.frames - (data.frameStart || 0),
+                        step = 100 / frames | 0,
+                        property = data.property || 'background-position-x';
+
+                    for (var i = 0; i < frames; i++) {
+                        var rule = (step * (i + 1)) + '% { ' + property + ': ' + (-data.frameWidth * (i + (data.frameStart || 0))) + 'px}';
+                        keyFrameAnimation.insertRule(rule);
+                    }
+                    keyFrameAnimation.iterationCount = data.iterationCount;
+                    keyFrameAnimation.frameToStop = data.frameToStop;
+
+                    keyframes[data.id] = keyFrameAnimation;
+                }
+            },
+            start: function($element, animationId, msperframe) {
+                var style = $element.get(0).style;
+                
+                style[vendor.AnimationName] = 'none';
+                setTimeout(function() {
+                    var keyframe = keyframes[animationId];
+                    
+                    if (style[vendor.AnimationFillMode] == 'forwards') {
+                        spriteAnimation.stop($element);
+                        return;
+                    }
+                    $element.on(vendor + 'AnimationEnd', function() {
+                        var css;
+                        if (keyframe.frameToStop) {
+                            //TODO: now only last cssRule is taken
+                            var styles = keyframe.cssRules[keyframe.cssRules.length - 1].style;
+                            css = {};
+                            for (var i = 0; i < styles.length; i++) {
+                                css[styles[i]] = styles[styles[i]];
+                            }
+                        }
+                        spriteAnimation.stop($element, css);
+                    });
+
+                    style[vendor.AnimationIterationCount] = keyframe.iterationCount || 1;
+                    style[vendor.AnimationDuration] = (keyframe.cssRules.length * msperframe) + 'ms';
+                    style[vendor.AnimationTimingFunction] = 'step-start';
+                    style[vendor.AnimationFillMode] = keyframe.frameToStop ? 'forwards' : 'none';
+                    style[vendor.AnimationName] = animationId;
+
+                }, 0);
+            },
+            stop: function($element, css) {
+                var style = $element.get(0).style;
+                style[vendor.AnimationFillMode] = 'none';
+                style[vendor.AnimationName] = '';
+                if (css != null) $element.css(css);
+            }
+        }
+    })();
+
+}); </script></div></body>
+</html>

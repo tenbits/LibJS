@@ -1,0 +1,29 @@
+
+header {
+    'Source Highlighter Component'
+    a.github-ribbon href='https://github.com/tenbits/CompoJS' >
+        img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
+}
+
+scroller.content {
+    div.container.tabPanel {
+        div.api.active {
+            'Is based on '
+            a href='http://prismjs.com/' > 'Prism Library'
+            '. Many thanks to the author.'
+            
+            div.hint > 'Include "compo/prism/lib/prism.js"'
+            
+            div > 'Markup example:'
+            prism > 'prism > "Source Code"'
+            div > 'Attributes:'
+            ul > li > code > "? src='' path to load source code from"            
+        }       
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='api' > 'API'        
+    }
+}

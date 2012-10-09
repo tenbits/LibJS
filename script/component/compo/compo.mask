@@ -1,0 +1,114 @@
+
+header {
+    'CompoJS'
+    a.github-ribbon href='https://github.com/tenbits/CompoJS' >
+        img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
+}
+
+scroller.content {
+    div.container.tabPanel {
+        div.info.active {
+            ul {
+                li { 'Enhance power of MaskJS' div.hint > code > 'is build on top of Custom Control Feature' }
+                li { 'Write Once — Use Everywhere' div.hint > code > '... without additional Javascript!' }
+                li > 'Model-View-‹Component›'
+                li > 'Weak Code Integration'                
+                li { 'Dry & Highly Customizable' }                
+            }            
+            'Dependencies:'
+            ul {
+                li > code > 'MaskJS'
+                li > code > 'ClassJS'
+                li {
+                    code > 'Any Dom Manipulation Library'
+                    div.hint > code > 'We Recommend Zepto.js for Mobile Applications'
+                }
+            }
+            
+            'If IncludeJS is used than it completely solves Javascript Problem of Libraries and Components'
+        }
+        div.api {
+            h4 > 'Ṗroperties'
+            ul {
+                li > code > '.events'
+                li > code > '.compo'
+                li > code > '.$'
+            }
+            h4 > 'Ċonstructor'
+            ul {
+                li > code > 'Construct(?arg, ?cntx)'
+            }
+            h4 > 'Ḟunctions'
+            ul {
+                li > code > '.render(values,?container,?cntx)'
+                li > code > '.insert(parent)'
+                li > code > '.append(template, values)'
+                li > code > '.on(?type, selector, callback)'
+                li > code > '.remove()'
+            }
+            h4 > 'Ṡtatic'
+            ul {
+                li > code > '.find(component, selector, direction)'
+                li > code > '.dispose(component)'
+                li > code > '.config.setDOMLibrary(lib)'
+            }
+            
+            prism src='/api.help/compo.api.js';
+        }
+        
+        div.example {
+            
+            ul {
+                li > code data-href='radiobuttons' > 'Radio Buttons'
+                li > code data-href='prismjs' > 'PrismJS'
+                li > code data-href='complex' > 'Complex Example'
+            }
+            
+            
+            h4 data-id='radiobuttons' > 'Lets have a look at RadioButtons Implementation'
+            
+            'As the result, we can just write in our mask markup:'
+            
+            prism > "radioButtons { button.active > 'Info' button > 'API' button > 'Example' }"
+            
+            'We dont need no more Javascript to apply mouse events, everything is done under the hood:'
+            
+            prism src='/api.help/radioButtons.source.js';
+            
+            'As for example, lets listen for button state change from parent Component'
+            
+            prism > "this.on('changed: .radioButtons', function(event){ /** do smth. */ })"
+            
+            'So developed once radioButton Handler, we need than only 2 lines of code '
+            font color='#bbb' > '(I dont count new lines) '
+            '(1) and (3) for rest of the future'
+            
+            h4 data-id='prismjs' > 'One more example: PrismJS'
+            'All Source codes are highlighted with '
+            a href='http://prismjs.com/' > 'PrismJS'
+            
+            prism > "var a = 10;" 'is'
+            prism > 'prism > "var a = 10;"'
+            
+            'As you can see its quite simple: define "prism" tag in mask markup and thats all. '
+            'The source code of a Prism Control Handler is'
+            prism src='/api.help/prism.source.js';
+            
+            
+            
+            h4 data-id='complex' > 'Another big example is the source code of this page, or current View'
+            
+            a href='script/component/compo/compo.js' target='_blank' > 'Current Component'
+            div;
+            a href='script/component/compo/compo.mask' target='_blank' > 'Current Mask'
+        }
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='info' > 'Info'
+        button name='api' > 'API'
+        button name='example' > 'Example'
+    }
+}

@@ -1,0 +1,142 @@
+
+header {
+    'MaskJS'
+    a.github-ribbon href='https://github.com/tenbits/MaskJS' >
+        img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
+}
+
+scroller.content#maskScroller {
+    div.container.tabPanel {
+        div.info.active {
+            ul {
+                li { 'Zen Coding Style' div.hint > code > 'Write Less, Do More' }
+                li { 'Dry & Highly Customizable' div.hint > code > 'Custom Tags, Custom Value Preprocessors' }
+                li {
+                    'Performance '
+                    a href='http://jsperf.com/javascript-template-engine-compare/2' > 'jsperf.com'
+                }                
+                li > 'No Dependencies'
+            }            
+        }
+        div.examples {        
+            maskExamples;        
+        }
+        div.syntax {
+            h4 > 'Tags'
+            p {
+                h5 > 'Tag Declaration'
+                code.api > 'tag#id.class{0,} key=[\'"]value[\'"]{0,}'
+                div.hint > 'Similar to CSS, but tag name is required, and attributes are not in square brackets «[ ]»'
+                h5 > 'Tags Items'        
+                table style='margin-left:30px;'  {
+                    tr { td > '«;»' td > ' — close tag, if it has no content' }
+                    tr { td > '«>»' td > ' — if it has only one item (tag or literal)' }
+                    tr { td > '«{»' td > ' — if it has one or more items. Then close it with «}».' }
+                }
+                p > 'And the content itself are other tags or literals'
+            }
+            
+            h4 > 'Literal'                
+            p {
+                code.api > '[\'"]Text Node Content[\'"]'
+            }
+            
+            h4 > 'Template Values'            
+            p {
+                code.api {
+                    '#' '{property_Name_To_Extract_From_Json_Values.and_Chaining_Is_Also_Possible}'
+                }
+                h5 > 'Template Value Conditions'
+                code.api {
+                    '#' '{:index > 10 ? property : "Some other string"}'
+                }
+                h5 > 'Template Value Utilities'
+                'Template Values Can be Transformed before inserting'
+                code.api {
+                    '#' '{utilityName:data}'
+                }
+                div.hint > '@see mask.registerUtility'
+                
+            }
+        }
+        div.api {
+            p {
+                h4 > '℉unctions'
+                ul {
+                    li > code > '.renderDom(template, ?values, ?container, ?cntx)'
+                    li > code > '.renderHtml(template, ?values, ?container, ?cntx)'
+                    li > code > '.registerHandler(tagName, handlerFunction)'
+                    li > code > '.getHandler(tagName)'
+                    li > code > '.registerUtility(name, fn)'
+                    li > code > '.compile(template)'
+                    li > code > '.serialize(template)'
+                    li > code > '.deserialize(template)'
+                }
+            }
+            p {
+                h4 > 'Ḃild-in Tags'
+                ul {
+                    li > code > 'list'
+                    li > code > 'visible'
+                    li > code > 'bind'
+                }
+            }
+            
+            prism src='/api.help/mask.api.js';
+            
+            
+            prism src='/api.help/mask.tags.js';            
+        }
+        
+        
+        div.snippets {            
+            ul.tiny {
+                li {
+                    prism > 'div;'
+                    prism language='markup' > '<div></div>'
+                }
+                li {
+                    prism > 'div.class#id.other;'
+                    prism language='markup' > '<div id="id" class="class other"></div>'
+                }
+                li {
+                    prism > 'div data-key="value" > "hi";'
+                    prism language='markup' > '<div data-key="value">hi</div>'
+                }
+                li {
+                    prism > 'p.container > div.panel > button > "Press Me";'
+                    prism language='markup' > '<p class="container"><div class="panel"><button>Press Me</button></div></p>'
+                }
+                li {
+                    prism > 'p { button > "Press" button > "Cancel"}'
+                    prism language='markup' > '<p><button>Press</button><button>Cancel</button></p>'
+                }
+                li {
+                    prism { 'p.#''{klass} data-id="#''{id}" > "#''{info.name}"' }
+                    prism > '{ id: "post234", klass: "red", info: {name: "RD"} }'
+                    prism language='markup' > '<p class="red" data-id="post234">RD</p>'
+                }
+                li {
+                    prism { 'span { #''{: current > 10 ? "More Than 10":"" }' }
+                    prism > '{ current: 11 }'
+                    prism language='markup' > '<span>More Than 10</span>'
+                }
+                li {
+                    prism { 'list values="arr" > ul > li > "#''{.}"' }
+                    prism > '{ arr: [1,2,3] }'
+                    prism language='markup' > '<ul><li>1</li><li>2</li><li>3</li></ul>'
+                }
+            }            
+        }
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='info' > 'Info'
+        button name='examples' > 'Examples'
+        button name='syntax' > 'Syntax'
+        button name='api' > 'API'
+        button name='snippets' > 'Snippets'
+    }
+}

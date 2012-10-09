@@ -1,0 +1,33 @@
+
+header {
+    'ClassJS'
+    a.github-ribbon href='https://github.com/tenbits/ClassJS' >
+        img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
+}
+
+scroller.content#maskScroller {
+    div.container.tabPanel {
+        div.info.active {
+            ul {
+                li {
+                    'Fastest Class implementation for modern browsers. Check out speed comparison: '
+                    a href='http://jsperf.com/class-libjs-vs-others' > 'jsperf.com'
+                    div.hint > 'Note that even comple example is up to 2 times faster'
+                }
+                li {
+                    'Size'
+                    div.hint > 'Compiled: 1.3KB'
+                }
+                li > 'No Dependencies'
+            }            
+        }      
+        div.api > prism src='/api.help/class.api.js';
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='info' > 'Info'
+        button name='api' > 'API'        
+    }
+}
