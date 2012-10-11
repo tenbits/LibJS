@@ -1,68 +1,72 @@
 header {
-    'LibJS'
-    div style='text-align:right; float:right;' > 'Javascript Tao 道 Application Framework'
+    'LibJS Project'
+    div style='text-align:right; float:right;' > 'Tao 道 Application Framework'
 }
 
 scroller.content.container.about {
-    div {
-
-    div {
-        'Library Set for HTML5 Application Development. '
-        'And as we believe in "Energy of the Universe", we tried not to desturb its streams with our code, '
-        'and made it Simple, Beautiful and Harmonious'
-    }
-    h6 > 'The Framework consists of serveral libraries:'
-    ul {
-        li > 'ClassJS — yes, this is Class implementation'
-        li > 'MaskJS — Dzen Coding Views'
-        li > 'IncludeJS — More Powerfull, but yet easier Resource Loader'
-        li > 'IncludeJS.Builder — Node.js tool for building Projects and combining Components'
-        li > 'CompoJS — Model-View-‹Component›'        
-    }
-    div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
-    
-    div {
-        h6 > 'Main Feature'
+    p {
+        h4 > 'Component Composition in HTML5 Application without Javascript'
+        
+        'You can — '
+        ul {
+            li > 'develop components seperate from main project'
+            li > 'embed them into the project with all it resources (css, image, html, javascript)'
+            li > 'initialize them direct in the markup - without addition javascript'
+        }
+        
+        'And so the development starts to make fun!'
+        
+        div.hint {
+            'As we believe in "Energy of the Universe", we tried not to desturb its streams with our code, '
+            'and made it Simple, Beautiful and Harmonious'
+        }
+        h6 > 'LibJS Project consists of serveral libraries:'
+        ul {
+            li > 'ClassJS — yes, this is Class implementation'
+            li > 'MaskJS — Dzen Coding Views'
+            li > 'IncludeJS — More Powerfull, but yet easier Resource Loader'
+            li > 'IncludeJS.Builder — Node.js tool for building Projects and combining Components'
+            li > 'CompoJS — Model-View-‹Component›'        
+        }
+        div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
         
         div {
-            'Though each of this libraries solves many problems and has many its own features, i would like
-            to mark out one advantage of using them all together, and this is: '
-            b > i > 'Component Composition in HTML5 Application.'
-            
-            font color='#555' > ' You can think about Components as about Widgets in jQuery'
-            
-            ' So what tha main problem i see by those widgets —'
-            ' To initialize a widget you have first to define placeholder in html markup for it.'
-            code > '<div id="mycomponent"></div>'
-            'Then on DomReady Event Initialize it'
-            code > '$("#mycomponent").myWidget(config);'
-            
-            'Sounds simple, BUT usually there are many different widgets in one application, and then we have troubles. '
-            ul {
+            h6;
+            'So, what does this mean — "without Javascript"?'
+            ' As for example, lets look at jQuery widget initialization — '
+            ol {
+                li > code > 'Define placeholder or container in HTML markup'
+                li > code > '"Somewhere" in code — $("#myCompo").initMyComponent(config)'
+            }
+            'It looks simple — only 2 lines. ' b > i > 'BUT' ', this 2 lines have also 2 Problems.'
+            ol {
                 li {
-                    h6 > 'Source Code Organization'
-                    'You say, i will place everything in one widgets.js file?'
-                    div > '— Really? Difficult to maintain and to reuse.'
-                    'You say, i will use then any Async Module Defenition Library, like RequireJS.'
-                    div > "— Fine, but what will you do with component's CSS dependencies, and its images? AMD libs can not manage them."
-                    'I say, ' i > 'IncludeJS' '. It can do all this stuff AMD libraries do, plus it can handle those dependencies. '
-                    i > 'And IncludeJS.Builder' ' can combine Javascript, Lazy Javascript, CSS, HTML
-                    and copy images into projects working directory if they are included from external CSS file. So '
-                    u > 'Develop Seperate and Release Unified.'
-                    ' Additionaly you are not stuck with AMD Code Styling, develop as you want, and include. And such
-                    powerful features like Lazy Modules and Path Routing are in arcenal too.'
-                    
+                    div > 'Tao'
+                    div >'You seperate this two lines. (1) is in markup and (2) is "somewhere" in javascript file.'
+                    div > 'Smth. must be defined only once - not twice.'
                 }
                 li {
-                    h6 > 'Code Writing'
-                    'As was already said, normally, you declare widgets placeholder or container in HTML markup
-                     and then initilize it in main.js, for example. You do this even when use any mvc framework. But what CompoJS offers to you, is:
-                     to write only one line in you markup file, like' code > 'myComponent settingKey="settingValue";'
-                     ' and if myComponent developed right, you dont have to write any additional javascript.'
+                    div > 'Actual Performance'
+                    div > '(2) line has performance issues - '
+                    ul  {
+                       li > 'additional DOM Quering'
+                       li > 'additional DOM Reflow and Repaint, while rendering in that HTMLElement'
+                    }
                 }
             }
-            'Read to this line and still interested? Then take a look at those libraries and see the examples.'
+            
+            'This Project aims to cut off this two problems and the third one — ' b > i > 'Source Code Organization'
+            
+            p {
+                'What is jQuery Widget usually consists of? Right — javascript, css, images ...' br;
+                'So to use this widget you have to copy images and scripts into project directory, copy css into applicaton styles.' br;
+                'Compfortable? Defenetly no. With IncludeJS you "include" this all with only 1 line of code.'
+            }
+            
+            'Interested? Look at the libraries and examples.'
+            
         }
+        
+        h6;
     }
-    
 }

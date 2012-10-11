@@ -19,20 +19,14 @@ void function(){
                     &lt;/script&gt;
                     &lt;script type='include/lazy' data-appuri='/lazy.js'&gt;
                         (function(){ return {name: 'Name'} })()
-                    &lt;/script&gt;
+                    &lt;/script&gt;            
             
-            Install:
-                npm install includejs -g
+        Install:
+            npm install includejs -g
+        
+        Help:
+            includejs -help
             
-            Help:
-                includejs -help
-            
-            Example:
-                includejs index.html -minify
-                
-        Output Example:
-            This Page is not built, and to see the built example go to
-            [index.dev.build.html](index.dev.build.html)
     */
 
 })();

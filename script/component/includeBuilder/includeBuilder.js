@@ -1,4 +1,4 @@
-include.load(['includeBuilder.mask']).done(function(r) {
+include.load('includeBuilder.mask').done(function(r) {
 
     mask.registerHandler('includeBuilderView', Class({
         Base: Compo,

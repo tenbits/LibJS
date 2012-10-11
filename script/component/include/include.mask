@@ -5,38 +5,40 @@ header {
         img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
 }
 
-scroller.content.tabPanel {
-    div.info.active {
-        div {            
-            ul {
-                li { 'Async Resource Loader' div.hint > code > 'Javascript, Style, HTML, Ajax, Image' }
-                li { 'Inline Declaration' div.hint > code > 'No external files (such as "package.json")' }
-                li > 'Routing'
-                li { 'Builder' div.hint > code > 'Combine all resources in one .JS | .CSS | .HTML file' }
-                li { 'Callbacks' div.hint > code > 'Sub- and ResourceLoaded and DOMContentLoaded' }
-                li { 'Lazy Modules' div.hint > code > 'Parse(eval) Scripts only when they are needed' }
-                li { 'Performance ' div.hint > code > 'We use it for Mobile Development mainly' }
-                li { 'Size ' div.hint > code > 'Uglified only 7.1KB' }                
+scroller.content {
+    div.tabPanel{
+        div.info.active {
+            div {            
+                ul {
+                    li { 'Async Resource Loader' div.hint > code > 'Javascript, Style, HTML, Ajax, Image' }
+                    li { 'Inline Declaration' div.hint > code > 'No external files (such as "package.json")' }
+                    li > 'Routing'
+                    li { 'Builder' div.hint > code > 'Combine all resources in one .JS | .CSS | .HTML file' }
+                    li { 'Callbacks' div.hint > code > 'Sub- and ResourceLoaded and DOMContentLoaded' }
+                    li { 'Lazy Modules' div.hint > code > 'Parse(eval) Scripts only when they are needed' }
+                    li { 'Performance ' div.hint > code > 'We use it for Mobile Development mainly' }
+                    li { 'Size ' div.hint > code > 'Uglified only 7.1KB' }                
+                }
+                'Dependecies:'
+                ul > li > code > 'ClassJS'
             }
-            'Dependecies:'
-            ul > li > code > 'ClassJS'
+        }
+        div.api {
+            ul {
+                li > code > '.js()'
+                li > code > '.css()'
+                li > code > '.load()'
+                li > code > '.ajax()'
+                li > code > '.embed()'
+                li > code > '.lazy()'
+                li > code > '.wait()'
+                li > code > '.done()'
+                li > code > '.ready()'
+                li > code > '.cfg()'
+            }
+            prism src='/api.help/include.help.js';   
         }
     }
-    div.api {
-        ul {
-            li > code > '.js()'
-            li > code > '.css()'
-            li > code > '.load()'
-            li > code > '.ajax()'
-            li > code > '.embed()'
-            li > code > '.lazy()'
-            li > code > '.wait()'
-            li > code > '.done()'
-            li > code > '.ready()'
-            li > code > '.cfg()'
-        }
-        prism src='/api.help/include.help.js';   
-    }    
 }
 
 footer {

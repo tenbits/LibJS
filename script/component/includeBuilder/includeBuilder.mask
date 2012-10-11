@@ -5,12 +5,78 @@ header {
         img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
 }
 
-scroller.content.tabPanel {
-    div.info.active {
-        h3 >  'node.js Command-Line Tool'
+scroller.content {
+    p.tabPanel {
+        div.info.active {
+            h3 >  'node.js Command-Line Tool'
+            
+            prism.builder src='/api.help/include.builder.help.js';
+        }
         
-        prism.builder src='/api.help/include.builder.help.js';
-    }    
+        div.commands {
+            ul {
+                li {
+                    code > 'includejs [*.html] -minify'
+                    ul {
+                        li > 'parse html and Resolve all Resources'
+                        li > 'parse scripts and Resolve all Resources'
+                        li > 'parse dependency-scripts and Resolve all Resources'
+                        li > '... and so on'
+                        li > 'combine all resources into seperate single files'
+                        li {
+                            'create new HTML with'
+                            ul {
+                                li > 'embedded Lazy- and Loaddata'
+                                li > 'only one script tag - linked to combined script file'
+                                li > 'only one style tag - linked to combined style file'
+                            }
+                        }
+                    }
+                }
+                li {
+                    code > 'includejs [*.config]'
+                    code > ul {
+                        li > '{'
+                        li > '"file" — {String} - HTML input file'
+                        li > '"vars" — {Object} — Variables used when parsing includes'
+                        li {
+                            '"action" — '
+                            ul {
+                                li > '"build" — @default — combine resources'
+                                li > '"import" — copy outer resources into projects directory'
+                            }
+                        }
+                        
+                        li > '"minify" — {Boolean} — minify scripts and styles'
+                        li > '"outputMain" — output name of a built html — @default "{name}.build.html"'
+                        li > '"outputSources" — directory of combined/copied resources — @default "{name}.build/"'
+                        li > '}'
+                    }
+                }
+                li {
+                    code > 'includesjs template [name]'
+                    p > 'Create Empty Project in {current} directory'
+                    p > 'Available: "starter"'
+                }
+            }
+        }
+        div.loader {
+            p > 'Include.Loader {include.loader.js} is here to maintain dev-machine routes'
+            p.hint > 'This Script will be not included in any of build actions'
+            p.hint > 'Also add "include.loader.js" to .gitignore, if you develop in team and use .git'
+            
+            code > "<script type='text/javascript' src='include.loader.js' main='script/app.js'>"
+            
+            p > 'Try it with:' code > '$ includejs template starter'
+            p > 'BUT change before your pathes in:' code > '{npm-global-modules}/includejs/template/starter/include.loader.js'
+        }
+    }
 }
 
-footer;
+footer {
+    radioButtons{
+        button.active name='info' > 'Info'
+        button name='commands' > 'Commands'
+        button name='loader' > 'Loader'        
+    }
+}
