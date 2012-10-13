@@ -17,16 +17,17 @@ scroller.content.container.about {
         'And so the development starts to make fun!'
         
         div.hint {
-            'As we believe in "Energy of the Universe", we tried not to desturb its streams with our code, '
-            'and made it Simple, Beautiful and Harmonious'
+            'We call this a project, as we dont want to develop monolith framework, but to give you '
+            'tools, so that you decide, what you need. And when we write ' i > small > '"component composition"'
+            ' — thats only our advice, and you can use any of libraries or classes seperate.'
         }
-        h6 > 'LibJS Project consists of serveral libraries:'
+        h6 > 'LibJS Project consists of several libraries:'
         ul {
-            li > 'ClassJS — yes, this is Class implementation'
-            li > 'MaskJS — Dzen Coding Views'
-            li > 'IncludeJS — More Powerfull, but yet easier Resource Loader'
-            li > 'IncludeJS.Builder — Node.js tool for building Projects and combining Components'
-            li > 'CompoJS — Model-View-‹Component›'        
+            li { a href='#class' > 'ClassJS' ' — yes, this is Class implementation' }
+            li { a href='#mask' > 'MaskJS'  ' — Dzen Coding Views' }
+            li { a href='#include' > 'IncludeJS' ' — More Powerfull, but yet easier Resource Loader' }
+            li { a href='#includeBuilder' > 'IncludeJS.Builder'' — Node.js tool for building Projects and combining Components' }
+            li { a href='#compo' > 'CompoJS'' — Model-View-‹Component›' }
         }
         div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
         

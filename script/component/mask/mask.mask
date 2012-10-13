@@ -14,6 +14,8 @@ scroller.content#maskScroller {
                 li {
                     'Performance '
                     a href='http://jsperf.com/javascript-template-engine-compare/2' > 'jsperf.com'
+                    
+                    div.hint > code { '... is even faster than native JSON.parse ' a href='http://jsperf.com/maskjs-vs-json'> 'jsperf' }
                 }                
                 li > 'No Dependencies'
             }            
