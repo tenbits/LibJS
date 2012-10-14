@@ -65,22 +65,22 @@ scroller.content#maskScroller {
             p {
                 h4 > '℉unctions'
                 ul {
-                    li > code > '.renderDom(template, ?values, ?container, ?cntx)'
-                    li > code > '.renderHtml(template, ?values, ?container, ?cntx)'
-                    li > code > '.registerHandler(tagName, handlerFunction)'
-                    li > code > '.getHandler(tagName)'
-                    li > code > '.registerUtility(name, fn)'
-                    li > code > '.compile(template)'
-                    li > code > '.serialize(template)'
-                    li > code > '.deserialize(template)'
+                    li > a href='#/mask/api/renderDom' > '.renderDom(template, ?values, ?container, ?cntx)'
+                    li > a href='#/mask/api/renderHtml' > '.renderHtml(template, ?values, ?container, ?cntx)'
+                    li > a href='#/mask/api/registerHandler' > '.registerHandler(tagName, handlerFunction)'
+                    li > a href='#/mask/api/getHandler' > '.getHandler(tagName)'
+                    li > a href='#/mask/api/registerUtility' > '.registerUtility(name, fn)'
+                    li > a href='#/mask/api/compile' > '.compile(template)'
+                    li > a href='#/mask/api/serialize' > '.serialize(template)'
+                    li > a href='#/mask/api/deserialize' > '.deserialize(template)'
                 }
             }
             p {
                 h4 > 'Ḃild-in Tags'
                 ul {
-                    li > code > 'list'
-                    li > code > 'visible'
-                    li > code > 'bind'
+                    li > a href='#/mask/api/list' > 'list'
+                    li > a href='#/mask/api/visible' > 'visible'
+                    li > a href='#/mask/api/bind' > 'bind'
                 }
             }
             

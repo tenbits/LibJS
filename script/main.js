@@ -12,9 +12,10 @@ include.cfg({
 }).wait().js({
     compo: ['scroller', 'prism'],
     controller: ['viewsManager', 'view'],
-    uicontrol: ['radioButtons', 'pageActivity'],	
+    uicontrol: ['radioButtons', 'pageActivity'],
+	'': '/script/handler/routes.js'
 }).ready(function() {
-    console.log('main.done');
+    
     mask.registerHandler('html', Class({
         render: function(values, container) {
             var source = null;
@@ -42,6 +43,8 @@ include.cfg({
             formsView: {
                 name: 'Forms'
             },
+			
+			
             aboutView: {
                 name: 'About'
             },
@@ -59,7 +62,11 @@ include.cfg({
             },
             compoView: {
                 name: 'CompoJS'
+            },
+			ruqqView: {
+                name: 'RuqqJS'
             }
+			
         },
         aggr = function(keys, fn) {
             var arr = [];
@@ -69,7 +76,7 @@ include.cfg({
         };
 
     var model = {
-        libraries: aggr(['classView', 'maskView', 'includeView','includeBuilderView', 'compoView'], function(key, x) {
+        libraries: aggr(['classView', 'maskView', 'includeView','includeBuilderView', 'compoView', 'ruqqView'], function(key, x) {
             return {
                 id: key,
                 name: x.name
@@ -96,21 +103,27 @@ include.cfg({
         events: {
             'click: menu li': function(e) {
                 var view = $(e.target).data('view');
-                viewsManager.show(view);
-                w.location.hash = view.replace('View','');
+				
+                routes.set(view.replace('View',''));
             }
         }
     }));
-
-
+	
 
     w.app.render(model).insert(document.body);
+	
+	
+	w.routes = new Routes({
+		match: /([\w]+)(\/([\w]+))?(\/([\w]+))?/,
+		param: 'view=$1View&category=$3&anchor=$5',
+		callback: viewsManager.show.bind(viewsManager)
+	});
+	
+	
+	
 
-    
-    var lib = (window.location.hash || '').substring(1) 
-    if (lib + 'View' in views == false) lib = null;
-    
-    viewsManager.show((lib || 'about')+ 'View');
+	
+	viewsManager.show(w.routes.current() || { view : 'aboutView' });
 
 
 

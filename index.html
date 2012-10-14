@@ -82,13 +82,7 @@ include.js({
             if (data.timing == null) data.timing = 'linear';
             if (data.duration == null) data.duration = 300;
 
-            if (typeof data.duration == 'string') {
-                var speeds = {
-                    slow: 600,
-                    fast: 200
-                }
-                data.duration = speeds[data.duration] || 400;
-            }
+            
             if (data.valueFrom != null) {
                 var css = {};
                 css[data.property] = data.valueFrom;
@@ -123,6 +117,13 @@ include.js({
                 length = isarray ? model.length : 1,
                 x = null;
 
+            var beforeCss = null;
+            for (var i = 0; x = isarray ? model[i] : model, isarray ? i < length : i < 1; i++) {
+                if (x.from == null) continue;                
+                (beforeCss || (beforeCss = {}))[x.prop] = x.from;
+            }
+            
+            
             for (var i = 0; x = isarray ? model[i] : model, isarray ? i < length : i < 1; i++) {
                 var callback = x.onComplete ? scopeModel(x.onComplete) : ondone;
                 Animate(x.element, x.prop, x.to, x.duration, callback, x.from, x.timing);
@@ -145,10 +146,89 @@ include.js({
         }
     })();
 
+    
+    
+    var I = {
+        prop: prfx + 'transition-property',
+        duration: prfx + 'transition-duration',
+        timing: prfx + 'transition-timing-function'
+    };
+    
+    r.animate.Model = Class({        
+        Construct: function(model, ondone){
+            this.count = 0;
+            this.addModel(model);            
+        },
+        addModel: function(model){            
+            if (model instanceof Array){
+                for(var i = 0, x, length = model.length; x = model[i], i<length; i++){
+                    this.addModel(x);
+                }
+                return;
+            }            
+            switch(typeof model){
+                case 'string':
+                    this._addModel(this._parse(model));
+                    break;
+                case 'object':
+                    if (model != null) this._addModel(model);
+                    break;                    
+            }            
+        },
+        start: function(element){
+            if (this.startCss){
+                for(var key in this.startCss) element.style[key] = this.startCss[key];
+            }
+            setTimeout(function(){
+                for(var key in this.css){
+                    element.style[key] = this.css[key];
+                }                
+            }.bind(this),0)
+        },
+        /**
+         *  '{prop} | {?from} > {to} | {duration}ms | {?timing}'
+         */
+        _parse: function(model){
+            var arr = model.split(/ *\| */g),
+                data = {},
+                length = arr.length;
+            
+            data.prop = arr[0];
+            
+            var vals = arr[1].split(/ *> */);
+            data.from = vals.length == 2 ? vals[0] : null;
+            data.to = vals[vals.length - 1];
+            
+            
+            data.duration = length >  2 ? arr[2] : '200ms';
+            data.timing = length > 3 ? arr[3] : 'linear';
+           
+            return data;
+        },
+        /**
+         * Apply Raw Object */
+        _addModel: function(data){
+            this.count++;
+            
+            if (data.from != null){
+                if (this.startCss == null) this.startCss = {};
+                this.startCss[data.prop] = data.from;
+            }            
+            if (this.css == null)  this.css = {};
+            
+            for(var key in I) this.css[I[key]] = (this.css[I[key]] ? this.css[I[key]] + ',' : '') + data[key];            
+            
+            ////this.css[I.prop] = (this.css[I.prop] ? this.css[I.prop] + ',' : '') + data.prop;            
+            ////this.css[I.duration] = (this.css[I.duration] ? this.css[I.duration] + ',' : '') + data.duration;
+            ////this.css[I.timing] = (this.css[I.timing] ? this.css[I.timing] + ',' : '') + data.timing;
+            
+            this.css[data.prop] = data.to;
+        }
+    });
 
 
 
-    r.spriteAnimation = (function() {
+    r.animate.sprite = (function() {
         var keyframes = {},
             prfx = r.info.cssprefix,
             vendor = null,

@@ -1,12 +1,9 @@
 include.load('about.mask').css('about.css').done(function(r) {
 
     mask.registerHandler('aboutView',Class({
-        Base: Compo,
+        Base: mask.getHandler('view'),
         attr: {
             template: r.load[0]
-        },
-        activate: function() {
-            Compo.find(this, 'scroller').scroller.refresh();
         }
     }));
 

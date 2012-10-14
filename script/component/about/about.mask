@@ -28,6 +28,7 @@ scroller.content.container.about {
             li { a href='#include' > 'IncludeJS' ' — More Powerfull, but yet easier Resource Loader' }
             li { a href='#includeBuilder' > 'IncludeJS.Builder'' — Node.js tool for building Projects and combining Components' }
             li { a href='#compo' > 'CompoJS'' — Model-View-‹Component›' }
+            li { a href='#ruqq' > 'RuqqJS'' — Helper Utilities.' i > ' @todo: needs to be refactored' }
         }
         div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
         

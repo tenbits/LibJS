@@ -111,7 +111,7 @@ function() {
         },
         show: function() {
             this.start();
-            this.$.show();
+            this.$.show();            
             return this;
         },
         hide: function() {
@@ -150,14 +150,15 @@ function() {
 
             Compo.prototype.render.apply(this, arguments);            
         },
-        show: function() {
-            
+        show: function() {            
             this.$.show();
             this.compos.spinner.show();
+            return this;
         },
         hide: function(){
             this.$.hide();
             this.compos.spinner.hide();
+            return this;
         }
     }));
 

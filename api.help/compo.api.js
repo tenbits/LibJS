@@ -5,7 +5,7 @@
 Class({
 
 /**
- *  [events](#.events)  (optional)
+ *  [events](name=events)  (optional)
  *  Events that should be delegated after DOMInsert,
  *  @event key - 'EventType: Selector', 'click' is @default,
  *                  if only 'Selector' specified
@@ -15,7 +15,7 @@ events: {
     // ..
 },
 /**
- *  [compo](#.compo)    (optional)
+ *  [compo](name=compos)    (optional)
  *  Components/HTMLElements that will be searched for after DOMInsert,
  *  after that this.compo holds references to them in values instead
  *  of selector strings.
@@ -33,14 +33,14 @@ compo: {
 },
 
 /**
- *  [$](#.$) 
+ *  [$](name=$) 
  *  After Compo is rendered, dollar sign contains the HTMLElement(s)
  *      selected with default DOM Manipulation Library
  */
 $: null,
     
 /**
- *  [Construct](#Construct)
+ *  [Construct](name=Construct)
  *   @param  arg -
  *      1. {Object} - template model object, receive from mask.renderDom
  *      Custom Class Initialization:
@@ -51,7 +51,7 @@ $: null,
 Construct: function(arg, cntx){},
 
 /**
- *  [.render](#.render)
+ *  [.render](name=render)
  *  Implements .render {Function} needed for MaskJS, @see MaskJS.registerHandler
  *  This Function renders Template into container.
  *
@@ -64,7 +64,7 @@ Construct: function(arg, cntx){},
 render: function(values, container, cntx){},
 
 /**
- *  [.insert](#.insert)
+ *  [.insert](name=insert)
  *  Insert Component into @parent
  *  'DOMInsert' Event will be emitted to all children-Components
  *
@@ -73,7 +73,7 @@ render: function(values, container, cntx){},
 insert: function(parent){},
 
 /**
- *  [.append](#.append)
+ *  [.append](name=append)
  *  Append Mask Template to Current Component,
  *  if Component is already rendered to DOM, 'DOMInsert' Event is emitted
  *  to newly created child components (if any)
@@ -86,21 +86,21 @@ insert: function(parent){},
 append: function(template, values){},
 
 /**
- *  [.on](#.on)
+ *  [.on](name=on)
  *  @see @properties.events
  *  Adds Event Handler to this.events object
  */  
 on: function(?type, selector, callback){},
 
 /**
- *  [.remove](#.remove)
+ *  [.remove](name=remove)
  *  Removes Component from DOM, and calls Compo.dispose
  */
 remove: function(){},
 
 Static: {
     /**
-     *[.find](#.find)
+     *[.find](name=find)
      * Get Component
      *
      * @argument compo - {Compo} - Current Component to Star Search From.
@@ -116,7 +116,7 @@ Static: {
     find: function(compo, selector, direction){},
     
     /**
-     *  [.dispose](#.dispose)
+     *  [.dispose](name=dispose)
      *  Go through all children and if some implements dispose function
      *      calls this.
      *  @argument compo - {Compo};
@@ -125,7 +125,7 @@ Static: {
     
     config:{
         /**
-         *  [.config.setDOMLibrary](#.config.setDOMLibrary)
+         *  [.config.setDOMLibrary](name=config.setDOMLibrary)
          *  DOM Manipulation Library.
          *
          *  used functions:

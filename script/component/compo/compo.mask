@@ -30,27 +30,27 @@ scroller.content {
         div.api {
             h4 > 'Ṗroperties'
             ul {
-                li > code > '.events'
-                li > code > '.compo'
-                li > code > '.$'
+                li > a href='#/compo/api/events' > '.events'
+                li > a href='#/compo/api/compos' > '.compos'
+                li > a href='#/compo/api/$' > '.$'
             }
             h4 > 'Ċonstructor'
             ul {
-                li > code > 'Construct(?arg, ?cntx)'
+                li > a href='#/compo/api/Construct' > 'Construct(?arg, ?cntx)'
             }
             h4 > 'Ḟunctions'
             ul {
-                li > code > '.render(values,?container,?cntx)'
-                li > code > '.insert(parent)'
-                li > code > '.append(template, values)'
-                li > code > '.on(?type, selector, callback)'
-                li > code > '.remove()'
+                li > a href='#/compo/api/render' > '.render(values,?container,?cntx)'
+                li > a href='#/compo/api/insert' > '.insert(parent)'
+                li > a href='#/compo/api/append' > '.append(template, values)'
+                li > a href='#/compo/api/on' > '.on(?type, selector, callback)'
+                li > a href='#/compo/api/remove' > '.remove()'
             }
             h4 > 'Ṡtatic'
             ul {
-                li > code > '.find(component, selector, direction)'
-                li > code > '.dispose(component)'
-                li > code > '.config.setDOMLibrary(lib)'
+                li > a href='#/compo/api/find' > '.find(component, selector, direction)'
+                li > a href='#/compo/api/dispose' > '.dispose(component)'
+                li > a href='#/compo/api/config.setDOMLibrary' > '.config.setDOMLibrary(lib)'
             }
             
             prism src='/api.help/compo.api.js';
@@ -59,13 +59,13 @@ scroller.content {
         div.example {
             
             ul {
-                li > code data-href='radiobuttons' > 'Radio Buttons'
-                li > code data-href='prismjs' > 'PrismJS'
-                li > code data-href='complex' > 'Complex Example'
+                li > a href='#/compo/example/radioButtons' > 'Radio Buttons'
+                li > a href='#/compo/example/prismjs' > 'PrismJS'
+                li > a href='#/compo/example/complex' > 'Complex Example'
             }
             
             
-            h4 data-id='radiobuttons' > 'Lets have a look at RadioButtons Implementation'
+            h4 > a name='radioButtons' > 'Lets have a look at RadioButtons Implementation'
             
             'As the result, we can just write in our mask markup:'
             
@@ -83,7 +83,8 @@ scroller.content {
             font color='#bbb' > '(I dont count new lines) '
             '(1) and (3) for rest of the future'
             
-            h4 data-id='prismjs' > 'One more example: PrismJS'
+            
+            h4 > a name='prismjs' > 'One more example: PrismJS'
             'All Source codes are highlighted with '
             a href='http://prismjs.com/' > 'PrismJS'
             
@@ -96,7 +97,7 @@ scroller.content {
             
             
             
-            h4 data-id='complex' > 'Another big example is the source code of this page, or current View'
+            h4 > a name='complex' > 'Another big example is the source code of this page, or current View'
             
             a href='script/component/compo/compo.js' target='_blank' > 'Current Component'
             div;

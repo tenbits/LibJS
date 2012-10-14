@@ -4,7 +4,7 @@ void function(){
 
 	include
 		/**
-		 *	[.js](#.js)
+		 *	[.js](name=js)
 		 * Load javascript files
 		 * @argument
 		 * 		1. String - IncludeUrl:
@@ -19,7 +19,7 @@ void function(){
 		})
 		
 		/**
-		 *	[.css](#.css)
+		 *	[.css](name=css)
 		 * 	Load css files
 		 *  @arguments - @see .js 
 		 */
@@ -28,14 +28,14 @@ void function(){
 		})
 		
 		/**
-		 *	[.load](#.load)
+		 *	[.load](name=load)
 		 *	Load{XMLHTTPRequest}
 		 *	@arguments - @see .js (same url handling)
 		 */
 		.load('/data/description.txt')
 		
 		/**
-		 *	[.ajax](#.ajax)
+		 *	[.ajax](name=ajax)
 		 *	Ajax{XMLHTTPRequest}
 		 *	same as .load, but its data is not embedded in release. @see Building Project
 		 *	@arguments - @see .js (same url handling)
@@ -43,7 +43,7 @@ void function(){
 		.ajax('/user/tenbits/news')
 		
 		/**
-		 *	[.embed](#.embed)
+		 *	[.embed](name=embed)
 		 *	Loading script with script-tag, while .js loads first and than evals source.
 		 *	This usually used to load cross-domain scripts.
 		 *	(i) Nested dependencies couldnt be handled jet
@@ -51,7 +51,7 @@ void function(){
 		.embed('http://example.com/script.js')
 		
 		/**
-		 *	[.lazy](#.lazy)
+		 *	[.lazy](name=lazy)
 		 *	Lazy Module
 		 *	@argument {xpath: url}
 		 *
@@ -72,7 +72,7 @@ void function(){
 		})
 		
 		/**
-		 *	[.wait](#.wait)
+		 *	[.wait](name=wait)
 		 * 	Wait until all upper resources are loaded, and continue to load
 		 * 	all resources that will be included after this function.
 		 * 	(example)
@@ -83,14 +83,14 @@ void function(){
 		.wait()
 		
 		/**
-		 *	[.done](#.done)
+		 *	[.done](name=done)
 		 *	Fire callback fn when all upper resources and also subresources are loaded
 		 */		
 		.done(function() { console.log('done'); })
 		
 		
 		/**
-		 *	[.ready](#.ready)
+		 *	[.ready](name=ready)
 		 *	Same as .done, but additionally it waits (if not yet) for DOMContentLoaded
 		 */
 		.ready(function() { console.log('dom ready'); });
@@ -99,7 +99,7 @@ void function(){
 	
 	include
 		/**
-		 *	[.cfg](#.cfg)
+		 *	[.cfg](name=cfg)
 		 *	Routing is mad-simple yet - {name} will be replaced with supplied value
 		 *
 		 *	In case of .css({styles: 'theme/dark'}) we become 'app/styles/theme/dark.css'

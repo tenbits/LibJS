@@ -21,6 +21,8 @@ include.lazy({
         }
     }
 
+	
+	var currentCompo;
     window.ViewsManager = Class({
         Base: Compo,
         Construct: function() {
@@ -31,50 +33,51 @@ include.lazy({
             this.tagName = 'div';
             Compo.prototype.render.call(this, values, container, cntx);
         },
-        load: function(id) {
+        load: function(info) {
             
-            var activity = Compo.findCompo(app, 'pageActivity');
-			activity.show();
+			var activity = Compo.findCompo(app, 'pageActivity').show(),
+				name = info.view.replace('View', '');
             
-            
-            var name = id.replace('View', '');
-            
-            
+			
             window.include.js({
                 controller: name + '/' + name
             }).done(function() {
                 
-                this.append('view;', {
-                    id: id
-                });
-                
+                this.append(name + 'View;',{});
+				
                 activity.hide();
                 
                 
-                var compo = Compo.findCompo(this, id);
-                if (compo == null) {
-                    console.error('Cannt be loaded', id);                    
+                var compo = Compo.findCompo(this, info.view);
+				if (compo == null) {
+                    console.error('Cannt be loaded', info.view);                    
                     return;
                 }
-                if (this.$) Helper.doSwitch(this.$.children('.active'), compo.$.parent());
-    
-                compo.activate && compo.activate();
-            
-                
+				
+				this.performShow(compo, info);
+				
             }.bind(this));
         },
-        show: function(id) {
-            var compo = Compo.findCompo(this, id);
+        show: function(info) {			
+			var compo = Compo.findCompo(this, info.view);
             if (compo == null) {
-                console.log('is null', this, id);
-                this.load(id);
+                this.load(info);
                 return;
             }
-            if (this.$) Helper.doSwitch(this.$.children('.active'), compo.$.parent());
-
+			
+			this.performShow(compo, info);
+        },
+		performShow: function(compo, info){
+			
+			compo.section(info);
+			
+			if (compo == currentCompo) return;
+			
+			currentCompo = compo;
+            
+			if (this.$) Helper.doSwitch(this.$.children('.active'), compo.$);
             compo.activate && compo.activate();
-
-        }
+		}
     });
 
     mask.registerHandler('viewsManager', ViewsManager);

@@ -1,5 +1,5 @@
 /**
- *  [List](#list)
+ *  [List](name=list)
  *  List View Builder
  *
  *  @attribute values - property Name of an Array of Items
@@ -14,7 +14,7 @@
 list values='array' { /** Template */ }
 
 /**
- *  [Visible](#visible)
+ *  [Visible](name=visible)
  *  Conditional Rendering
  *
  *  @attribute check - assertion to check if sub-template should be rendered
@@ -23,7 +23,7 @@ list values='array' { /** Template */ }
 visible check='user=="admin"' { /** Template */ }
 
 /**
- *  [Bind](#bind)
+ *  [Bind](name=bind)
  *  Value Binder, uses __defineGetter__/__defineSetter__
  *
  *  @attribute value - name of the property. Its value will be retrieved

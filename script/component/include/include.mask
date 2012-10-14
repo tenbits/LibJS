@@ -6,7 +6,7 @@ header {
 }
 
 scroller.content {
-    div.tabPanel{
+    p.tabPanel{
         div.info.active {
             div {            
                 ul {
@@ -25,16 +25,16 @@ scroller.content {
         }
         div.api {
             ul {
-                li > code > '.js()'
-                li > code > '.css()'
-                li > code > '.load()'
-                li > code > '.ajax()'
-                li > code > '.embed()'
-                li > code > '.lazy()'
-                li > code > '.wait()'
-                li > code > '.done()'
-                li > code > '.ready()'
-                li > code > '.cfg()'
+                li > a href='#/include/api/js' > '.js(package)'
+                li > a href='#/include/api/css' > '.css(package)'
+                li > a href='#/include/api/load' > '.load(package)'
+                li > a href='#/include/api/ajax' > '.ajax(package)'
+                li > a href='#/include/api/embed' > '.embed(package)'
+                li > a href='#/include/api/lazy' > '.lazy(package)'
+                li > a href='#/include/api/wait' > '.wait()'
+                li > a href='#/include/api/done' > '.done(fn)'
+                li > a href='#/include/api/ready' > '.ready(fn)'
+                li > a href='#/include/api/cfg' > '.cfg(routes)'
             }
             prism src='/api.help/include.help.js';   
         }

@@ -1,6 +1,6 @@
 
 /**
- *  [renderDom](#renderDom)
+ *  [renderDom](name=renderDom)
  *  Render DocumentFragment, or if @param container defined,
  *      than render template into that container
  *  (i) Use this fn in in-browser rendering,
@@ -18,14 +18,14 @@
 mask.renderDom(template, ?values, ?container, ?cntx);
 
 /**
- *  [renderHtml](#renderHtml)
+ *  [renderHtml](name=renderHtml)
  *  @see .renderDom, but HTML-String will be rendered
  *  @param container - here container is {Array}
  */
 mask.renderHtml(template, ?values, ?container, ?cntx)
 
 /**
- *  [registerHandler](#registerHandler)
+ *  [registerHandler](name=registerHandler)
  *  Register Custom Tag Handler Class,
  *  This Class realization must implement .render(values, container, cntx)
  *  Function, that will be called while rendering template,
@@ -46,14 +46,14 @@ mask.renderHtml(template, ?values, ?container, ?cntx)
 mask.registerHandler(tagName, handler);
 
 /**
- *  [gerHandler](#getHandler)
+ *  [getHandler](name=getHandler)
  *  Get Registered Handler Class
  *  @return handler - {Function}
  */
 mask.getHandler(tagName);
 
 /**
- *  [registerUtility](#registerUtility)
+ *  [registerUtility](name=registerUtility)
  *  Register Custom Value Utility Function.
  *  If specified, this function will be called before inserting values,
  *  the Function receives current JSON Values and the line to handle.
@@ -70,7 +70,7 @@ mask.getHandler(tagName);
 mask.registerUtility(name, fn);
 
 /**
- *  [compile](#compile)
+ *  [compile](name=compile)
  *  Parse JSON-Template-Tree From {String} Template.
  *  
  *  @param template - {String}
@@ -79,17 +79,21 @@ mask.registerUtility(name, fn);
 mask.compile(template);
 
 /**
- *  [serialize](#serialize)
+ *  [serialize](name=serialize)
  *  @see .compile, but some additional preparation are made,
  *  so that the JSON-Tree Template can be stored in localStorage,
  *  or sent over RESTFul service as JSON Data.
+ *
+ *  @todo check if the serialization approach will be faster @
+        see http://jsperf.com/maskjs-vs-json
+ *  
  *  @param template - {String}
  *  @return - Raw-JSON-Object
  */
 mask.serialize(template);
 
 /**
- * [deserialize](#deserialize)
+ * [deserialize](name=deserialize)
  * Restore Serialized Object to Compiled Template
  */
 mask.deserialize(json);
