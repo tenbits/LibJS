@@ -24,7 +24,7 @@ scroller.content {
             }
         }
         div.api {
-            ul {
+            ul.anchors {
                 li > a href='#/include/api/js' > '.js(package)'
                 li > a href='#/include/api/css' > '.css(package)'
                 li > a href='#/include/api/load' > '.load(package)'

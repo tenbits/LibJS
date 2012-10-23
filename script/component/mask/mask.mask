@@ -64,7 +64,7 @@ scroller.content#maskScroller {
         div.api {
             p {
                 h4 > '℉unctions'
-                ul {
+                ul.anchors {
                     li > a href='#/mask/api/renderDom' > '.renderDom(template, ?values, ?container, ?cntx)'
                     li > a href='#/mask/api/renderHtml' > '.renderHtml(template, ?values, ?container, ?cntx)'
                     li > a href='#/mask/api/registerHandler' > '.registerHandler(tagName, handlerFunction)'
@@ -77,7 +77,7 @@ scroller.content#maskScroller {
             }
             p {
                 h4 > 'Ḃild-in Tags'
-                ul {
+                ul.anchors {
                     li > a href='#/mask/api/list' > 'list'
                     li > a href='#/mask/api/visible' > 'visible'
                     li > a href='#/mask/api/bind' > 'bind'

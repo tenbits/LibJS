@@ -16,21 +16,21 @@ scroller.content.container.about {
         
         'And so the development starts to make fun!'
         
-        div.hint {
-            'We call this a project, as we dont want to develop monolith framework, but to give you '
-            'tools, so that you decide, what you need. And when we write ' i > small > '"component composition"'
-            ' — thats only our advice, and you can use any of libraries or classes seperate.'
+        div.hint > code {
+            'It is called a "Project", as it is not a monolith framework, but set of libraries. '
+            'So that, only you decide, what you need. And when i write ' i > small > '"component composition"'
+            ' — thats only my advice, and you can use any of libraries or classes seperate.'
         }
         h6 > 'LibJS Project consists of several libraries:'
         ul {
-            li { a href='#class' > 'ClassJS' ' — yes, this is Class implementation' }
+            li { a href='#class' > 'ClassJS' ' — yes, this is Class implementation, but it is the fastest one.' }
             li { a href='#mask' > 'MaskJS'  ' — Dzen Coding Views' }
-            li { a href='#include' > 'IncludeJS' ' — More Powerfull, but yet easier Resource Loader' }
+            li { a href='#include' > 'IncludeJS' ' — More Powerful, but yet easier Resource Loader' }
             li { a href='#includeBuilder' > 'IncludeJS.Builder'' — Node.js tool for building Projects and combining Components' }
             li { a href='#compo' > 'CompoJS'' — Model-View-‹Component›' }
             li { a href='#ruqq' > 'RuqqJS'' — Helper Utilities.' i > ' @todo: needs to be refactored' }
         }
-        div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
+        div.hint > code > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
         
         div {
             h6;
