@@ -428,6 +428,7 @@ function(w, d) {
 
 					resource.state = 4;
 					resource.namespace = namespace;
+					resource.type = key;
 
 					if (url) {
 						if (url[0] == '/') url = url.substring(1);
@@ -703,7 +704,7 @@ window.__includeEval = function(source, include) {
 	return eval(source);
 }
 ;include.cfg({"lib":"file:///c:/Development/libjs/{name}/lib/{name}.js","framework":"file:///c:/Development/libjs/framework/lib/{name}.js","compo":"file:///c:/Development/libjs/compos/{name}/lib/{name}.js","lockedToFolder":true,"controller":"/script/component/{name}.js","uicontrol":"/script/control/{name}.js"}); include.register({"css":[{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"controller.view/view.css","url":"view.css"},{"id":"compo.prism/prism.lib.css","url":"prism.lib.css"}],"lazy":[{"id":"framework.animation","url":"file:///c:/Development/libjs/framework/lib/animation.js","namespace":"framework.animation"}],"js":[{"id":"/file:///c:/Development/libjs/class/lib/class.js","url":"file:///c:/Development/libjs/class/lib/class.js"},{"id":"/file:///c:/Development/libjs/include/lib/include.js","url":"file:///c:/Development/libjs/include/lib/include.js"},{"id":"framework.dom/zepto","url":"file:///c:/Development/libjs/framework/lib/dom/zepto.js","namespace":"framework.dom/zepto"},{"id":"framework.ruqq.base","url":"file:///c:/Development/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"framework.utils","url":"file:///c:/Development/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"framework.animation","url":"file:///c:/Development/libjs/framework/lib/animation.js","namespace":"framework.animation"},{"id":"lib.mask","url":"file:///c:/Development/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"lib.compo","url":"file:///c:/Development/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"compo.scroller/iscroll-full.js","url":"iscroll-full.js"},{"id":"compo.scroller","url":"file:///c:/Development/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"compo.prism/prism.lib.js","url":"prism.lib.js"},{"id":"compo.prism","url":"file:///c:/Development/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"controller.viewsManager","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"controller.view","url":"/script/component/view.js","namespace":"controller.view"},{"id":"uicontrol.radioButtons","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"uicontrol.pageActivity","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/handler/routes.js","url":"/script/handler/routes.js","namespace":""},{"id":"/script/main.js","url":"script/main.js"}]})
-;include.setCurrent({ id: 'framework.dom/zepto', namespace: 'framework.dom/zepto', url: ''});
+;include.setCurrent({ id: 'framework.dom/zepto', namespace: 'framework.dom/zepto', url: '{url}'});
 ;/* Zepto v1.0rc1 - polyfill zepto event detect fx ajax form touch - zeptojs.com/license */
 ;(function(undefined){
   if (String.prototype.trim === undefined) // fix for iOS 3.2
@@ -2060,7 +2061,7 @@ window.Zepto = Zepto
   })
 })(Zepto)
 
-;include.setCurrent({ id: 'framework.ruqq.base', namespace: 'framework.ruqq.base', url: ''});
+;include.setCurrent({ id: 'framework.ruqq.base', namespace: 'framework.ruqq.base', url: '{url}'});
 ;void
 
 function() {
@@ -2105,7 +2106,7 @@ function() {
    return r;
 
 }();
-;include.setCurrent({ id: 'framework.utils', namespace: 'framework.utils', url: ''});
+;include.setCurrent({ id: 'framework.utils', namespace: 'framework.utils', url: '{url}'});
 ;void
 
 function() {
@@ -2221,7 +2222,7 @@ function() {
 
 
 }();
-;include.setCurrent({ id: 'framework.animation', namespace: 'framework.animation', url: ''});
+;include.setCurrent({ id: 'framework.animation', namespace: 'framework.animation', url: '{url}'});
 ;
 include.js({
     framework: 'ruqq.base'
@@ -2476,7 +2477,7 @@ include.js({
     })();
 
 });
-;include.setCurrent({ id: 'lib.mask', namespace: 'lib.mask', url: ''});
+;include.setCurrent({ id: 'lib.mask', namespace: 'lib.mask', url: '{url}'});
 ;//include('script/ruqq/class.js', function() {
 
 
@@ -3264,7 +3265,8 @@ window.mask = (function(w, d) {
 			}
 			return serialized;
 		},
-		ICustomTag: ICustomTag
+		ICustomTag: ICustomTag,
+		ValueUtils: ValueUtilities
 	}
 })(window, document);
 
@@ -3272,7 +3274,7 @@ window.mask = (function(w, d) {
 
 
 //});
-;include.setCurrent({ id: 'lib.compo', namespace: 'lib.compo', url: ''});
+;include.setCurrent({ id: 'lib.compo', namespace: 'lib.compo', url: '{url}'});
 ;include.js({
 	lib: 'mask'
 }).done(function() {
@@ -3648,7 +3650,7 @@ window.mask = (function(w, d) {
 	});
 
 });
-;include.setCurrent({ id: 'compo.scroller/iscroll-full.js', namespace: 'undefined', url: 'iscroll-full.js'});
+;include.setCurrent({ id: 'compo.scroller/iscroll-full.js', namespace: 'undefined', url: '{url}'});
 ;/*!
  * iScroll v4.2.2 ~ Copyright (c) 2012 Matteo Spinelli, http://cubiq.org
  * Released under MIT license, http://cubiq.org/license
@@ -4751,7 +4753,7 @@ if (typeof exports !== 'undefined') exports.iScroll = iScroll;
 else window.iScroll = iScroll;
 
 })(window, document);
-;include.setCurrent({ id: 'compo.scroller', namespace: 'compo.scroller', url: ''});
+;include.setCurrent({ id: 'compo.scroller', namespace: 'compo.scroller', url: '{url}'});
 ;include.js('iscroll-full.js').done(function() {
    mask.registerHandler('scroller', Class({
       Base: Compo,
@@ -4782,7 +4784,7 @@ else window.iScroll = iScroll;
       }
    }));
 });
-;include.setCurrent({ id: 'compo.prism/prism.lib.js', namespace: 'undefined', url: 'prism.lib.js'});
+;include.setCurrent({ id: 'compo.prism/prism.lib.js', namespace: 'undefined', url: '{url}'});
 ;(function(){var i=/\blang(?:uage)?-(?!\*)(\w+)\b/i,g=self.Prism={languages:{insertBefore:function(a,b,d,c){var c=c||g.languages,f=c[a],e={},h;for(h in f)if(f.hasOwnProperty(h)){if(h==b)for(var i in d)d.hasOwnProperty(i)&&(e[i]=d[i]);e[h]=f[h]}return c[a]=e},DFS:function(a,b){for(var d in a)b.call(a,d,a[d]),"[object Object]"===Object.prototype.toString.call(a)&&g.languages.DFS(a[d],b)}},highlightAll:function(a,b){for(var d=document.querySelectorAll('code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'),
 c=0,f;f=d[c++];)g.highlightElement(f,!0===a,b)},highlightElement:function(a,b,d){for(var c,f,e=a;e&&!i.test(e.className);)e=e.parentNode;e&&(c=(e.className.match(i)||[,""])[1],f=g.languages[c]);if(f&&(a.className=a.className.replace(i,"").replace(/\s+/g," ")+" language-"+c,e=a.parentNode,/pre/i.test(e.nodeName)&&(e.className=e.className.replace(i,"").replace(/\s+/g," ")+" language-"+c),e=a.textContent.trim())){var e=e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\u00a0/g,
 " "),h={element:a,language:c,grammar:f,code:e};g.hooks.run("before-highlight",h);b&&self.Worker?(a=new Worker(g.filename),a.onmessage=function(a){h.highlightedCode=k.stringify(JSON.parse(a.data));h.element.innerHTML=h.highlightedCode;d&&d.call(h.element);g.hooks.run("after-highlight",h)},a.postMessage(JSON.stringify({language:h.language,code:h.code}))):(h.highlightedCode=g.highlight(h.code,h.grammar),h.element.innerHTML=h.highlightedCode,d&&d.call(a),g.hooks.run("after-highlight",h))}},highlight:function(a,
@@ -4799,7 +4801,7 @@ Prism.languages.java={comment:{pattern:/(^|[^\\])(\/\*[\w\W]*?\*\/|\/\/.*?(\r?\n
 number:/\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+[e]?[\d]*[df]\b|\W\d*\.?\d+\b/gi,operator:{pattern:/([^\.]|^)([-+]{1,2}|!|=?&lt;|=?&gt;|={1,2}|(&amp;){1,2}|\|?\||\?|\*|\/|%|\^|(&lt;){2}|($gt;){2,3}|:|~)/g,lookbehind:!0},ignore:/&(lt|gt|amp);/gi,punctuation:/[{}[\];(),.:]/g};
 (function(){if(window.Prism){var i=/\b([a-z]{3,7}:\/\/|tel:)[\w-+%~/.]+/,g=/\b\S+@[\w.]+[a-z]{2}/,k=/\[([^\]]+)]\(([^)]+)\)/,j=["comment","url","attr-value","string"],a;for(a in Prism.languages){var b=Prism.languages[a];Prism.languages.DFS(b,function(a,c){-1<j.indexOf(a)&&(c.pattern||(c=this[a]={pattern:c}),c.inside=c.inside||{},"comment"==a&&(c.inside["md-link"]=k),c.inside["url-link"]=i,c.inside["email-link"]=g)});b["url-link"]=i;b["email-link"]=g}Prism.hooks.add("wrap",function(a){if(/-link$/.test(a.type)){a.tag=
 "a";var c=a.content;if("email-link"==a.type)c="mailto:"+c;else if("md-link"==a.type){var b=a.content.match(k),c=b[2];a.content=b[1]}b="href";0==c.indexOf("name=")&&(b="name",c=c.substring(5));a.attributes[b]=c}})}})();
-;include.setCurrent({ id: 'compo.prism', namespace: 'compo.prism', url: ''});
+;include.setCurrent({ id: 'compo.prism', namespace: 'compo.prism', url: '{url}'});
 ;include.js('prism.lib.js').css('prism.lib.css').done(function() {
     
     function IDeferred(){}    
@@ -4861,7 +4863,7 @@ number:/\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+[e]?[\d]*[df]\b|\W\d
         }
     }));
 });
-;include.setCurrent({ id: 'controller.viewsManager', namespace: 'controller.viewsManager', url: ''});
+;include.setCurrent({ id: 'controller.viewsManager', namespace: 'controller.viewsManager', url: '{url}'});
 ;include.lazy({
     'ruqq.animation': {
         framework: 'animation'
@@ -4947,7 +4949,7 @@ number:/\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+[e]?[\d]*[df]\b|\W\d
     mask.registerHandler('viewsManager', ViewsManager);
 
 });
-;include.setCurrent({ id: 'controller.view', namespace: 'controller.view', url: ''});
+;include.setCurrent({ id: 'controller.view', namespace: 'controller.view', url: '{url}'});
 ;include.css('view.css').done(function() {
 
 
@@ -5028,7 +5030,7 @@ number:/\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+[e]?[\d]*[df]\b|\W\d
 
    }));
 });
-;include.setCurrent({ id: 'uicontrol.radioButtons', namespace: 'uicontrol.radioButtons', url: ''});
+;include.setCurrent({ id: 'uicontrol.radioButtons', namespace: 'uicontrol.radioButtons', url: '{url}'});
 ;mask.registerHandler('radioButtons', Class({
     Base: Compo,
     Construct: function() {            
@@ -5053,7 +5055,7 @@ number:/\b0b[01]+\b|\b0x[\da-f]*\.?[\da-fp\-]+\b|\b\d*\.?\d+[e]?[\d]*[df]\b|\W\d
     }
 }));
 
-;include.setCurrent({ id: 'uicontrol.pageActivity', namespace: 'uicontrol.pageActivity', url: ''});
+;include.setCurrent({ id: 'uicontrol.pageActivity', namespace: 'uicontrol.pageActivity', url: '{url}'});
 ;void
 
 function() {
@@ -5219,7 +5221,7 @@ function() {
     }));
 
 }();
-;include.setCurrent({ id: '/script/handler/routes.js', namespace: '', url: '/script/handler/routes.js'});
+;include.setCurrent({ id: '/script/handler/routes.js', namespace: '', url: '{url}'});
 ;void
 
 function(w) {
@@ -5294,7 +5296,7 @@ function(w) {
 
 
 }(window);
-;include.setCurrent({ id: '/script/main.js', namespace: 'undefined', url: 'script/main.js'});
+;include.setCurrent({ id: '/script/main.js', namespace: 'undefined', url: '{url}'});
 ;window.onerror = function(e, a, b) {
     console.error(arguments, typeof a.stack);
 }

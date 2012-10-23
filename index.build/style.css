@@ -272,8 +272,8 @@ p {
 
 /** views */
 
-li > a { color: #000; text-decoration: none; font-family: monospace; }
-li > a:hover { background: rgb(240,240,240); text-decoration: underline; }
+ul.anchors > li > a { color: #000; text-decoration: none; font-family: monospace; }
+ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: underline; }
 
 #includeView{
 	background: hsl(30,20%,25%);
