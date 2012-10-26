@@ -7,7 +7,7 @@ include.cfg({
 	controller: '/script/component/{name}.js',
 	uicontrol: '/script/control/{name}.js'
 }).js({
-	framework: ['dom/jquery', 'ruqq.base', 'utils', 'animation'],
+	framework: ['es5shim', 'dom/jquery', 'ruqq.base', 'utils', 'animation'],
 	lib: 'compo'
 }).wait().js({
 	compo: ['scroller', 'prism'],

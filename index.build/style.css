@@ -101,6 +101,7 @@ menu {
     -o-transition: -o-transform 100ms ease-in, color 100ms linear;
     
     opacity: .97;
+	-webkit-user-select: none;
 }
 
 menu:before{
@@ -245,7 +246,7 @@ div.radioButtons > button.active {
 
 /** content */
 
-.scroller  {
+.view .scroller  {
     background: #EEEEEE url(../images/dust.png) 0 0 repeat;
 }
 
