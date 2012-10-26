@@ -43,7 +43,9 @@ scroller.content {
                             '"action" — '
                             ul {
                                 li > '"build" — @default — combine resources'
+                                li > font color='#999' > '@see next page'
                                 li > '"import" — copy outer resources into projects directory'
+                                li > '"reference"'
                             }
                         }
                         
@@ -54,21 +56,72 @@ scroller.content {
                     }
                 }
                 li {
-                    code > 'includesjs template [name]'
+                    code > 'includejs template [name]'
                     p > 'Create Empty Project in {current} directory'
                     p > 'Available: "starter"'
                 }
+                li {
+                    code > 'includejs globals'
+                    p > 'Open global routes file'
+                }
             }
         }
-        div.loader {
-            p > 'Include.Loader {include.loader.js} is here to maintain dev-machine routes'
-            p.hint > 'This Script will be not included in any of build actions'
-            p.hint > 'Also add "include.loader.js" to .gitignore, if you develop in team and use .git'
+        div.resources {
+            h6 > 'Small note about external resources'
+            p > 'Every application has some outer dependencies. Lets say you created empty project and want to use some classes
+            from you own library "MyCoolStuff". There are 3 ways you can do it.'
+            ul {
+                li {
+                    i > 'Bad — ''Copy them into working project. '
+                    div;
+                    u > 'Contra'' — '
+                    ul {
+                        li > 'you dont know always from start on what classes you need'
+                        li > 'you have to work a lot with copy/paste - and this was always a mess.'
+                        li > 'they become part of the project. This is good for Release, but not for Development'
+                        li > 'harms code organization energy'
+                    }
+                }
+                li {
+                    i > 'Better — ''Use IncludeJS Routing to reference to the directory'
+                    code > 'include.cfg(coolStuff: "file:///c:/dev/MyCoolStuff/classes/{name}.js")'
+                    u > 'Contra'' — '
+                    ul {
+                        li > 'Though after project build you dont have any absolute pathes more, but not in Development'
+                        li > 'When you develop a web site (not a html5 application), you defenetly 
+                            want to test on local server - is not possible with file:/// links'
+                    }
+                }
+                li {
+                    i > 'Best — ''Use symbolic links'
+                    ul {
+                        li > code > ' > npm install includejs -g'
+                        li > code > ' > mkdir testProject && cd testProject'
+                        li {
+                            code > ' > includejs globals'                            
+                            ul {
+                                li > 'Add/Edit Paths to project directories, such as LibJS'
+                                li > 'Add/Edit Default Routes'
+                            }
+                        }
+                        li {
+                            code > ' > includejs template starter'
+                            'And now, under "testProject/.reference/libjs" you find a symblic link to libjs project
+                             and all requests to libjs libraries, such as '
+                             code > 'include.js({ lib: "mask" })' 'will path through that symbolic link'
+                        }
+                    }
+                    
+                    'Any time you can import all referenced resources into working project with:'
+                    code > ' > includejs build.config -action import'
+                    div {
+                        'You find that referenced resources now in ' tt > q > 'testProject/.import' ' directory'
+                    }
+                    div > 'Any time you can also switch back to referencing with:'
+                    code > ' > includejs build.config -action reference'
+                }
+            }
             
-            code > "<script type='text/javascript' src='include.loader.js' main='script/app.js'>"
-            
-            p > 'Try it with:' code > '$ includejs template starter'
-            p > 'BUT change before your pathes in:' code > '{npm-global-modules}/includejs/template/starter/include.loader.js'
         }
     }
 }
@@ -77,6 +130,6 @@ footer {
     radioButtons{
         button.active name='info' > 'Info'
         button name='commands' > 'Commands'
-        button name='loader' > 'Loader'        
+        button name='resources' > 'Resources'        
     }
 }

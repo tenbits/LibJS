@@ -8,17 +8,20 @@ header {
 scroller.content {
     div.container.tabPanel {
         div.api.active {
-            'Is based on '
-            a href='http://prismjs.com/' > 'Prism Library'
-            '. Many thanks to the author.'
             
-            div.hint > 'Include "compo/prism/lib/prism.js"'
+            div {
+                'Based on '
+                a href='http://prismjs.com/' > 'Prism Library'
+            }
+            
+            p > code > " > {compos}/prism/lib/prism.js"
+            p > code > " include.js({ compo : 'prism' })"
             
             div > 'Markup example:'
             prism > 'prism > "Source Code"'
             div > 'Attributes:'
-            ul > li > code > "? src='' path to load source code from"            
-        }       
+            ul > li > code > "? src='' path to load source code from. Trailing slash - path from project root, without - path relative to current"
+        }
     }
 }
 

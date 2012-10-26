@@ -15,21 +15,26 @@ events: {
     // ..
 },
 /**
- *  [compo](name=compos)    (optional)
+ *  [compos](name=compos)    (optional)
  *  Components/HTMLElements that will be searched for after DOMInsert,
  *  after that this.compo holds references to them in values instead
  *  of selector strings.
  *
- *  @type value - 'SelectorEngine: Selector'
+ *  @{String} value - 'SelectorEngine: Selector'
  *      @argument SelectorEngine -
  *          '$' - Use Default DOM Manipulation Library,
  *          'compo' - Search for Component
  *          '' - Search with currentComponent.$.documentQuerySelector
+ *
+ *  @{Array} ['SelectorEngine: Selector', {events object}]
  */
 
-compo: {
+compos: {
     myContainer: '$: #container',
-    // ...
+    somePanel: ['$: .somePanel', {
+		'click': function(){ console.log('click'); },
+		'click: .subPanel': function(){ console.log('sub-click'); },
+	}]
 },
 
 /**

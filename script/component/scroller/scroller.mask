@@ -8,11 +8,13 @@ header {
 scroller.content {
     div.container.tabPanel {
         div.api.active {
-            'Is based on '
-            a href='http://cubiq.org/iscroll-4' > 'iScroll4'
-            '. Many thanks to the author.'
+            div {
+                'Based on '
+                a href='http://cubiq.org/iscroll-4' > 'iScroll4'
+            }
             
-            div.hint > 'Include "compo/scroller/lib/scroller.js"'
+            p > code > " > {compos}/scroller/lib/scroller.js"
+            p > code > " include.js({ compo : 'scroller' })"
             
             div > 'Markup example:'
             prism > 'scroller#myscroller { /** Content Items*/ }'

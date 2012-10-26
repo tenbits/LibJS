@@ -4,9 +4,13 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <meta name="viewport" content="maximum-scale=1.5, minimum-scale=.8, initial-scale=1, user-scalable=1" />
 	<title>LibJS</title>
-		
-    <script type='text/javascript' src='include.loader.js' main='script/main.js'></script>
-    
+	
+	<script type="text/javascript" src=".reference/libjs/class/lib/class.js"></script>
+    <script type="text/javascript" src=".reference/libjs/include/lib/include.js"></script>	
+
+    <script type="text/javascript" src="include.routes.js"></script>
+    <script type="text/javascript" src="script/main.js"></script>	
+
 	<link rel='stylesheet' href='style/main.css'/>
 </head>
 <body>
@@ -18,21 +22,44 @@
 	
     div.footer;
     menu {
+		
 		section {
 			h3 > 'About'
 			ul > li data-view='aboutView' > 'About'
 		}
 		
 		section#libraries {
-            h3 > 'Library'
-            ul > list value='libraries' > li data-view='#{id}'> '#{name}'
-        }
+			h3 > 'Library'
+			ul > list value='libraries' > li data-view='#{id}'> '#{name}'
+		}
 		
-        section#components {
-            h3 > 'Components'
-            ul > list value='components' > li data-view='#{id}'> '#{name}'
+		section#components {
+			h3 > 'Components'
+			ul > list value='components' > li data-view='#{id}'> '#{name}'
 			div style='text-align:right; opacity:.3' > '... more in near future'
-        }
+			
+			h3.badge > 'Pre/Post Processing'
+			ul > list value='processors' > li data-view='#{id}'> '#{name}'
+			ul {
+				li > 'Pre — '
+				li > 'Post — '
+			}
+		}
+	
+		
+		div.menu-help {
+			p.processors {
+				p > 'Tag Processors are like decorators - they change in some how underlined or parents stack'
+				p > code > 'comment > "any comment"'
+				p > 'From this simple example "comment" preprocessor doesnt render itself and any of the child nodes.'
+				hr;
+				div > b > tt style='letter-spacing:1px;' > 'Important!'
+				p { 'Tag Processor is just a name, its ' u > 'still the custom handler'' of the MaskJS. 
+					I just call them so, while they do specific job - change or extend any render behaviour. 
+					'
+				}
+			}
+		}
     }
 	
 	

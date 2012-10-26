@@ -25,9 +25,9 @@ include.css('view.css').done(function() {
          Compo.prototype.render.apply(this, arguments);
       },
       events: {
-         'changed: .radioButtons': function(e) {
+         'changed: .radioButtons': function(e, target) {
             var name = this.attr.id.replace('View', '');
-            window.routes.set(name + '/' + e.data.name);
+            window.routes.set(name + '/' + target.name);
          }
       },
 
@@ -35,9 +35,11 @@ include.css('view.css').done(function() {
          this.$.find('.tabPanel > .active').removeClass('active');
          this.$.find('.tabPanel > .' + name).addClass('active');
          
-         var scroller = Compo.find(this, 'scroller').scroller;
-         scroller.scrollTo(0,0);
-         scroller.refresh();
+         var scroller = Compo.find(this, 'scroller');
+         if (scroller && (scroller = scroller.scroller)){
+            scroller.scrollTo(0,0);
+            scroller.refresh();
+         }
          
       },
 
@@ -62,9 +64,8 @@ include.css('view.css').done(function() {
       
       },
       update: function(info){
-         var scroller = Compo.find(this, 'scroller').scroller;         
-         
-         scroller.refresh();
+         var scroller = Compo.find(this, 'scroller');
+         scroller && scroller.scroller && scroller.scroller.refresh();
          
          if (info.anchor){
             var element = this.$.find('a[name="' + info.anchor + '"]').get(0);
