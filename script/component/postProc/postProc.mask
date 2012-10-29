@@ -1,0 +1,108 @@
+
+header {
+    'Post Processors'
+    a.github-ribbon href='https://github.com/tenbits/Compos' >
+        img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
+}
+
+layout:master#apiItem {
+    div {
+        hr;
+        h4 > code > placeholder#title;
+        p.description > small{
+            placeholder#description;
+        }
+
+        table {
+            tr {
+                td > 'Include'
+                td > ul > li > tt > placeholder#include;
+            }
+            tr {
+                td > 'Attributes'
+                td > ul > placeholder#attributes;
+            }            
+            tr {
+              td > 'Depends'
+              td > ul > placeholder#depends;   
+            }        
+        }
+        'Example:'
+        p.example > placeholder#example;
+        
+    }
+}
+
+
+scroller.content {
+    div.container.tabPanel {
+        p.api.active {
+            h4 > 'Bindings' 
+            p {
+                layout:view master='apiItem' {                
+                    title > 'bind;'
+                    attributes {                        
+                        li > tt > 'value="propName" - property name of the DataModel to listen for changes(__defineSetter__ is overriden)'
+                        li > tt > '?attr="attributeName" - bind to attribute value of a parent HTMLNode'
+                        li > tt > '?prop="propertyName" - bind to property value of a parent HTMLNode'
+                        li > tt > '{no "attr" and "prop" attributes} - bind to innerHTML'                        
+                    }
+                    description { '
+                            Set value to parents HTMLNode, and change it any time source data is changed.
+                        '
+                    }
+                    include > "'{libjs}/compos/binding/lib/binding.js'"
+                    depends {
+                        li > tt > 'MaskJS'
+                        li > tt > 'RuqqJS: Object.observe()'
+                    }
+                    example {
+                        prism language='css' > "div > bind value='time';"
+
+                        prism > formatter:pre > "
+                            var model = { time: new Date() } \n
+                            document.body.appendChild(mask.renderDom(template, model)); \n
+                            setTimeout(function(){ \n
+                            \t    model.time = model.time.setSeconds(model.time.getSeconds() + 1); \n
+                            },1000);
+                        "
+                        
+                    }               
+                }
+
+                layout:view master='apiItem' {                
+                    title > 'visible;'
+                    attributes {
+                        li > tt > 'bind="propName" - property name of the DataModel to listen for'
+                        li > tt > 'check="Conditional String" - evaluate condition to check if parent is visible or not'                        
+                    }
+                    description { '
+                            Set css display property to "none" or @default, according to "check value" when property changes.
+                        '
+                    }
+                    include > "'{libjs}/compos/binding/lib/binding.js'"
+                    depends > li > tt > '@see bind;'
+                    example {
+                        prism language='css' > "div { visible check='state==1?' value='state'; 'Hello World!' }"
+
+                        prism > formatter:pre > "
+                            var model = { state: 0 } \n
+                            document.body.appendChild(mask.renderDom(template, model)); \n
+                            setTimeout(function(){ \n
+                            \t    model.state = new Date().getSeconds() % 2; \n
+                            },1000);
+                        "
+                        
+                    }               
+                }
+                
+            }   
+        }        
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='api' > 'API'        
+    }
+}

@@ -10,15 +10,11 @@ include.cfg({
 	framework: ['es5shim', 'dom/jquery', 'ruqq.base', 'utils', 'animation'],
 	lib: 'compo'
 }).wait().js({
-	compo: ['scroller', 'prism'],
+	compo: ['scroller', 'prism','datePicker','timePicker'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],
 	'': '/script/handler/routes.js'
 }).ready(function() {
-	
-	include.js({
-		compo: ['datePicker','timePicker']
-	});
 
 	mask.registerHandler('html', Class({
 		render: function(values, container) {

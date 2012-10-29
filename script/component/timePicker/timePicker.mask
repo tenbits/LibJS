@@ -1,0 +1,35 @@
+
+header {
+    'Time Picker Component'
+    a.github-ribbon href='https://github.com/tenbits/Compos' >
+        img src='https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png';
+}
+
+div.content.scroller > div {
+    div.container.tabPanel {
+        div.api.active {
+            div {
+                'Based on '
+                a href='http://mobiscroll.com/' > 'MOBISCROLL'
+            }
+            
+            p > code > " > {compos}/timePicker/lib/timePicker.js"
+            p > code > " include.js({ compo : 'timePicker' })"
+            
+            div > 'Markup example:'
+            prism > 'timePicker;'
+            
+            prism > 'app.findCompo("timePicker").$./** read mobi scroll docs */'
+            
+            p {
+                timePicker;
+            }
+        }       
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='api' > 'API'        
+    }
+}
