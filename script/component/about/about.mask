@@ -3,8 +3,8 @@ header {
     div style='text-align:right; float:right;' > 'Tao 道 Application Framework'
 }
 
-scroller.content.container.about {
-    p {
+scroller.content.about > p.container.tabPanel{
+    div.info.active {
         h4 > 'Component Composition in HTML5 Application without Javascript'
         
         'You can — '
@@ -70,5 +70,30 @@ scroller.content.container.about {
         }
         
         h6;
+    }
+    
+    div.install {
+        div.hint {
+            'Prerequest: ' a href='http://nodejs.org/download/' target='_blank' > 'nodejs'
+        }
+        code > ' > npm install includejs -g'
+        code > ' > cd c:/some/path'
+        code > ' > includejs git-clone libjs'
+        div.hint > tt {
+            'Now all LibJS libraries are downloaded into  c:/some/path/libjs/'
+        }
+        code > ' > cd c:/some/temp/test'
+        code > ' > includejs template starter'
+        div.hint > tt {
+            'Now under "c:/some/path/libjs/" is "Hello World" small app - can see libjs in work'
+        }
+        
+    }
+}
+
+footer {
+    radioButtons{
+        button.active name='info' > 'Info'
+        button name='install' > 'Install'
     }
 }

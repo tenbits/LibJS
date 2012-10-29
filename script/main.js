@@ -44,7 +44,6 @@ include.cfg({
 			timePickerView: 'Time Picker',
 			formsView: 'Forms',
 
-
 			aboutView: 'About',
 			classView: 'ClassJS',
 			maskView: 'MaskJS',
@@ -53,7 +52,8 @@ include.cfg({
 			compoView: 'CompoJS',
 			ruqqView: 'RuqqJS',
 			
-			bindingsView: 'Bindings'
+			preProcView: 'Pre-',
+			postProcView: 'Post-'
 		},
 		aggr = function(keys, fn) {
 			var arr = [];
@@ -75,7 +75,7 @@ include.cfg({
 				name: x.name || x
 			}
 		}),
-		processors: aggr(['bindingsView'], function(key, x){
+		processors: aggr(['preProcView','postProcView'], function(key, x){
 			return {
 				id: key,
 				name: x.name || x
@@ -97,6 +97,7 @@ include.cfg({
 			menuHelp: '$: .menu-help',
 			menu:  ['$: menu', {				
 				'click: li' : function(e) {
+					console.log('mouseup');
 					var view = $(e.target).data('view');
 					routes.set(view.replace('View', ''));
 				},

@@ -16,34 +16,32 @@
 <body>
 <noscript>Please enable Javascript in your browser</noscript>
 
-<script type="text/template" id="layout">
+<script type="mask/template" id="layout">
 	html.tao source='tao-svg';
 	div.webkit;
 	
     div.footer;
     menu {
-		
-		section {
-			h3 > 'About'
-			ul > li data-view='aboutView' > 'About'
-		}
-		
-		section#libraries {
-			h3 > 'Library'
-			ul > list value='libraries' > li data-view='#{id}'> '#{name}'
-		}
-		
-		section#components {
-			h3 > 'Components'
-			ul > list value='components' > li data-view='#{id}'> '#{name}'
-			div style='text-align:right; opacity:.3' > '... more in near future'
-			
-			h3.badge > 'Pre/Post Processing'
-			ul > list value='processors' > li data-view='#{id}'> '#{name}'
-			ul {
-				li > 'Pre — '
-				li > 'Post — '
+		scroller {
+			section {
+				h3 > 'About'
+				ul > li data-view='aboutView' > 'About'
 			}
+			
+			section#libraries {
+				h3 > 'Library'
+				ul > list value='libraries' > li data-view='#{id}'> '#{name}'
+			}
+			
+			section#components {
+				h3 > 'Components'
+				ul > list value='components' > li data-view='#{id}'> '#{name}'
+				div style='text-align:right; opacity:.3' > '... more in near future'
+				
+				h3.badge > 'Pre/Post Processing'
+				ul > list value='processors' > li data-view='#{id}'> '#{name}'			
+			}
+			div style='height:20px;';
 		}
 	
 		

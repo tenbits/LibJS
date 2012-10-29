@@ -68,7 +68,7 @@ scroller.content {
         }
         div.resources {
             h6 > 'Small note about external resources'
-            p > 'Every application has some outer dependencies. Lets say you created empty project and want to use some classes
+            p > 'Every application has some outer dependencies. Lets say you created empty project and want to use some classes, styles and images
             from you own library "MyCoolStuff". There are 3 ways you can do it.'
             ul {
                 li {
@@ -76,7 +76,7 @@ scroller.content {
                     div;
                     u > 'Contra'' — '
                     ul {
-                        li > 'you dont know always from start on what classes you need'
+                        li > 'you dont know always from start on what classes or styles you need'
                         li > 'you have to work a lot with copy/paste - and this was always a mess.'
                         li > 'they become part of the project. This is good for Release, but not for Development'
                         li > 'harms code organization energy'
@@ -112,12 +112,12 @@ scroller.content {
                         }
                     }
                     
-                    'Any time you can import all referenced resources into working project with:'
+                    b>'! ' 'Any time you can import all referenced resources into working project with:'
                     code > ' > includejs build.config -action import'
                     div {
                         'You find that referenced resources now in ' tt > q > 'testProject/.import' ' directory'
                     }
-                    div > 'Any time you can also switch back to referencing with:'
+                    div { b>'! '  'Any time you can also switch back to referencing with:'}
                     code > ' > includejs build.config -action reference'
                 }
             }

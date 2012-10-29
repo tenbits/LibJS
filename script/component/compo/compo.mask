@@ -103,6 +103,10 @@ scroller.content {
             div;
             a href='script/component/compo/compo.mask' target='_blank' > 'Current Mask'
         }
+        
+        div.visual style='text-align: center'{
+            img src='images/graph/compo.png' height='706px' width='523';
+        }
     }
 }
 
@@ -111,5 +115,6 @@ footer {
         button.active name='info' > 'Info'
         button name='api' > 'API'
         button name='example' > 'Example'
+        button name='visual' > 'Visualization'
     }
 }

@@ -314,8 +314,8 @@ function(w, d) {
 	var IncludeDeferred = Class({
 		ready: function(callback) {
 			return this.on(4, function() {
-				events.ready(callback);
-			});
+				events.ready(this.resolve.bind(this, callback)); 
+			}.bind(this));
 		},
 		/** assest loaded and window is loaded */
 		loaded: function(callback) {
@@ -368,8 +368,9 @@ function(w, d) {
 
 			if (currentParent) {
 				r.id = currentParent.id;
-				//-r.url = currentParent.url;
+				r.url = currentParent.url;
 				r.namespace = currentParent.namespace;
+				r.location = helper.uri.getDir(r.url)
 				//-currentParent = null;
 			}
 			return r.include(type, pckg);
@@ -487,6 +488,7 @@ function(w, d) {
 			else if (url[0] == '/') id = url;
 			else if (parent && parent.namespace) id = parent.namespace + '/' + url;
 			else if (parent && parent.location) id = '/' + parent.location.replace(/^[\/]+/, '') + url;
+			else if (parent && parent.id) id = parent.id + '/' + url;
 			else id = '/' + url;
 
 			if (bin[type] && bin[type][id]) {
@@ -1426,7 +1428,9 @@ window.mask = (function(w, d) {
 			'>': /\\>/g,
 			';': /\\>/g
 		},
-		attrEnd: /[\.#>\{ ;]/g
+		attrEnd: /[\.#>\{ ;]/g,
+		tabsAndNL: /[\t\n\r]{1,}/g,
+		multipleSpaces: / {2,}/g
 	},
 		singleTags = {
 			img: 1,
@@ -2151,12 +2155,15 @@ window.mask = (function(w, d) {
 		 */
 		compile: function(template, serializeOnly) {
 			/** remove unimportant whitespaces */
-			template = template.replace(/[\t\n\r]|[ ]{2,}/g, ' ');
+			template = template.replace(regexp.tabsAndNL, '').replace(regexp.multipleSpaces,' ');
+			
 			
 			var T = new Template(template);
 			if (serializeOnly == true) T.serialize = true;
 
 			return Parser.parse(T, []);
+			
+			
 		},
 		registerHandler: function(tagName, TagHandler) {
 			CustomTags.all[tagName] = TagHandler;
@@ -2490,7 +2497,7 @@ window.mask = (function(w, d) {
 			Compo.dispose(this);
 
 			if (this.parent != null) {
-				var i = this.parent.components.indexOf(compo);
+				var i = this.parent.components.indexOf(this);
 				this.parent.components.splice(i, 1);
 			}
 
@@ -3192,6 +3199,10 @@ iScroll.prototype = {
 			return;
 		}
 
+		e.preventDefault();
+		e.stopPropagation();
+		console.log('stop prop');
+		
 		if (duration < 300 && that.options.momentum) {
 			momentumX = newPosX ? that._momentum(newPosX - that.startX, duration, -that.x, that.scrollerW - that.wrapperW + that.x, that.options.bounce ? that.wrapperW : 0) : momentumX;
 			momentumY = newPosY ? that._momentum(newPosY - that.startY, duration, -that.y, (that.maxScrollY < 0 ? that.scrollerH - that.wrapperH + that.y - that.minScrollY : 0), that.options.bounce ? that.wrapperH : 0) : momentumY;
@@ -3479,7 +3490,8 @@ iScroll.prototype = {
 	},
 
 	_bind: function (type, el, bubble) {
-		(el || this.scroller).addEventListener(type, this, !!bubble);
+		
+		(el || this.scroller).addEventListener(type, this,  !!bubble);
 	},
 
 	_unbind: function (type, el, bubble) {
@@ -4312,7 +4324,6 @@ include.cfg({
 			timePickerView: 'Time Picker',
 			formsView: 'Forms',
 
-
 			aboutView: 'About',
 			classView: 'ClassJS',
 			maskView: 'MaskJS',
@@ -4321,7 +4332,8 @@ include.cfg({
 			compoView: 'CompoJS',
 			ruqqView: 'RuqqJS',
 			
-			bindingsView: 'Bindings'
+			preProcView: 'Pre-',
+			postProcView: 'Post-'
 		},
 		aggr = function(keys, fn) {
 			var arr = [];
@@ -4343,7 +4355,7 @@ include.cfg({
 				name: x.name || x
 			}
 		}),
-		processors: aggr(['bindingsView'], function(key, x){
+		processors: aggr(['preProcView','postProcView'], function(key, x){
 			return {
 				id: key,
 				name: x.name || x
@@ -4365,6 +4377,7 @@ include.cfg({
 			menuHelp: '$: .menu-help',
 			menu:  ['$: menu', {				
 				'click: li' : function(e) {
+					console.log('mouseup');
 					var view = $(e.target).data('view');
 					routes.set(view.replace('View', ''));
 				},
