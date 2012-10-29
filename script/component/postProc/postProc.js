@@ -1,6 +1,4 @@
-include.load('postProc.mask').js({
-	compo: 'layout'
-}).done(function(r) {
+include.load('postProc.mask').done(function(r) {
 
 
 	var replaces;

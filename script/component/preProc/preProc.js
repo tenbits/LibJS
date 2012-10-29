@@ -1,6 +1,4 @@
-include.load('preProc.mask').js({
-	compo: 'layout'
-}).done(function(r) {
+include.load('preProc.mask').done(function(r) {
 
 
 	var replaces;

@@ -705,7 +705,7 @@ function(w, d) {
 window.__includeEval = function(source, include) {
 	return eval(source);
 }
-;include.cfg({"lib":"/.reference/libjs/{name}/lib/{name}.js","framework":"/.reference/libjs/framework/lib/{name}.js","compo":"/.reference/libjs/compos/{name}/lib/{name}.js","lockedToFolder":true,"controller":"/script/component/{name}.js","uicontrol":"/script/control/{name}.js"}); include.register({"css":[{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"controller.view/view.css","url":"view.css"},{"id":"compo.timePicker/css/mobiscroll.css","url":"css/mobiscroll.css"},{"id":"compo.datePicker/css/android.css","url":"css/android.css"},{"id":"compo.prism/prism.lib.css","url":"prism.lib.css"}],"lazy":[{"id":"framework.animation","url":"/.reference/libjs/framework/lib/animation.js","namespace":"framework.animation"}],"js":[{"id":"/.reference/libjs/class/lib/class.js","url":".reference/libjs/class/lib/class.js","namespace":""},{"id":"/.reference/libjs/include/lib/include.js","url":".reference/libjs/include/lib/include.js","namespace":""},{"id":"/include.routes.js","url":"include.routes.js","namespace":""},{"id":"framework.es5shim","url":"/.reference/libjs/framework/lib/es5shim.js","namespace":"framework.es5shim"},{"id":"framework.dom/jquery","url":"/.reference/libjs/framework/lib/dom/jquery.js","namespace":"framework.dom/jquery"},{"id":"framework.ruqq.base","url":"/.reference/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"framework.utils","url":"/.reference/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"framework.animation","url":"/.reference/libjs/framework/lib/animation.js","namespace":"framework.animation"},{"id":"lib.mask","url":"/.reference/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"lib.compo","url":"/.reference/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"compo.scroller/iscroll-full.js","url":"iscroll-full.js"},{"id":"compo.scroller","url":"/.reference/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"compo.prism/prism.lib.js","url":"prism.lib.js"},{"id":"compo.prism","url":"/.reference/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"compo.datePicker/js/glDatePicker.min.js","url":"js/glDatePicker.min.js"},{"id":"compo.datePicker","url":"/.reference/libjs/compos/datePicker/lib/datePicker.js","namespace":"compo.datePicker"},{"id":"compo.timePicker/js/mobiscroll.js","url":"js/mobiscroll.js"},{"id":"compo.timePicker","url":"/.reference/libjs/compos/timePicker/lib/timePicker.js","namespace":"compo.timePicker"},{"id":"controller.viewsManager","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"controller.view","url":"/script/component/view.js","namespace":"controller.view"},{"id":"uicontrol.radioButtons","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"uicontrol.pageActivity","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/handler/routes.js","url":"/script/handler/routes.js","namespace":""},{"id":"/script/main.js","url":"script/main.js","namespace":""}]})
+;include.cfg({"lib":"/.reference/libjs/{name}/lib/{name}.js","framework":"/.reference/libjs/framework/lib/{name}.js","compo":"/.reference/libjs/compos/{name}/lib/{name}.js","lockedToFolder":true,"controller":"/script/component/{name}.js","uicontrol":"/script/control/{name}.js"}); include.register({"css":[{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"controller.view/view.css","url":"view.css"},{"id":"compo.timePicker/css/mobiscroll.css","url":"css/mobiscroll.css"},{"id":"compo.datePicker/css/android.css","url":"css/android.css"},{"id":"compo.prism/prism.lib.css","url":"prism.lib.css"}],"lazy":[{"id":"framework.animation","url":"/.reference/libjs/framework/lib/animation.js","namespace":"framework.animation"}],"js":[{"id":"/.reference/libjs/class/lib/class.js","url":".reference/libjs/class/lib/class.js","namespace":""},{"id":"/.reference/libjs/include/lib/include.js","url":".reference/libjs/include/lib/include.js","namespace":""},{"id":"/include.routes.js","url":"include.routes.js","namespace":""},{"id":"framework.es5shim","url":"/.reference/libjs/framework/lib/es5shim.js","namespace":"framework.es5shim"},{"id":"framework.dom/jquery","url":"/.reference/libjs/framework/lib/dom/jquery.js","namespace":"framework.dom/jquery"},{"id":"framework.ruqq.base","url":"/.reference/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"framework.utils","url":"/.reference/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"framework.animation","url":"/.reference/libjs/framework/lib/animation.js","namespace":"framework.animation"},{"id":"lib.mask","url":"/.reference/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"lib.compo","url":"/.reference/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"compo.scroller/iscroll-full.js","url":"iscroll-full.js"},{"id":"compo.scroller","url":"/.reference/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"compo.prism/prism.lib.js","url":"prism.lib.js"},{"id":"compo.prism","url":"/.reference/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"compo.datePicker/js/glDatePicker.min.js","url":"js/glDatePicker.min.js"},{"id":"compo.datePicker","url":"/.reference/libjs/compos/datePicker/lib/datePicker.js","namespace":"compo.datePicker"},{"id":"compo.timePicker/js/mobiscroll.js","url":"js/mobiscroll.js"},{"id":"compo.timePicker","url":"/.reference/libjs/compos/timePicker/lib/timePicker.js","namespace":"compo.timePicker"},{"id":"compo.layout","url":"/.reference/libjs/compos/layout/lib/layout.js","namespace":"compo.layout"},{"id":"controller.viewsManager","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"controller.view","url":"/script/component/view.js","namespace":"controller.view"},{"id":"uicontrol.radioButtons","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"uicontrol.pageActivity","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/handler/routes.js","url":"/script/handler/routes.js","namespace":""},{"id":"/script/main.js","url":"script/main.js","namespace":""}]})
 ;include.setCurrent({ id: '/include.routes.js', namespace: '', url: '{url}'});
 ;include.cfg({
      "lib": "/.reference/libjs/{name}/lib/{name}.js",
@@ -3948,6 +3948,74 @@ b[d].toLowerCase())return y+=b[d].length,d+1;return 0},y=0,z=0;z<p.length;z++)if
 		}
 	}));
 });
+;include.setCurrent({ id: 'compo.layout', namespace: 'compo.layout', url: '{url}'});
+;void
+function() {
+
+    var masters = {};
+
+    mask.registerHandler('layout:master', Class({
+        render: function() {
+            masters[this.attr.id] = this;
+        }
+    }));
+
+    mask.registerHandler('layout:view', Class({
+        clone: function(node) {
+
+            if (node.content != null) return {
+                content: node.content
+            };
+
+            var outnode = {
+                tagName: node.tagName || node.compoName,
+                attr: node.attr
+            }
+
+            if (node.nodes != null) {
+                outnode.nodes = [];
+
+                var isarray = node.nodes instanceof Array,
+                    length = isarray ? node.nodes.length : 1,
+                    x = null;
+                for (var i = 0; x = isarray ? node.nodes[i] : node.nodes, isarray ? i < length : i < 1; i++) {
+                    
+                    if (x.tagName == 'placeholder') {
+                        var value = this.get(x.attr.id);                        
+                        if (value != null) {
+                            if (value instanceof Array) {
+                                outnode.nodes = outnode.nodes.concat(value);
+                                continue;
+                            }
+                            outnode.nodes.push(value);
+                        }
+                        continue;
+                    }
+                    
+                    outnode.nodes.push(this.clone(x));
+                }
+            }
+            return outnode;
+
+        },
+        get: function(id) {
+            for (var i = 0, x, length = this.nodes.length; x = this.nodes[i], i < length; i++) {
+                if (x.tagName == id) return x.nodes;
+            }
+            return null;
+        },
+        render: function(values, container, cntx) {
+            var masterLayout = masters[this.attr.master];
+            if (masterLayout == null){
+                console.error('Master Layout is not defined for', this);
+                return;
+            }
+            this.nodes = this.clone(masterLayout).nodes;
+            mask.renderDom(this.nodes, values, container, cntx);
+        }
+    }));
+
+}();
 ;include.setCurrent({ id: 'controller.viewsManager', namespace: 'controller.viewsManager', url: '{url}'});
 ;include.lazy({
     'ruqq.animation': {
@@ -4395,7 +4463,7 @@ include.cfg({
 	framework: ['es5shim', 'dom/jquery', 'ruqq.base', 'utils', 'animation'],
 	lib: 'compo'
 }).wait().js({
-	compo: ['scroller', 'prism','datePicker','timePicker'],
+	compo: ['scroller', 'prism','datePicker','timePicker', 'layout'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],
 	'': '/script/handler/routes.js'

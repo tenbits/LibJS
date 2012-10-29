@@ -10,7 +10,7 @@ include.cfg({
 	framework: ['es5shim', 'dom/jquery', 'ruqq.base', 'utils', 'animation'],
 	lib: 'compo'
 }).wait().js({
-	compo: ['scroller', 'prism','datePicker','timePicker'],
+	compo: ['scroller', 'prism','datePicker','timePicker', 'layout'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],
 	'': '/script/handler/routes.js'

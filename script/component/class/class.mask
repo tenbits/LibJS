@@ -11,7 +11,7 @@ scroller.content#maskScroller {
             ul {
                 li {
                     'Fastest Class implementation for modern browsers. Check out speed comparison: '
-                    a href='http://jsperf.com/class-libjs-vs-others' > 'jsperf.com'
+                    a href='http://jsperf.com/class-libjs-vs-others' target='_blank' > 'jsperf.com'
                     div.hint > 'Note that even comple example is up to 2 times faster'
                 }
                 li {
