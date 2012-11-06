@@ -85,7 +85,7 @@ scroller.content.about > p.container.tabPanel{
         code > ' > cd c:/some/temp/test'
         code > ' > includejs template starter'
         div.hint > tt {
-            'Now under "c:/some/path/libjs/" is "Hello World" small app - can see libjs in work'
+            'Now under "c:/some/temp/test/" is "Hello World" small app - can see libjs in work'
         }
         
     }

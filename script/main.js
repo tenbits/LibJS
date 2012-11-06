@@ -1,13 +1,12 @@
-window.onerror = function(e, a, b) {
-	console.error(arguments, typeof a.stack);
-}
+
+console.log("loading - " + typeof include.cfg);
 
 include.cfg({
 	lockedToFolder: true,
 	controller: '/script/component/{name}.js',
 	uicontrol: '/script/control/{name}.js'
 }).js({
-	framework: ['es5shim', 'dom/jquery', 'ruqq.base', 'utils', 'animation'],
+	framework: ['dom/jquery', 'ruqq.base', 'utils', 'animation'],
 	lib: 'compo'
 }).wait().js({
 	compo: ['scroller', 'prism','datePicker','timePicker', 'layout'],
@@ -15,7 +14,7 @@ include.cfg({
 	uicontrol: ['radioButtons', 'pageActivity'],
 	'': '/script/handler/routes.js'
 }).ready(function() {
-
+	console.log("loaded");
 	mask.registerHandler('html', Class({
 		render: function(values, container) {
 			var source = null;

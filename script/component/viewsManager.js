@@ -1,7 +1,5 @@
-include.lazy({
-    'ruqq.animation': {
-        framework: 'animation'
-    }
+include.js({
+    'framework': 'animation'
 }).done(function() {
 
     var Helper = {

@@ -86,13 +86,13 @@ function() {
                 }, 5000);
 
             } else {
-                this.interval = setInterval(function() {
-                    this.currentPos += this.data.height;
-                    if (this.currentPos > this.data.height * this.data.frames - 1) {
-                        this.currentPos = 0;
-                    }
-                    this.$.css('background-position', '0px -' + this.currentPos + 'px');
-                }.bind(this), this.data.fps ? 1000 / this.data.fps : 100);
+                //this.interval = setInterval(function() {
+                //    this.currentPos += this.data.height;
+                //    if (this.currentPos > this.data.height * this.data.frames - 1) {
+                //        this.currentPos = 0;
+                //    }
+                //    this.$.css('background-position', '0px -' + this.currentPos + 'px');
+                //}.bind(this), 100);
             }
         },
         stop: function() {

@@ -35,7 +35,13 @@ scroller.content#maskScroller {
             }
             
         }      
-        div.api > 'Placeholder for RuqqJS Documentation'
+        div.api {
+            'Placeholder for RuqqJS Documentation'
+            
+            p.animation {
+                div.animatedPanel style='width:100px; height:100px; background:red;';  
+            }
+        }
     }
 }
 
