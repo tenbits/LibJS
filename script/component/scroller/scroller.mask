@@ -19,7 +19,7 @@ scroller.content {
             div > 'Markup example:'
             prism > 'scroller#myscroller { /** Content Items*/ }'
             
-            p > 'As with other Components, no futher javascript is needed,
+            p > 'As with other Components, no further javascript is needed,
                 scroller tag will be changed to div and after DOMInsertion
                 scroller will work as expected if overflowed.'
             p > 'If later you make changes to content, you can refresh scroller.

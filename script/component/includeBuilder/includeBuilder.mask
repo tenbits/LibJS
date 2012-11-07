@@ -22,7 +22,7 @@ scroller.content {
                         li > 'parse scripts and Resolve all Resources'
                         li > 'parse dependency-scripts and Resolve all Resources'
                         li > '... and so on'
-                        li > 'combine all resources into seperate single files'
+                        li > 'combine all resources into separate single files'
                         li {
                             'create new HTML with'
                             ul {
@@ -87,8 +87,8 @@ scroller.content {
                     code > 'include.cfg(coolStuff: "file:///c:/dev/MyCoolStuff/classes/{name}.js")'
                     u > 'Contra'' — '
                     ul {
-                        li > 'Though after project build you dont have any absolute pathes more, but not in Development'
-                        li > 'When you develop a web site (not a html5 application), you defenetly 
+                        li > 'Though after project build you dont have any absolute paths more, but not in Development'
+                        li > 'When you develop a web site (not a html5 application), you definitely 
                             want to test on local server - is not possible with file:/// links'
                     }
                 }
@@ -106,7 +106,7 @@ scroller.content {
                         }
                         li {
                             code > ' > includejs template starter'
-                            'And now, under "testProject/.reference/libjs" you find a symblic link to libjs project
+                            'And now, under "testProject/.reference/libjs" you find a symbolic link to libjs project
                              and all requests to libjs libraries, such as '
                              code > 'include.js({ lib: "mask" })' 'will path through that symbolic link'
                         }

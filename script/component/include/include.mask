@@ -19,7 +19,7 @@ scroller.content {
                     li { 'Performance ' div.hint > code > 'We use it for Mobile Development mainly' }
                     li { 'Size ' div.hint > code > 'Uglified only 7.1KB' }                
                 }
-                'Dependecies:'
+                'Dependencies:'
                 ul > li > code > 'ClassJS'
             }
         }

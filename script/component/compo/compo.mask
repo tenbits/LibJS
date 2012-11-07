@@ -40,7 +40,7 @@ scroller.content {
             }
             h4 > 'Ḟunctions'
             ul.anchors {
-                li > a href='#/compo/api/render' > '.render(values,?container,?cntx)'
+                li > a href='#/compo/api/render' > '.render(values, ?container, ?cntx)'
                 li > a href='#/compo/api/insert' > '.insert(parent)'
                 li > a href='#/compo/api/append' > '.append(template, values)'
                 li > a href='#/compo/api/on' > '.on(?type, selector, callback)'
