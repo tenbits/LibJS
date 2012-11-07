@@ -1,29 +1,43 @@
 if (typeof Function.prototype.bind === 'undefined') {
-    Function.prototype.bind = function() {
-        if (arguments.length < 2 && typeof arguments[0] == "undefined") return this;
-        var __method = this,
-            args = Array.prototype.slice.call(arguments),
-            object = args.shift();
-        return function() {
-            return __method.apply(object, args.concat(Array.prototype.slice.call(arguments)));
-        }
-    }
+	Function.prototype.bind = function() {
+		if (arguments.length < 2 && typeof arguments[0] == "undefined") return this;
+		var __method = this,
+			args = Array.prototype.slice.call(arguments),
+			object = args.shift();
+		return function() {
+			return __method.apply(object, args.concat(Array.prototype.slice.call(arguments)));
+		}
+	}	
 }
 
+if (typeof Object.defineProperty === 'undefined') {
+	if (({}).__defineGetter__ !== 'undefined') {
+		Object.defineProperty = function(obj, prop, data) {
+			if (data.set) {
+				obj.__defineSetter__(prop, data.set);
+			}
+			if (data.get) {
+				obj.__defineGetter__(prop, data.get);
+			}
+		}
+	}
+}
 
 if (typeof Date.now === 'undefined') {
-    Date.now = function() {
-        return new Date().getTime();
-    }
+	Date.now = function() {
+		return new Date().getTime();
+	}
 }
 
-window.requestAnimationFrame = (function() {
-	var w = window;
-	return w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.mozRequestAnimationFrame || w.oRequestAnimationFrame || w.msRequestAnimationFrame ||
-	function(callback) {
-		return setTimeout(callback, 17);
-	}
-})();
+if (typeof window.requestAnimationFrame === 'undefined') {
+	window.requestAnimationFrame = (function() {
+		var w = window;
+		return w.requestAnimationFrame || w.webkitRequestAnimationFrame || w.mozRequestAnimationFrame || w.oRequestAnimationFrame || w.msRequestAnimationFrame ||
+		function(callback) {
+			return setTimeout(callback, 17);
+		}
+	})();
+}
 ;;
 (function(w) {
 
@@ -307,15 +321,15 @@ function(w, d) {
 
 				if (timer) console.log('DOMContentLoader', d.readyState, Date.now() - timer, 'ms');
 				events.ready = (events.readyQueue = helper.doNothing);
-				
-				
+
+
 				helper.invokeEach(readyqueue);
-				
-				helper.invokeEach(readycollection);				
+
+				helper.invokeEach(readycollection);
 				readycollection = null;
 				readyqueue = null;
-				
-				
+
+
 				if (d.readyState == 'complete') {
 					events.load = helper.doNothing;
 					helper.invokeEach(loadcollection);
@@ -327,7 +341,7 @@ function(w, d) {
 				ready: function(callback) {
 					readycollection.unshift(callback);
 				},
-				readyQueue: function(callback){
+				readyQueue: function(callback) {
 					(readyqueue || (readyqueue = [])).push(callback);
 				},
 				load: function(callback) {
@@ -340,7 +354,7 @@ function(w, d) {
 	var IncludeDeferred = Class({
 		ready: function(callback) {
 			return this.on(4, function() {
-				events.ready(this.resolve.bind(this, callback)); 
+				events.ready(this.resolve.bind(this, callback));
 			}.bind(this));
 		},
 		/** assest loaded and window is loaded */
@@ -403,7 +417,7 @@ function(w, d) {
 			return r.include(type, pckg);
 			//-return (this instanceof Resource ? this : new Resource).include(type, pckg);
 		},
-		js: function(pckg) {			
+		js: function(pckg) {
 			return this.incl('js', pckg);
 		},
 		css: function(pckg) {
@@ -457,7 +471,7 @@ function(w, d) {
 					resource.state = 4;
 					resource.namespace = namespace;
 					resource.type = key;
-					
+
 					if (url) {
 						if (url[0] == '/') url = url.substring(1);
 						resource.location = helper.uri.getDir(url);
@@ -466,21 +480,28 @@ function(w, d) {
 					switch (key) {
 					case 'load':
 					case 'lazy':
-						resource.state = 0;
-						events.readyQueue(function(_r, _id) {
-							var container = d.querySelector('script[data-id="' + _id + '"]');
-							if (container == null) {
-								console.error('"%s" Data was not embedded into html', _id);
-								return;
-							}
-							_r.obj = container.innerHTML;
-							_r.readystatechanged(4);
-						}.bind(this, resource, id));
+						//resource.state = 0;
+						//events.readyQueue(function(_r, _id) {
+							////var container = d.querySelector('script[data-id="' + _id + '"]');
+							////if (container == null) {
+							////	console.error('"%s" Data was not embedded into html', _id);
+							////	return;
+							////}
+							////_r.obj = container.innerHTML;
+							////_r.readystatechanged(4);
+						//}.bind(this, resource, id));
+						
+						var container = d.querySelector('script[data-id="' + id + '"]');
+						if (container == null) {
+							console.error('"%s" Data was not embedded into html', id);
+							return;
+						}
+						resource.obj = container.innerHTML;						
 						break;
 					};
 					(bin[key] || (bin[key] = {}))[id] = resource;
 				}
-			}			
+			}
 		}
 	});
 
@@ -580,7 +601,7 @@ function(w, d) {
 			this.state = 0;
 			if (this.includes == null) this.includes = [];
 
-			
+
 			helper.eachIncludeItem(type, pckg, function(namespace, url, xpath) {
 				var resource = new Resource(type, url, namespace, xpath, this);
 
@@ -661,7 +682,7 @@ function(w, d) {
 				this.readystatechanged(4);
 				return;
 			}
-			
+
 			switch (this.type) {
 			case 'load':
 			case 'ajax':
@@ -700,22 +721,24 @@ function(w, d) {
 				obj = obj[prop] || (obj[prop] = {});
 			}
 			arr = null;
-			obj.__defineGetter__(module, function() {
 
-				delete obj[module];
-				try {
-					var r = __includeEval(code, window.include);
-					if (r != null && r instanceof Resource == false) obj[module] = r;
-				} catch (error) {
-					error.xpath = xpath;
-					helper.reportError(e);
-				} finally {
-					code = null;
-					xpath = null;
+			Object.defineProperty(obj, module, {
+				get: function() {
 
-					return obj[module];
+					delete obj[module];
+					try {
+						var r = __includeEval(code, window.include);
+						if (r != null && r instanceof Resource == false) obj[module] = r;
+					} catch (error) {
+						error.xpath = xpath;
+						helper.reportError(e);
+					} finally {
+						code = null;
+						xpath = null;
+						return obj[module];
+					}
 				}
-			});
+			})
 		}
 	}
 
