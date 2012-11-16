@@ -6,15 +6,15 @@ include.cfg({
 	controller: '/script/component/{name}.js',
 	uicontrol: '/script/control/{name}.js'
 }).js({
-	framework: ['dom/jquery', 'ruqq.base', 'utils', 'animation'],
+	framework: ['dom/jquery', 'ruqq.base', 'utils', 'animation', 'routes'],
 	lib: 'compo'
 }).wait().js({
 	compo: ['scroller', 'prism','datePicker','timePicker', 'layout'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],
-	'': '/script/handler/routes.js'
+	'': ['/script/utils/maskUtils.js']
 }).ready(function() {
-	console.log("loaded");
+	
 	mask.registerHandler('html', Class({
 		render: function(values, container) {
 			var source = null;
@@ -94,7 +94,7 @@ include.cfg({
 				'click: li' : function(e) {
 					console.log('mouseup');
 					var view = $(e.target).data('view');
-					routes.set(view.replace('View', ''));
+					routes.navigate(view.replace('View', ''));
 				},
 				'click: h3' : function(){
 					this.compos.menuHelp.css('opacity',1);
@@ -109,18 +109,20 @@ include.cfg({
 
 	w.app.render(model).insert(document.body);
 
-	w.routes = new Routes({
-		match: /([\w]+)(\/([\w]+))?(\/([\w]+))?/,
-		param: 'view=$1View&category=$3&anchor=$5',
-		callback: viewsManager.show.bind(viewsManager)
+	w.routes.add('/:view/?:category/?:anchor', function(current){
+		console.log('current', current);
+		viewsManager.show(current);
 	});
-
-
-
+	
+	//w.routes.add({
+	//	match: /^([\w]+)(\/([\w]+))?(\/([\w]+))?/,
+	//	param: 'view=$1View&category=$3&anchor=$5',
+	//	callback: viewsManager.show.bind(viewsManager)
+	//});
 
 
 	viewsManager.show(w.routes.current() || {
-		view: 'aboutView'
+		view: 'about'
 	});
 
 

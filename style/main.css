@@ -1,15 +1,24 @@
+@import url(http://fonts.googleapis.com/css?family=Anaheim);
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
     background: rgb(250,253,250);    
-    min-width: 800px;
-    
-    font-family: 'Segoe UI', sans-serif;    
+    min-width: 600px;
+	
+    font-family: 'Segoe UI', 'Helvetica', sans-serif;
+	position: relative;
+	
+	min-height: 500px;
+	height: 100%;    
+}
+
+ul {
+	margin: 0px;
 }
 
 body {
-    background: #E8D1AE url(../images/wood.jpg) 0 0 repeat;
+	height: 100%;
+	background: #E8D1AE url(../images/wood.jpg) 0 0 repeat;
 }
 div {cursor: default;}
 td{ vertical-align: top; }
@@ -39,12 +48,16 @@ div.footer {
     width:100%;
     z-index: 0;
     background: url(../images/grass.png) bottom left repeat-x;
-	background-size: 100%;
+	background-size: 100%;	
 }
 
 #views {
     height: 100%;
+	min-height: 300px;
     line-height: 1.3em;
+	
+	font-size:.95em;
+	
 }
 .view header, .view footer {
     background:#4C3F33; /*rgb(100,100,100); */
@@ -54,7 +67,7 @@ div.footer {
     color:rgb(250,255,250);
     padding: 0px 20px;
     text-shadow: 0px 0px 3px #000;
-    font-size: 1.1em;
+    font-size: .95em;
     letter-spacing: 1px;
     box-sizing: border-box;
     height: 50px;
@@ -67,8 +80,10 @@ div.footer {
 .view section {
     padding: 10px 20px;
 }
+.view header {
+	height:40px; line-height: 40px;
+}
 .view footer {
-    height: 50px;
     position: absolute;    
     bottom: 0px;
     border-radius: 0px;
@@ -81,7 +96,7 @@ div.footer {
 }
 
 .view div.scroller {
-    position: absolute; top:50px; left:0px; right:0px; bottom: 50px;
+    position: absolute; top:40px; left:0px; right:0px; bottom: 50px;
 }
 
 
@@ -156,7 +171,7 @@ menu > .scroller > .scroller-container {
 }
 
 
-menu li {cursor: pointer; opacity: .8; -webkit-transition:opacity 200ms linear;}
+menu li {cursor: pointer; opacity: .7; -webkit-transition:opacity 200ms linear; font-size: .95em;}
 menu li:hover { text-decoration: underline; opacity: 1;}
 
 menu > .menu-help {
@@ -191,12 +206,37 @@ menu:hover > .menu-help { display: block; }
     background:rgba(200,200,200, 1);
     border:1px solid rgba(230,230,230,1);
     color: rgb(50,70,50);
+	text-shadow: 0px 0px 4px #eee;
 }
 
 .github-ribbon {
     position:absolute;
-    top: 0px;
-    right: 0px;
+    top: -12px;
+    right: -12px;
+	
+	width:64px;
+	height:64px;
+	background: url(../images/github.png) 0 0 no-repeat;
+	
+	-webkit-transform: scale(.5) rotate(0deg);
+	-webkit-transition: -webkit-transform 200ms ease-in;
+	z-index: 5;
+	
+}
+.github-ribbon:before {
+	content: 'Fork';
+	z-index: 4;
+	color:#eee;
+	position: absolute;
+	left: -100%;
+	top:0px;
+	line-height: 64px;
+}
+
+.github-ribbon:hover{
+	
+	-webkit-transform: scale(1) rotate(360deg);
+	
 }
 
 
@@ -232,6 +272,8 @@ div.radioButtons > button {
     border-right-width: 0px;
     border-radius: 0px;
     border-left: 1px solid rgba(15,15,15,.4);
+	
+	-webkit-transition: box-shadow 100ms linear, background-color 200ms linear;
 }
 div.radioButtons > button:first-child{
     border-left-width: 1px;
@@ -258,7 +300,10 @@ div.radioButtons > button.active {
 /** content */
 
 .view .scroller  {
-    background: #EEEEEE url(../images/dust.png) 0 0 repeat;
+    /*background: #EEEEEE url(../images/dust.png) 0 0 repeat;*/
+	background: #F3F0ED url(../images/dust2.png) 0 0 repeat;
+	/*background: #EEEEEE url(http://subtlepatterns.com/patterns/absurdidad.png) 0 0 repeat;*/
+	
 }
 
 .container {
@@ -271,8 +316,8 @@ h5 {
     color: #444;
 }
 
-code {    
-    border-left: 2px solid hsl(30,20%,25%);
+code {
+	border-left: 2px solid hsl(30,20%,25%);
     display: block;
 }
 
@@ -319,9 +364,9 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
 }
 #includeView .scroller{
     border-top:1px solid #333;
-    border-bottom: 1px solid #333;
-    font-size: .9em;
+    border-bottom: 1px solid #333;    
 }
+
 #maskView .examples {
     padding-bottom: 40px;
 }

@@ -27,7 +27,7 @@ include.css('view.css').done(function() {
       events: {
          'changed: .radioButtons': function(e, target) {
             var name = this.attr.id.replace('View', '');
-            window.routes.set(name + '/' + target.name);
+            window.routes.navigate(name + '/' + target.name);
          }
       },
 

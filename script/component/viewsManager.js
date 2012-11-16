@@ -56,7 +56,9 @@ include.js({
 				
             }.bind(this));
         },
-        show: function(info) {			
+        show: function(info) {
+			if (info.view) info.view += 'View';
+			
 			var compo = Compo.findCompo(this, info.view);
             if (compo == null) {
                 this.load(info);
