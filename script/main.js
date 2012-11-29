@@ -1,83 +1,102 @@
-
 console.log("loading - " + typeof include.cfg);
+
+window.onerror = function(){
+	console.log(arguments);
+}
 
 include.cfg({
 	lockedToFolder: true,
 	controller: '/script/component/{name}.js',
 	uicontrol: '/script/control/{name}.js'
 }).js({
-	framework: ['dom/jquery', 'ruqq.base', 'utils', 'animation', 'routes'],
-	lib: 'compo'
+	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes'],
+	lib: ['compo','ranimate']
 }).wait().js({
-	compo: ['scroller', 'prism','datePicker','timePicker', 'layout'],
+	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],
 	'': ['/script/utils/maskUtils.js']
 }).ready(function() {
-	
-	mask.registerHandler('html', Class({
-		render: function(values, container) {
-			var source = null;
-			if (this.attr.source != null) source = document.getElementById(this.attr.source).innerHTML;
-			if (this.nodes && this.nodes.content != null) source = this.nodes.content;
-
-			var $div = document.createElement('div');
-			$div.innerHTML = source;
-			for (var key in this.attr) {
-				$div.setAttribute(key, this.attr[key]);
-			}
-			container.appendChild($div);
-		}
-	}));
-
 
 	var w = window,
-		views = {
-			scrollerView: 'Scroller',
-			prismView: 'Prism',
-			datePickerView: 'Date Picker',
-			timePickerView: 'Time Picker',
-			formsView: 'Forms',
+		model = {
 
-			aboutView: 'About',
-			classView: 'ClassJS',
-			maskView: 'MaskJS',
-			includeView: 'IncludeJS',
-			includeBuilderView: 'IncludeJS.Builder',
-			compoView: 'CompoJS',
-			ruqqView: 'RuqqJS',
-			
-			preProcView: 'Pre-',
-			postProcView: 'Post-'
-		},
-		aggr = function(keys, fn) {
-			var arr = [];
-			if (keys == null) keys = Object.keys(views);
-			for (var i = 0; i < keys.length; i++) arr.push(fn(keys[i], views[keys[i]]));
-			return arr;
+			menuModel: [{
+				title: 'About',
+				items: [{
+					view: 'about',
+					title: 'About'
+				}/*, {
+					view: 'blog',
+					title: 'Blog'
+				}*/]
+			}, {
+				title: 'Library',
+				items: [{
+					view: 'class',
+					title: 'ClassJS'
+				}, {
+					view: 'mask',
+					title: 'MaskJS'
+				}, {
+					view: 'include',
+					title: 'IncludeJS'
+				}, {
+					view: 'includeBuilder',
+					title: 'IncludeJS.Builder'
+				}, {
+					view: 'compo',
+					title: 'CompoJS'
+				}, {
+					view: 'ruqq',
+					title: 'RuqqJS',
+					items: [{
+						view: 'ruqq/routing',
+						title: 'Routing'
+					}, {
+						view: 'ruqq/arr',
+						title: 'Array Helper'
+					}, {
+						view: 'ruqq/obj',
+						title: 'Object Helper'
+					}, ]
+				},{
+					view: 'ranimate',
+					title: 'RAnimateJS',					
+				},
+
+				]
+			}, {
+				title: 'Component',
+				items: [{
+					view: 'compos/scroller',
+					title: 'scroller;'
+				}, {
+					view: 'compos/prism',
+					title: 'prism;'
+				}, {
+					view: 'compos/datePicker',
+					title: 'datePicker;'
+				}, {
+					view: 'compos/timePicker',
+					title: 'timePicker;'
+				}],
+				hint: '... more in near future'
+			}, {
+				title: 'Pre/Post Processing',
+				'class': 'badge',
+				items: [{
+					view: 'compos/layout',
+					title: 'layout;'
+				}, {
+					view: 'compos/dualbind',
+					title: 'dualbind;'
+				}, {
+					view: 'compos/validate',
+					title: 'validate;'
+				}]
+			}]
 		};
-
-	var model = {
-		libraries: aggr(['classView', 'maskView', 'includeView', 'includeBuilderView', 'compoView', 'ruqqView'], function(key, x) {
-			return {
-				id: key,
-				name: x.name || x
-			}
-		}),
-		components: aggr(['scrollerView', 'prismView', 'datePickerView', 'timePickerView'], function(key, x) {
-			return {
-				id: key,
-				name: x.name || x
-			}
-		}),
-		processors: aggr(['preProcView','postProcView'], function(key, x){
-			return {
-				id: key,
-				name: x.name || x
-			}
-		})
-	};
-
 
 
 
@@ -90,36 +109,30 @@ include.cfg({
 		},
 		compos: {
 			menuHelp: '$: .menu-help',
-			menu:  ['$: menu', {				
-				'click: li' : function(e) {
+			menu: ['$: menu',
+			{
+				'click: .viewTitle': function(e) {
 					console.log('mouseup');
 					var view = $(e.target).data('view');
-					routes.navigate(view.replace('View', ''));
+					routes.navigate(view);
 				},
-				'click: h3' : function(){
-					this.compos.menuHelp.css('opacity',1);
+				'click: h3.badge': function() {
+					this.compos.menuHelp.css('opacity', 1);
 				},
-				'mouseleave': function(){
-					this.compos.menuHelp.css('opacity',0);
+				'mouseleave': function() {
+					this.compos.menuHelp.css('opacity', 0);
 				}
 			}]
-		},		
+		},
 	}));
 
 
 	w.app.render(model).insert(document.body);
 
-	w.routes.add('/:view/?:category/?:anchor', function(current){
+	w.routes.add('/:view/?:category/?:anchor', function(current) {
 		console.log('current', current);
 		viewsManager.show(current);
 	});
-	
-	//w.routes.add({
-	//	match: /^([\w]+)(\/([\w]+))?(\/([\w]+))?/,
-	//	param: 'view=$1View&category=$3&anchor=$5',
-	//	callback: viewsManager.show.bind(viewsManager)
-	//});
-
 
 	viewsManager.show(w.routes.current() || {
 		view: 'about'

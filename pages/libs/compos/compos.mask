@@ -1,0 +1,43 @@
+
+layout:master#tagApiItem {
+    div {
+        hr;                
+        h4 > code > placeholder#title;
+        p.description {
+            placeholder#description;
+        }
+
+        small {
+            div {
+                placeholder#include;
+            }
+            div {               
+                placeholder#source;
+            }
+        }
+        p {
+            div > 'Attributes: '
+            table.api-list cellspacing='0' > placeholder#attributes;
+        }
+
+        p {
+            div > 'Component: '
+            table.api-list cellspacing='0' > placeholder#component;
+        }
+        
+
+        p {
+            div > 'Depends: '
+            ul > placeholder#depends;
+        }
+        p {
+            div > 'Example: '
+            div > placeholder#example;
+        }
+    }
+}
+
+
+scroller.content.maximized.tagAPI > p.container.tabPanel{
+    
+}

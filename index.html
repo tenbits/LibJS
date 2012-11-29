@@ -13,7 +13,7 @@
     	
 
 	
-<script type="application/javascript" src="index.build/script.js"></script><link rel="stylesheet" href="index.build/style.css" /></head>
+<link rel="stylesheet" href="index.build/style.css" /></head>
 <body>
 <noscript>Please enable Javascript in your browser</noscript>
 
@@ -24,24 +24,8 @@
     div.footer;
     menu {
 		scroller {
-			section {
-				h3 > 'About'
-				ul > li data-view='aboutView' > 'About'
-			}
+			list value='menuModel' template='#menuTemplate';
 			
-			section#libraries {
-				h3 > 'Library'
-				ul > list value='libraries' > li data-view='#{id}'> '#{name}'
-			}
-			
-			section#components {
-				h3 > 'Components'
-				ul > list value='components' > li data-view='#{id}'> '#{name}'
-				div style='text-align:right; opacity:.3' > '... more in near future'
-				
-				h3.badge > 'Pre/Post Processing'
-				ul > list value='processors' > li data-view='#{id}'> '#{name}'			
-			}
 			div style='height:20px;';
 		}
 	
@@ -68,6 +52,23 @@
 	
 </script>
 
+<script type="mask/template" id="menuTemplate">
+	
+	section {
+		h3.#{class} > '#{title}'
+		ul > list value='items' template='#menuItemTemplate';
+		div style='text-align:right; opacity:.3' > '#{hint}'
+	}
+	
+</script>
+
+<script type="mask/template" id="menuItemTemplate">
+	li {
+		div.viewTitle data-view='#{view}' > '#{title}'
+		ul > list value='items' template='#menuItemTemplate';
+	}
+</script>
+
 
 
 <script type="text/source" id="tao-svg">
@@ -83,5 +84,5 @@
 		/>
 	</svg>
 </script>
-</body>
+<script type="application/javascript" src="index.build/script.js"></script></body>
 </html>

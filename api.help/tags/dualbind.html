@@ -1,0 +1,94 @@
+<script type='text/template' id='example'>
+	
+	input {
+        dualbind value='name';
+    }
+    textarea {
+        dualbind value='paths' bindingProvider='pathsProvider';
+    }
+
+    datePicker {
+        dualbind value='date' getter='getDate' setter='setDate';                
+    }    
+
+</script>
+<script type='text/example' id='main'>
+	
+	window.model  = {
+		name: 'Alex',
+		paths: ['path1.html','path2.html'],
+		date: new Date
+	}
+	
+	mask.bindingProviders.pathsProvider = {		
+		domWay: {
+			get: function(provider){
+				return provider.element.value.split('\n');
+			},
+			set: function(provider, value){				
+				provider.element.value = value.join('\n');
+			}
+		}
+	}
+	
+	mask.renderDom('#example',window.model);
+
+</script>
+
+
+<script id='BindingProviderApi'>
+	//[BindingProvider](name=BindingProvider)
+	mask.BindingProvider = Class({
+		/**
+		 *	@param model - {Object} - Mask Data Model passed to mask.renderDom
+		 *	@param element - {HTMLElement} - parent element
+		 *	@param node - {MaskNode} - current "dualbind" mask node
+		 */
+		Construct: function(model, element, node){
+			/** .. */
+			this.node = node;
+			this.model = model;
+			this.element = element;
+			/* .. */
+		},
+		/**
+		 *	This event-listener is set on Object.observe() (ruqqjs:utils.js)
+		 */
+		objectChanged: function(){},
+		/**
+		 *	This event-listener is set on $(element).on(changeEvent)
+		 */
+		domChanged: function(){},
+		
+		/**
+		 *	Object that contains static getters and setters of an Data-Model-Object
+		 *	per BindingProvider
+		 */
+		objectWay: {
+			/**@param provider - {BindingProvider}*/
+			get: function(provider){},
+
+			/**
+			 *	@param provider - {BindingProvider}
+			 *	@param value - {*dynamic*} - value that is resolved via
+			 *								domWay.get() function
+			*/
+			set: function(provider, value){}
+		},
+		/**
+		 *	Same as objectWay property but this one controls getting and setting values
+		 *	to HTMLElements.
+		 *	In case you have to set/get values to/from parents MaskComponent:
+		 *		provider.node.parent.anySetterFunction()/anyGetterFunction();
+		 *
+		 *	Usually you have to override only this object, as getting and setting
+		 *	values can be very HTMLElement/Control specific.
+		 */
+		domWay: {
+			get: function(provider){},
+			set: function(provider, value){}
+		},
+		
+	})
+	
+</script>

@@ -107,14 +107,18 @@ scroller.content.about > p.container.tabPanel{
         div.hint {
             'Pre request: ' a href='http://nodejs.org/download/' target='_blank' > 'nodejs'
         }
-        code > ' > npm install includejs -g'
-        code > ' > cd c:/some/path'
-        code > ' > includejs git-clone libjs'
+        p {
+            div > code > ' > npm install includejs -g'
+            div > code > ' > cd c:/some/path'
+            div > code > ' > includejs git-clone libjs'
+        }
         div.hint > tt {
             'Now all LibJS libraries are downloaded into  c:/some/path/libjs/'
         }
-        code > ' > cd c:/some/temp/test'
-        code > ' > includejs template starter'
+        p {
+            div > code > ' > cd c:/some/temp/test'
+            div > code > ' > includejs template starter'
+        }
         div.hint > tt {
             'Now under "c:/some/temp/test/" is "Hello World" small app - can see libjs in work'
         }

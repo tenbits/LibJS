@@ -8,13 +8,13 @@ scroller.content#maskScroller {
     div.container.tabPanel {
         div.info.active {
             ul {
-                li { 'Zen Coding Style' div.hint > code > 'Write Less, Do More' }
-                li { 'Dry & Highly Customizable' div.hint > code > 'Custom Tags, Custom Value Preprocessors' }
+                li { 'Zen Coding Style' div.hint > tt > 'Write Less, Do More' }
+                li { 'Dry & Highly Customizable' div.hint > tt > 'Custom Tags, Custom Value Preprocessors' }
                 li {
                     'Performance '
                     a href='http://jsperf.com/javascript-template-engine-compare/2' > 'jsperf.com'
                     
-                    div.hint > code { '... is even faster than native JSON.parse ' a href='http://jsperf.com/maskjs-vs-json'> 'jsperf' }
+                    div.hint > tt { '... is even faster than native JSON.parse ' a href='http://jsperf.com/maskjs-vs-json'> 'jsperf' }
                 }                
                 li > 'No Dependencies'
             }            

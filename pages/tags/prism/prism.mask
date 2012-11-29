@@ -1,0 +1,35 @@
+layout:view master='tagApiItem' {
+    title > 'prism;'
+    description {
+        div {
+            'Based on '
+            a href='http://prismjs.com/' target='_blank' > 'Prism Library'
+        }
+        
+    }
+
+    include > '{libjs}/compos/prism/lib/prism.js'
+    source {
+        a href='http://github.com/tenbits/Compos/prism/lib/prism.js' target='_blank' > 'github/compos/prism.js'   
+    }
+    attributes {
+        tr {            
+            td > 'lang'
+            td > '(optional @default=javascript) Tells Prism Lib what language to use for highlighting'
+        }        
+        tr {            
+            td > 'src'
+            td > '(optional) Url to load source code from. Include Url Resolving is used: (starts with "/" - absolute path,
+                without - relative to current files path)'
+        }        
+    } 
+    depends {
+        li > 'MaskJS'
+        li > 'IncludeJS - (for loading Prism lib)'        
+    }
+    
+    example {
+        prism > 'prism > "Source Code"'
+    }
+    
+}

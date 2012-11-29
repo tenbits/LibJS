@@ -1,0 +1,56 @@
+layout:view master='tagApiItem' {
+    title > 'dualbind;'
+    description {
+        'Two way model-view bindings for MaskJS. Any JSON value to Any DOM Element or MaskJS Component. Check out also '
+        a href='#/tag/validate ' > 'validation' 
+        ' to see, how you can validate user input before bindings applies.'
+        
+        p { 
+            'Things are simple - we have a '
+            a href='#/tag/dualbind/BindingProvider' > 'BindingProvider'
+            ', that listens to DOM changes using events and listens to JSON changes by overriding properties with '
+            code > 'Object.defineProperty' 
+        
+            '. You can also create your own custom providers and register them with '
+            code > 'mask.registerBinding(name, handler)'
+            '.'
+        }
+    }
+
+    include > '{libjs}/compos/binding/lib/binding.js'
+    source {
+        a href='http://github.com/tenbits/Compos/binding/lib/binding.js' target='_blank' > 'GitHub'   
+    }
+    attributes {
+        tr {
+            td > 'value="propName"'
+            td > 'Property of a JSON Data Model. IF property is an Array, then all mutable methods are also overridden for listening (like .pop .push)'
+        }
+        tr {
+            td > 'changeEvent="event"'
+            td > '(optional @default="change") Change JSON Data Model on that event - "$" is used to addEventListener to "element" with .on function. 
+                After the event is triggered, JSON Data Model updates.'
+        }
+        tr {
+            td > 'property="propName"'
+            td > '(optional @default="element.value") Property of a provider.'
+        }
+        tr {
+            td > 'setter="setterFn"'
+            td > '(optional @default=NULL) In case when we bind values to custom controls and we want to set values over setter function, 
+                define it here, instead of creating custom bindings.'
+        }
+        tr {
+            td > 'getter="getterFn"'
+            td > '(optional @default=NULL) @see "setter" attribute'
+        }
+    } 
+    depends {
+        li > 'MaskJS'
+        li > 'ClassJS'
+        li > 'RuqqJS:utils.js - Object Helper'
+    }   
+    example {
+        prism language='markup' src='api.help/tags/dualbind.html';
+    }
+}

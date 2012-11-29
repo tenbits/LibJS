@@ -1,0 +1,56 @@
+h6 > 'Do you familier with Master-Pages in ASP.NET?'
+layout:view master='tagApiItem' {
+    title > 'layout:master;'
+    description {
+         'Contains master layout template.'    
+
+         div {
+            code > 'placeholder;'
+            ' - tag is used withing layout:master to define placeholder for template item (ID attribute required)'            
+        }
+    }
+
+    include > '{libjs}/compos/layout/lib/layout.js'
+    source {
+        a href='http://github.com/tenbits/Compos/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'   
+    }
+    attributes {
+        tr {            
+            td > 'id'
+            td > '(required) ID'
+        }                
+    } 
+    depends {
+        li > 'MaskJS'
+        li > 'IncludeJS - (for loading Prism lib)'        
+    }
+    
+    example {
+        prism > 'layout:master#mainView { div.header > placeholder#header; }'
+    }    
+}
+layout:view master='tagApiItem' {
+    title > 'layout:view;'
+    description {
+         "Child tagNames are placeholder ids of a master view template"
+    }
+    
+    include > '{libjs}/compos/layout/lib/layout.js'
+    source {
+        a href='http://github.com/tenbits/Compos/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'   
+    }
+    attributes {
+        tr {            
+            td > 'master'
+            td > '(required) ID of master template'
+        }                
+    } 
+    depends {
+        li > 'MaskJS'
+        li > 'IncludeJS - (for loading Prism lib)'        
+    }
+    
+    example {
+        prism > 'layout:view master="mainView" { header > "This will be placed into placeholder#header" }'
+    }    
+}

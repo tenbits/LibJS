@@ -34,10 +34,9 @@ scroller.content#maskScroller {
             }
             
         }      
-        div.api {
-            'Placeholder for RuqqJS Documentation'
+        div.animation {
             
-            p.animation {
+            div.animation {
                 div.animatedPanel style='width:100px; height:100px; background:red;';  
             }
         }
@@ -46,7 +45,10 @@ scroller.content#maskScroller {
 
 footer {
     radioButtons{
-        button.active name='info' > 'Info'
-        button name='api' > 'API'        
+        button.active name='info' > 'Info'        
+        button name='animation' > 'Animation'
+        button name='routing' > 'Routing'
+        button name='array' > 'Array'
+        button name='object' > 'Object'
     }
 }

@@ -19,6 +19,7 @@ ul {
 body {
 	height: 100%;
 	background: #E8D1AE url(../images/wood.jpg) 0 0 repeat;
+	color: #333;
 }
 div {cursor: default;}
 td{ vertical-align: top; }
@@ -70,6 +71,8 @@ div.footer {
     font-size: .95em;
     letter-spacing: 1px;
     box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	
     height: 50px;
     line-height: 50px;
     position: relative;
@@ -99,6 +102,10 @@ div.footer {
     position: absolute; top:40px; left:0px; right:0px; bottom: 50px;
 }
 
+.view div.scroller.maximized {
+    top:0px; left:0px; right:0px; bottom: 0px;
+	border-radius: 14px;
+}
 
 menu {
     display: block;
@@ -112,8 +119,8 @@ menu {
     -o-box-sizing: border-box;
     
     background:#2D2C2B url(../images/dark_tire.png) 0 0 repeat;
-    color:rgba(240,245,240, .4);
-    text-shadow: 1px 0px 10px rgb(0,0,0);
+    color:rgba(240,245,240, 0);
+    /*text-shadow: 0px 0px 4px rgb(0,0,0);*/
     
     -webkit-transition: -webkit-transform 100ms ease-in, color 100ms linear;
     -moz-transition: -moz-transform 100ms ease-in, color 100ms linear;
@@ -148,14 +155,15 @@ menu:after, .menu-help:after{
     background:rgba(0,0,0,.4);
 }
 menu {
-    -webkit-transform: translate(-40%, 0px);
-    -moz-transform: translate(-40%, 0px);
-    -o-transform: translate(-40%, 0px);
-    -ms-transform: translate(-40%, 0px);
+	color:rgba(230,235,230, 0);
+    -webkit-transform: translate3d(-80%, 0px, 0px);
+    -moz-transform: translate(-80%, 0px);
+    -o-transform: translate(-80%, 0px);
+    -ms-transform: translate(-80%, 0px);
     
 }
 menu:hover {
-    -webkit-transform: translate(0px, 0px);
+    -webkit-transform: translate3d(0px, 0px, 0px);
     -moz-transform: translate(0px, 0px);
     -o-transform: translate(0px, 0px);
     -ms-transform: translate(0%, 0px);
@@ -171,8 +179,8 @@ menu > .scroller > .scroller-container {
 }
 
 
-menu li {cursor: pointer; opacity: .7; -webkit-transition:opacity 200ms linear; font-size: .95em;}
-menu li:hover { text-decoration: underline; opacity: 1;}
+menu .viewTitle {cursor: pointer; opacity: .7; -webkit-transition:opacity 200ms linear; font-size: .9em;}
+menu .viewTitle:hover { text-decoration: underline; opacity: 1;}
 
 menu > .menu-help {
 	position:absolute;
@@ -219,7 +227,15 @@ menu:hover > .menu-help { display: block; }
 	background: url(../images/github.png) 0 0 no-repeat;
 	
 	-webkit-transform: scale(.5) rotate(0deg);
-	-webkit-transition: -webkit-transform 200ms ease-in;
+	-webkit-transition: -webkit-transform 200ms ease-in;	
+	-moz-transform: scale(.5) rotate(0deg);
+	-moz-transition: -webkit-transform 200ms ease-in;	
+	-o-transform: scale(.5) rotate(0deg);
+	-o-transition: -webkit-transform 200ms ease-in;	
+	transform: scale(.5) rotate(0deg);
+	transition: -webkit-transform 200ms ease-in;
+	
+	
 	z-index: 5;
 	
 }
@@ -274,6 +290,8 @@ div.radioButtons > button {
     border-left: 1px solid rgba(15,15,15,.4);
 	
 	-webkit-transition: box-shadow 100ms linear, background-color 200ms linear;
+	
+	line-height: 1em;
 }
 div.radioButtons > button:first-child{
     border-left-width: 1px;
@@ -318,7 +336,12 @@ h5 {
 
 code {
 	border-left: 2px solid hsl(30,20%,25%);
-    display: block;
+    display: inline-block;
+	background: rgba(88,88,88,.1);
+}
+
+pre > code {
+	background: transparent;
 }
 
 code, pre{
@@ -385,12 +408,22 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
     cursor: pointer;
     font-size: 1.1em;
 }
+
+
+.api-list td {
+	padding: 5px;
+	font-family: monospace;
+}
+.api-list td:first-child {
+	border-right: 1px solid #999;
+}
+
 /*--.api li:hover > code, .example li:hover > code{ font-weight: 600; }*/
 
 
 
 .badge { position: relative; cursor: pointer;}
-.badge:after {
+.badge:before {
 	content: 'i';
 	font-family: monospace;
 	font-size: 10px;
@@ -400,7 +433,7 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
 	line-height: 16px;
 	text-align: center;
 	
-	right: -16px;
+	left: -16px;
 	top: -5px;
 	background: rgba(255,255,255,.7);
 	border-radius: 50%;

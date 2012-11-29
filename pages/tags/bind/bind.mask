@@ -1,0 +1,39 @@
+layout:view master='tagApiItem' {
+    title > 'bind;'
+    description {        
+        div {
+            'Simple one way binding'
+        }
+    }
+
+    include > '{libjs}/compos/binding/lib/binding.js'
+    source {
+        a href='http://github.com/tenbits/Compos/binding/lib/binding.js' target='_blank' > 'GitHub'   
+    }
+    attributes {
+       	tr {
+	       	td > 'value'
+	       	td > 'xpath of a property'
+       	}
+       	tr {
+       		td > 'attr'
+       		td > '(optional) HTMLElements attribute name (uses .setAttribute(key,))'
+       	}
+       	tr {
+       		td > 'prop'
+       		td > '(optional) HTMLElements property name (uses [key]=)'
+       	}
+       	tr {
+       		td > '{no "attr" and no "prop"}'
+       		td > 'default bind to HTMLElements .innerHTML'
+       	}
+    } 
+    depends {
+        li > 'MaskJS'
+        li > 'ClassJS'
+        li > 'RuqqJS:utils.js - Object Helper'
+    }
+    example {
+    	prism > 'input > bind value="user.name" prop="value";'
+    }
+}
