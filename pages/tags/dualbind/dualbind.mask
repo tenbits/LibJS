@@ -51,6 +51,6 @@ layout:view master='tagApiItem' {
         li > 'RuqqJS:utils.js - Object Helper'
     }   
     example {
-        prism language='markup' src='api.help/tags/dualbind.html';
+        prism language='markup' src='/api.help/tags/dualbind.html';
     }
 }
