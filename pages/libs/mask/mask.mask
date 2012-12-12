@@ -10,11 +10,12 @@ scroller.content#maskScroller {
             ul {
                 li { 'Zen Coding Style' div.hint > tt > 'Write Less, Do More' }
                 li { 'Dry & Highly Customizable' div.hint > tt > 'Custom Tags, Custom Value Preprocessors' }
+                li { 'For NodeJS and Browsers' }
                 li {
                     'Performance '
-                    a href='http://jsperf.com/javascript-template-engine-compare/2' > 'jsperf.com'
+                    a href='http://jsperf.com/javascript-template-engine-compare/27' > 'jsperf.com'
                     
-                    div.hint > tt { '... is even faster than native JSON.parse ' a href='http://jsperf.com/maskjs-vs-json'> 'jsperf' }
+                    div.hint > tt { '... is even faster than native JSON.parse ' a href='http://jsperf.com/maskjs-vs-json/4'> 'jsperf' }
                 }                
                 li > 'No Dependencies'
             }            

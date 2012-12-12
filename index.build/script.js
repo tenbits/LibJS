@@ -39,7 +39,7 @@ if (typeof window.requestAnimationFrame === 'undefined') {
 	})();
 }
 ;;
-(function(w) {
+(function(global) {
 
 	var helper = {
 		each: function(arr, fn) {
@@ -127,7 +127,7 @@ if (typeof window.requestAnimationFrame === 'undefined') {
 		}
 	}
 
-	w.Class = function(data) {
+	global.Class = function(data) {
 		var _base = data.Base,
 			_extends = data.Extends,
 			_static = data.Static,
@@ -191,588 +191,874 @@ if (typeof window.requestAnimationFrame === 'undefined') {
 
 
 
-})(window);
+})(typeof window === 'undefined' ? global : window);
 
-;;
-void
+;
+var __eval = function(source, include) {
+	"use strict";
+	if (!source) {
+		console.error('error', include);
+	}
+	var iparams = include.route.params;
+	return eval(source);
+};
 
-function(w, d) {
+;(function(global, document) {
 
-	var cfg = {},
-		bin = {},
-		isWeb = !! (w.location && w.location.protocol && /^https?:/.test(w.location.protocol)),
-		handler = {},
-		regexp = {
-			name: new RegExp('\\{name\\}', 'g')
+	"use strict";
+	
+	
+
+
+/**
+ *	.cfg
+ *		: path :=	root path. @default current working path, im browser window.location;
+ *		: eval := in node.js this conf. is forced
+ *		: lockedToFolder := makes current url as root path
+ *			Example "/script/main.js" within this window.location "{domain}/apps/1.html"
+ *			will become "{domain}/apps/script/main.js" instead of "{domain}/script/main.js"
+ */
+
+var bin = {},
+	isWeb = !! (global.location && global.location.protocol && /^https?:/.test(global.location.protocol)),
+	cfg = {
+		eval: document == null
+	},	
+	handler = {},
+	hasOwnProp = {}.hasOwnProperty,
+	rewrites = typeof IncludeRewrites != 'undefined' ? IncludeRewrites : null,
+	currentParent = null,
+	XMLHttpRequest = global.XMLHttpRequest;
+	
+
+var Helper = { /** TODO: improve url handling*/
+	uri: {
+		getDir: function(url) {
+			var index = url.lastIndexOf('/');
+			return index == -1 ? '' : url.substring(index + 1, -index);
 		},
-		helper = { /** TODO: improve url handling*/
-			uri: {
-				getDir: function(url) {
-					var index = url.lastIndexOf('/');
-					return index == -1 ? '' : url.substring(index + 1, -index);
-				},
-				/** @obsolete */
-				resolveCurrent: function() {
-					var scripts = d.querySelectorAll('script');
-					return scripts[scripts.length - 1].getAttribute('src');
-				},
-				resolveUrl: function(url, parent) {
-					if (cfg.path && url[0] == '/') {
-						url = cfg.path + url.substring(1);
-					}
-					if (url[0] == '/') {
-						if (isWeb == false || cfg.lockedToFolder == true) return url.substring(1);
-						return url;
-					}
-					switch (url.substring(0, 4)) {
-					case 'file':
-					case 'http':
-						return url;
-					}
-
-					if (parent != null && parent.location != null) return parent.location + url;
-					return url;
-				}
-			},
-			extend: function(target, source) {
-				for (var key in source) target[key] = source[key];
-				return target;
-			},
-			/**
-			 *	@arg x :
-			 *	1. string - URL to resource
-			 *	2. array - URLs to resources
-			 *	3. object - {route: x} - route defines the route template to resource,
-			 *		it must be set before in include.cfg.
-			 *		example:
-			 *			include.cfg('net','scripts/net/{name}.js')
-			 *			include.js({net: 'downloader'}) // -> will load scipts/net/downloader.js
-			 *	@arg namespace - route in case of resource url template, or namespace in case of LazyModule
-			 *
-			 *	@arg fn - callback function, which receives namespace|route, url to resource and ?id in case of not relative url
-			 *	@arg xpath - xpath string of a lazy object 'object.sub.and.othersub';
-			 */
-			eachIncludeItem: function(type, x, fn, namespace, xpath) {
-				if (x == null) {
-					console.error('Include Item has no Data', type, namespace);
-					return;
-				}
-
-				if (type == 'lazy' && xpath == null) {
-					for (var key in x) this.eachIncludeItem(type, x[key], fn, null, key);
-					return;
-				}
-				if (x instanceof Array) {
-					for (var i = 0; i < x.length; i++) this.eachIncludeItem(type, x[i], fn, namespace, xpath);
-					return;
-				}
-				if (typeof x === 'object') {
-					for (var key in x) this.eachIncludeItem(type, x[key], fn, key, xpath);
-					return;
-				}
-
-				if (typeof x === 'string') {
-					var route = namespace && cfg[namespace];
-					if (route) {
-						namespace += '.' + x;
-						x = route.replace(regexp.name, x);
-					}
-					fn(namespace, x, xpath);
-					return;
-				}
-
-				console.error('Include Package is invalid', arguments);
-			},
-			invokeEach: function(arr, args) {
-				if (arr == null) return;
-				if (arr instanceof Array) {
-					for (var i = 0, x, length = arr.length; x = arr[i], i < length; i++) {
-						if (typeof x === 'function')(args != null ? x.apply(this, args) : x());
-					}
-				}
-			},
-			doNothing: function(fn) {
-				typeof fn == 'function' && fn()
-			},
-			reportError: function(e) {
-				console.error('IncludeJS Error:', e, e.message, e.url);
-				typeof handler.onerror == 'function' && handler.onerror(e);
-			},
-			ensureArray: function(obj, xpath) {
-				if (!xpath) return obj;
-				var arr = xpath.split('.');
-				while (arr.length - 1) {
-					var key = arr.shift();
-					obj = obj[key] || (obj[key] = {});
-				}
-				return (obj[arr.shift()] = []);
-			},
-			xhr: function(url, callback) {
-				var xhr = new XMLHttpRequest(),
-					s = Date.now();
-				xhr.onreadystatechange = function() {
-					xhr.readyState == 4 && callback && callback(url, xhr.responseText);
-				}
-				xhr.open('GET', url, true);
-				xhr.send();
+		/** @obsolete */
+		resolveCurrent: function() {
+			var scripts = document.querySelectorAll('script');
+			return scripts[scripts.length - 1].getAttribute('src');
+		},
+		resolveUrl: function(url, parent) {
+			if (cfg.path && url[0] == '/') {
+				url = cfg.path + url.substring(1);
 			}
+			if (url[0] == '/') {
+				if (isWeb === false || cfg.lockedToFolder === true) {
+					return url.substring(1);
+				}
+				return url;
+			}
+			switch (url.substring(0, 4)) {
+			case 'file':
+			case 'http':
+				return url;
+			}
+
+			if (parent != null && parent.location != null) {
+				return parent.location + url;
+			}
+			return url;
+		}
+	},
+	extend: function(target) {
+		for(var i = 1; i< arguments.length; i++){
+			var source = arguments[i];
+			if (typeof source === 'function'){
+				source = source.prototype;
+			}
+			for (var key in source) {
+				target[key] = source[key];
+			}
+		}
+		return target;
+	},
+	invokeEach: function(arr, args) {
+		if (arr == null) {
+			return;
+		}
+		if (arr instanceof Array) {
+			for (var i = 0, x, length = arr.length; i < length; i++) {
+				x = arr[i];
+				if (typeof x === 'function'){
+					(args != null ? x.apply(this, args) : x());
+				}
+			}
+		}
+	},
+	doNothing: function(fn) {
+		typeof fn == 'function' && fn();
+	},
+	reportError: function(e) {
+		console.error('IncludeJS Error:', e, e.message, e.url);
+		typeof handler.onerror == 'function' && handler.onerror(e);
+	},
+	ensureArray: function(obj, xpath) {
+		if (!xpath) {
+			return obj;
+		}
+		var arr = xpath.split('.');
+		while (arr.length - 1) {
+			var key = arr.shift();
+			obj = obj[key] || (obj[key] = {});
+		}
+		return (obj[arr.shift()] = []);
+	},
+	xhr: function(url, callback) {
+		var xhr = new XMLHttpRequest(),
+			s = Date.now();
+		xhr.onreadystatechange = function() {
+			xhr.readyState == 4 && callback && callback(url, xhr.responseText);
+		};
+		
+		xhr.open('GET', url, true);
+		xhr.send();
+	}
+};
+var Routes = (function() {
+
+	var routes = {};
+
+	return {
+		/**
+		 *	@param route {String} = Example: '.reference/libjs/{0}/{1}.js'
+		 */
+		register: function(namespace, route) {
+
+			routes[namespace] = route instanceof Array ? route : route.split(/[\{\}]/g);
+
 		},
 
-		events = (function(w, d) {
-			if (d == null) {
+		/**
+		 *	@param {String} template = Example: 'scroller/scroller.min?ui=black'
+		 */
+		resolve: function(namespace, template) {
+			var questionMark = template.indexOf('?'),
+				aliasIndex = template.indexOf('::'),
+				alias, path, params, route, i, x, length;
+				
+			
+			if (~aliasIndex){
+				alias = template.substring(aliasIndex + 2);
+				template = template.substring(0, aliasIndex);
+			}
+			
+			if (~questionMark) {
+				var arr = template.substring(questionMark + 1).split('&');
+
+				params = {};
+				for (i = 0, length = arr.length; i < length; i++) {
+					x = arr[i].split('=');
+					params[x[0]] = x[1];
+				}
+
+				template = template.substring(0, questionMark);
+			}
+
+			template = template.split('/');
+			route = routes[namespace];
+			
+			if (route == null){
 				return {
-					ready: helper.doNothing,
-					load: helper.doNothing
+					path: template.join('/'),
+					params: params,
+					alias: alias
 				};
 			}
-			var readycollection = [],
-				loadcollection = null,
-				readyqueue = null,
-				timer = Date.now();
-
-			d.onreadystatechange = function() {
-				if (/complete|interactive/g.test(d.readyState) == false) return;
-
-				if (timer) console.log('DOMContentLoader', d.readyState, Date.now() - timer, 'ms');
-				events.ready = (events.readyQueue = helper.doNothing);
-
-
-				helper.invokeEach(readyqueue);
-
-				helper.invokeEach(readycollection);
-				readycollection = null;
-				readyqueue = null;
-
-
-				if (d.readyState == 'complete') {
-					events.load = helper.doNothing;
-					helper.invokeEach(loadcollection);
-					loadcollection = null;
+			
+			path = route[0];
+			
+			for (i = 1; i < route.length; i++) {
+				if (i % 2 === 0) {
+					path += route[i];
+				} else {
+					/** if template provides less "breadcrumbs" than needed -
+					 * take always the last one for failed peaces */
+					
+					var index = route[i] << 0;
+					if (index > template.length - 1) {
+						index = template.length - 1;
+					}
+					
+					
+					
+					path += template[index];
+					
+					if (i == route.length - 2){
+						for(index++;index < template.length; index++){
+							path += '/' + template[index];
+						}
+					}
 				}
-			};
+			}
 
 			return {
-				ready: function(callback) {
-					readycollection.unshift(callback);
-				},
-				readyQueue: function(callback) {
-					(readyqueue || (readyqueue = [])).push(callback);
-				},
-				load: function(callback) {
-					(loadcollection || (loadcollection = [])).unshift(callback);
-				}
+				path: path,
+				params: params,
+				alias: alias
+			};
+		},
+
+		/**
+		 *	@arg includeData :
+		 *	1. string - URL to resource
+		 *	2. array - URLs to resources
+		 *	3. object - {route: x} - route defines the route template to resource,
+		 *		it must be set before in include.cfg.
+		 *		example:
+		 *			include.cfg('net','scripts/net/{name}.js')
+		 *			include.js({net: 'downloader'}) // -> will load scipts/net/downloader.js
+		 *	@arg namespace - route in case of resource url template, or namespace in case of LazyModule
+		 *
+		 *	@arg fn - callback function, which receives namespace|route, url to resource and ?id in case of not relative url
+		 *	@arg xpath - xpath string of a lazy object 'object.sub.and.othersub';
+		 */
+		each: function(type, includeData, fn, namespace, xpath) {
+			var key;
+
+			if (includeData == null) {
+				console.error('Include Item has no Data', type, namespace);
+				return;
 			}
-		})(w, d);
+
+			if (type == 'lazy' && xpath == null) {
+				for (key in includeData) {
+					this.each(type, includeData[key], fn, null, key);
+				}
+				return;
+			}
+			if (includeData instanceof Array) {
+				for (var i = 0; i < includeData.length; i++) {
+					this.each(type, includeData[i], fn, namespace, xpath);
+				}
+				return;
+			}
+			if (typeof includeData === 'object') {
+				for (key in includeData) {
+					if (hasOwnProp.call(includeData, key)) {
+						this.each(type, includeData[key], fn, key, xpath);
+					}
+				}
+				return;
+			}
+
+			if (typeof includeData === 'string') {
+				var x = this.resolve(namespace, includeData);
+				if (namespace){
+					namespace += '.' + includeData;
+				}				
+				
+				fn(namespace, x, xpath);
+				return;
+			}
+
+			console.error('Include Package is invalid', arguments);
+		},
+
+		getRoutes: function(){
+			return routes;
+		}
+	};
+	
+})();
 
 
-	var IncludeDeferred = Class({
+/*{test}
+
+console.log(JSON.stringify(Routes.resolve(null,'scroller.js::Scroller')));
+
+Routes.register('lib', '.reference/libjs/{0}/lib/{1}.js');
+console.log(JSON.stringify(Routes.resolve('lib','scroller::Scroller')));
+console.log(JSON.stringify(Routes.resolve('lib','scroller/scroller.mobile?ui=black')));
+
+Routes.register('framework', '.reference/libjs/framework/{0}.js');
+console.log(JSON.stringify(Routes.resolve('framework','dom/jquery')));
+
+
+*/
+var Events = (function(document) {
+	if (document == null) {
+		return {
+			ready: Helper.doNothing,
+			load: Helper.doNothing
+		};
+	}
+	var readycollection = [],
+		loadcollection = null,
+		timer = Date.now();
+
+	document.onreadystatechange = function() {
+		if (/complete|interactive/g.test(document.readyState) === false) {
+			return;
+		}
+		if (timer) {
+			console.log('DOMContentLoader', document.readyState, Date.now() - timer, 'ms');
+		}
+		Events.ready = Helper.doNothing;
+
+		Helper.invokeEach(readycollection);
+		readycollection = null;
+		
+
+		if (document.readyState == 'complete') {
+			Events.load = Helper.doNothing;
+			Helper.invokeEach(loadcollection);
+			loadcollection = null;
+		}
+	};
+
+	return {
 		ready: function(callback) {
-			return this.on(4, function() {
-				events.ready(this.resolve.bind(this, callback));
-			}.bind(this));
+			readycollection.unshift(callback);
 		},
-		/** assest loaded and window is loaded */
-		loaded: function(callback) {
-			return this.on(4, function() {
-				events.load(callback);
-			});
-		},
-		/** assest loaded */
-		done: function(callback) {
-			return this.on(4, this.resolve.bind(this, callback));
-		},
-		resolve: function(callback) {
-			var r = callback(this.response);
-			if (r != null) this.obj = r;
+		load: function(callback) {
+			(loadcollection || (loadcollection = [])).unshift(callback);
 		}
-	});
+	};
+})(document);
+var IncludeDeferred = function() {
+	this.callbacks = [];
+};
 
+IncludeDeferred.prototype = {
+	/**	state observer */
 
-	var StateObservable = Class({
-		Construct: function() {
-			this.callbacks = [];
-		},
-		on: function(state, callback) {
-			state <= this.state ? callback(this) : this.callbacks.unshift({
-				state: state,
-				callback: callback
-			});
-			return this;
-		},
-		readystatechanged: function(state) {
-			this.state = state;
-			for (var i = 0, x, length = this.callbacks.length; x = this.callbacks[i], i < length; i++) {
-				if (x.state > this.state || x.callback == null) continue;
-				x.callback(this);
-				x.callback = null;
+	on: function(state, callback) {
+		state <= this.state ? callback(this) : this.callbacks.unshift({
+			state: state,
+			callback: callback
+		});
+		return this;
+	},
+	readystatechanged: function(state) {
+		this.state = state;
+		for (var i = 0, x, length = this.callbacks.length; i < length; i++) {
+			x = this.callbacks[i];
+			
+			if (x.state > this.state || x.callback == null) {
+				continue;
 			}
+			x.callback(this);
+			x.callback = null;
 		}
-	});
+	},
 
+	/** idefer */
 
-	var currentParent;
-	var Include = Class({
-		setCurrent: function(data) {
-			currentParent = data;
-		},
-		incl: function(type, pckg) {
+	ready: function(callback) {
+		return this.on(4, function() {
+			Events.ready(this.resolve.bind(this, callback));
+		}.bind(this));
+	},
+	/** assest loaded and window is loaded */
+	loaded: function(callback) {
+		return this.on(4, function() {
+			Events.load(callback);
+		});
+	},
+	/** assets loaded */
+	done: function(callback) {		
+		return this.on(4, this.resolve.bind(this, callback));
+	},
+	resolve: function(callback) {
+		global.include = this;		
+		callback(this.response);		
+	}
+};
+var Include = function(){};
+Include.prototype = {
+	setCurrent: function(resource) {
+		//currentParent = resource;
+		//r.location = Helper.uri.getDir(r.url);
+		
+		global.include = new Resource(null, resource.route, resource.namespace, null, null, resource.id);
+		
+	},
+	incl: function(type, pckg) {
 
-			if (this instanceof Resource) return this.include(type, pckg);
+		if (this instanceof Resource) {
+			return this.include(type, pckg);
+		}
 
-			var r = new Resource;
+		var r = new Resource();
+		//
+		//if (currentParent) {
+		//	r.id = currentParent.id;
+		//	r.url = currentParent.url;
+		//	r.namespace = currentParent.namespace;
+		//	r.location = Helper.uri.getDir(r.url);			
+		//}
+		return r.include(type, pckg);		
+	},
+	js: function(pckg) {
+		return this.incl('js', pckg);
+	},
+	css: function(pckg) {
+		return this.incl('css', pckg);
+	},
+	load: function(pckg) {
+		return this.incl('load', pckg);
+	},
+	ajax: function(pckg) {
+		return this.incl('ajax', pckg);
+	},
+	embed: function(pckg) {
+		return this.incl('embed', pckg);
+	},
+	lazy: function(pckg) {
+		return this.incl('lazy', pckg);
+	},
 
-			if (currentParent) {
-				r.id = currentParent.id;
-				r.url = currentParent.url;
-				r.namespace = currentParent.namespace;
-				r.location = helper.uri.getDir(r.url)
-				//-currentParent = null;
+	cfg: function(arg) {
+		switch (typeof arg) {
+		case 'object':
+			for (var key in arg) {
+				cfg[key] = arg[key];				
 			}
-			return r.include(type, pckg);
-			//-return (this instanceof Resource ? this : new Resource).include(type, pckg);
-		},
-		js: function(pckg) {
-			return this.incl('js', pckg);
-		},
-		css: function(pckg) {
-			return this.incl('css', pckg);
-		},
-		load: function(pckg) {
-			return this.incl('load', pckg);
-		},
-		ajax: function(pckg) {
-			return this.incl('ajax', pckg);
-		},
-		embed: function(pckg) {
-			return this.incl('embed', pckg);
-		},
-		lazy: function(pckg) {
-			return this.incl('lazy', pckg);
-		},
-
-		cfg: function(arg) {
-			switch (typeof arg) {
-			case 'object':
-				for (var key in arg) cfg[key] = arg[key];
-				break;
-			case 'string':
-				if (arguments.length == 1) return cfg[arg];
-				if (arguments.length == 2) cfg[arg] = arguments[1];
-				break;
-			case 'undefined':
-				return cfg;
+			break;
+		case 'string':
+			if (arguments.length == 1){
+				return cfg[arg];
 			}
-			return this;
-		},
-		promise: function(namespace) {
-			var arr = namespace.split('.'),
-				obj = w;
-			while (arr.length) {
-				var key = arr.shift();
-				obj = obj[key] || (obj[key] = {});
+			if (arguments.length == 2) {
+				cfg[arg] = arguments[1];
 			}
-			return obj;
-		},
-		register: function(_bin) {
-			var onready = [];
-			for (var key in _bin) {
-				for (var i = 0; i < _bin[key].length; i++) {
-					var id = _bin[key][i].id,
-						url = _bin[key][i].url,
-						namespace = _bin[key][i].namespace,
-						resource = new Resource;
+			break;
+		case 'undefined':
+			return cfg;
+		}
+		return this;
+	},
+	routes: function(arg){
+		if (arg == null){
+			return Routes.getRoutes();
+		}
+		for (var key in arg) {
+			Routes.register(key, arg[key]);
+		}
+		return this;
+	},
+	promise: function(namespace) {
+		var arr = namespace.split('.'),
+			obj = global;
+		while (arr.length) {
+			var key = arr.shift();
+			obj = obj[key] || (obj[key] = {});
+		}
+		return obj;
+	},
+	register: function(_bin) {		
+		for (var key in _bin) {
+			for (var i = 0; i < _bin[key].length; i++) {
+				var id = _bin[key][i].id,
+					url = _bin[key][i].url,
+					namespace = _bin[key][i].namespace,
+					resource = new Resource();
 
-					resource.state = 4;
-					resource.namespace = namespace;
-					resource.type = key;
+				resource.state = 4;
+				resource.namespace = namespace;
+				resource.type = key;
 
-					if (url) {
-						if (url[0] == '/') url = url.substring(1);
-						resource.location = helper.uri.getDir(url);
+				if (url) {
+					if (url[0] == '/') {
+						url = url.substring(1);
 					}
-
-					switch (key) {
-					case 'load':
-					case 'lazy':
-						//resource.state = 0;
-						//events.readyQueue(function(_r, _id) {
-							////var container = d.querySelector('script[data-id="' + _id + '"]');
-							////if (container == null) {
-							////	console.error('"%s" Data was not embedded into html', _id);
-							////	return;
-							////}
-							////_r.obj = container.innerHTML;
-							////_r.readystatechanged(4);
-						//}.bind(this, resource, id));
-						
-						var container = d.querySelector('script[data-id="' + id + '"]');
-						if (container == null) {
-							console.error('"%s" Data was not embedded into html', id);
-							return;
-						}
-						resource.obj = container.innerHTML;						
-						break;
-					};
-					(bin[key] || (bin[key] = {}))[id] = resource;
+					resource.location = Helper.uri.getDir(url);
 				}
-			}
-		}
-	});
 
-
-	var hasRewrites = typeof IncludeRewrites != 'undefined',
-		rewrites = hasRewrites ? IncludeRewrites : null;
-
-
-	var Resource = Class({
-		Base: Include,
-		Extends: [IncludeDeferred, StateObservable],
-		Construct: function(type, url, namespace, xpath, parent, id) {
-
-			if (type == null) {
-				return this;
-			}
-
-
-
-			this.namespace = namespace;
-			this.type = type;
-			this.xpath = xpath;
-			this.url = url;
-
-			if (url != null) {
-				this.url = helper.uri.resolveUrl(url, parent);
-			}
-
-
-			if (id) void(0);
-			else if (namespace) id = namespace;
-			else if (url[0] == '/') id = url;
-			else if (parent && parent.namespace) id = parent.namespace + '/' + url;
-			else if (parent && parent.location) id = '/' + parent.location.replace(/^[\/]+/, '') + url;
-			else if (parent && parent.id) id = parent.id + '/' + url;
-			else id = '/' + url;
-
-			if (bin[type] && bin[type][id]) {
-				return bin[type][id];
-			}
-
-
-			if (hasRewrites == true && rewrites[id] != null) {
-				url = rewrites[id];
-			} else {
-				url = this.url;
-			}
-
-			this.location = helper.uri.getDir(url);
-
-			//-console.log('includejs. Load Resource:', id, url);
-
-
-			;
-			(bin[type] || (bin[type] = {}))[id] = this;
-
-			var tag;
-			switch (type) {
-			case 'js':
-				helper.xhr(url, this.onload.bind(this));
-				if (d != null) {
-					tag = d.createElement('script');
-					tag.type = "application/x-included-placeholder";
-					tag.src = url;
-				}
-				break;
-			case 'ajax':
-			case 'load':
-			case 'lazy':
-				helper.xhr(url, this.onload.bind(this));
-				break;
-			case 'css':
-				this.state = 4;
-
-				tag = d.createElement('link');
-				tag.href = url;
-				tag.rel = "stylesheet";
-				tag.type = "text/css";
-				break;
-			case 'embed':
-				tag = d.createElement('script');
-				tag.type = 'application/javascript';
-				tag.src = url;
-				tag.onload = function() {
-					this.readystatechanged(4);
-				}.bind(this);
-				tag.onerror = tag.onload;
-				break;
-			}
-			if (tag != null) {
-				d.querySelector('head').appendChild(tag);
-				tag = null;
-			}
-			return this;
-		},
-		include: function(type, pckg) {
-			this.state = 0;
-			if (this.includes == null) this.includes = [];
-
-
-			helper.eachIncludeItem(type, pckg, function(namespace, url, xpath) {
-				var resource = new Resource(type, url, namespace, xpath, this);
-
-				this.includes.push(resource);
-
-				resource.index = this.calcIndex(type, namespace);
-				resource.on(4, this.resourceLoaded.bind(this));
-			}.bind(this));
-
-			return this;
-		},
-		calcIndex: function(type, namespace) {
-			if (this.response == null) this.response = {};
-			switch (type) {
-			case 'js':
-			case 'load':
-			case 'ajax':
-				if (this.response[type + 'Index'] == null) this.response[type + 'Index'] = -1;
-				return ++this.response[type + 'Index'];
-			}
-			return -1;
-		},
-		wait: function() {
-			if (this.waits == null) this.waits = [];
-			if (this._include == null) this._include = this.include;
-
-			var data;
-
-			this.waits.push((data = []));
-			this.include = function(type, pckg) {
-				data.push({
-					type: type,
-					pckg: pckg
-				});
-				return this;
-			}
-			return this;
-		},
-		resourceLoaded: function(resource) {
-			if (this.parsing) return;
-
-
-			if (resource != null && resource.obj != null && resource.obj instanceof Include === false) {
-				switch (resource.type) {
-				case 'js':
+				switch (key) {
 				case 'load':
-				case 'ajax':
-					var obj = (this.response[resource.type] || (this.response[resource.type] = []));
-
-					if (resource.namespace != null) {
-						obj = helper.ensureArray(obj, resource.namespace);
+				case 'lazy':						
+					var container = document.querySelector('#includejs-' + id);
+					if (container == null) {
+						console.error('"%s" Data was not embedded into html', id);
+						return;
 					}
-					obj[resource.index] = resource.obj;
+					resource.obj = container.innerHTML;						
 					break;
 				}
+				(bin[key] || (bin[key] = {}))[id] = resource;
 			}
+		}
+	}
+};
+var ScriptStack = (function() {
 
-			if (this.includes != null && this.includes.length) {
-				for (var i = 0; i < this.includes.length; i++) if (this.includes[i].state != 4) return;
-			}
+	var head, currentResource, stack = [],
+		loadScript = function(url, callback) {
+			//console.log('load script', url);
+			var tag = document.createElement('script');
+			tag.type = 'application/javascript';
+			tag.src = url;
+			tag.onload = tag.onerror = callback;
 
-
-			if (this.waits && this.waits.length) {
-
-				var data = this.waits.shift();
-				this.include = this._include;
-				for (var i = 0; i < data.length; i++) this.include(data[i].type, data[i].pckg);
-				return;
-			}
-
-			this.readystatechanged((this.state = 4));
-
+			(head || (head = document.querySelector('head'))).appendChild(tag);
 		},
+		afterScriptRun = function(resource) {
+			var includes = resource.includes;
 
-		onload: function(url, response) {
-			if (!response) {
-				console.warn('Resource cannt be loaded', this.url);
-				this.readystatechanged(4);
+			if (includes != null && includes.length) {
+				for (var i = 0; i < includes.length; i++) {
+					if (includes[i].state != 4) {
+						return;
+					}
+				}
+			}			
+			
+			resource.readystatechanged(4);
+		},
+		loadByEmbedding = function() {
+			if (stack.length === 0) {
 				return;
 			}
 
+			if (currentResource != null){
+				return;
+			}
+
+
+			var resource = (currentResource = stack[0]);
+
+			if (resource.state === 1) {
+				return;
+			}
+
+			resource.state = 1;
+
+			global.include = resource;
+			
+			
+			global.iparams = resource.route.params;
+			
+			
+			loadScript(resource.url, function(e) {
+				for (var i = 0, length = stack.length; i < length; i++) {
+					if (stack[i] === resource) {
+						stack.splice(i, 1);
+						break;
+					}
+				}
+				resource.state = 3;
+				afterScriptRun(resource);
+
+				currentResource = null;
+				loadByEmbedding();
+			});
+		},
+		processByEval = function() {
+			if (stack.length === 0){
+				return;
+			}
+			if (currentResource != null){
+				return;
+			}
+
+			var resource = stack[0];
+			if (resource && resource.state > 2) {
+				currentResource = resource;
+				resource.state = 1;
+
+				//console.log('evaling', resource.url, stack.length);			
+				try {
+					__eval(resource.source, resource);
+				} catch (error) {
+					error.url = resource.url;
+					Helper.reportError(error);
+				}
+				for (var i = 0, x, length = stack.length; i < length; i++) {
+					x = stack[i];
+					if (x == resource) {
+						stack.splice(i, 1);
+						break;
+					}
+				}
+				resource.state = 3;
+				afterScriptRun(resource);
+
+				currentResource = null;
+				processByEval();
+			}
+		};
+
+
+	return {
+		load: function(resource, parent) {
+
+			//console.log('LOAD', resource.url, 'parent:',parent ? parent.url : '');
+
+			var added = false;
+			if (parent) {
+				for (var i = 0, length = stack.length; i < length; i++) {
+					if (stack[i] === parent) {
+						stack.splice(i, 0, resource);
+						added = true;
+						break;
+					}
+				}
+			}
+
+			if (!added) {
+				stack.push(resource);
+			}
+
+			if (cfg.eval) {
+				Helper.xhr(resource.url, function(url, response) {
+					if (!response) {
+						console.error('Not Loaded:', url);
+					}
+
+					resource.source = response;
+					resource.readystatechanged(3);
+					//	process next
+					processByEval();
+				});
+			} else {
+				loadByEmbedding();
+			}
+
+		}
+	};
+})();
+var Resource = function(type, route, namespace, xpath, parent, id) {
+		Include.call(this);
+		IncludeDeferred.call(this);
+
+		if (type == null) {
+			return this;
+		}
+
+		var url = route && route.path;
+
+
+		this.route = route;
+		this.namespace = namespace;
+		this.type = type;
+		this.xpath = xpath;
+		this.url = url;
+
+		if (url != null) {
+			this.url = Helper.uri.resolveUrl(url, parent);
+		}
+
+
+		if (!id) {
+			if (namespace) {
+				id = namespace;
+			} else if (url[0] == '/') {
+				id = url;
+			} else if (parent && parent.namespace) {
+				id = parent.namespace + '/' + url;
+			} else if (parent && parent.location) {
+				id = '/' + parent.location.replace(/^[\/]+/, '') + url;
+			} else if (parent && parent.id) {
+				id = parent.id + '/' + url;
+			} else {
+				id = '/' + url;
+			}
+		}
+
+		if (bin[type] && bin[type][id]) {
+			return bin[type][id];
+		}
+
+		
+		if (rewrites != null && rewrites[id] != null) {
+			url = rewrites[id];
+		} else {
+			url = this.url;
+		}
+
+		this.location = Helper.uri.getDir(url);
+
+
+
+		(bin[type] || (bin[type] = {}))[id] = this;
+
+		var tag;
+		switch (type) {
+		case 'js':
+			this.exports = {};
+			ScriptStack.load(this, parent);
+
+			break;
+		case 'ajax':
+		case 'load':
+		case 'lazy':
+			Helper.xhr(url, this.onXHRLoaded.bind(this));
+			break;
+		case 'css':
+			this.state = 4;
+
+			tag = document.createElement('link');
+			tag.href = url;
+			tag.rel = "stylesheet";
+			tag.type = "text/css";
+			break;
+		case 'embed':
+			tag = document.createElement('script');
+			tag.type = 'application/javascript';
+			tag.src = url;
+			tag.onload = tag.onerror = this.readystatechanged.bind(this, 4);			
+			break;
+		}
+		if (tag != null) {
+			document.querySelector('head').appendChild(tag);
+			tag = null;
+		}
+		return this;
+	};
+
+Resource.prototype = Helper.extend({}, IncludeDeferred, Include, {
+	include: function(type, pckg) {
+		this.state = 1;
+		if (this.includes == null) {
+			this.includes = [];
+		}
+
+
+		Routes.each(type, pckg, function(namespace, route, xpath) {
+			var resource = new Resource(type, route, namespace, xpath, this);
+
+			this.includes.push(resource);
+
+			resource.index = this.calcIndex(type, namespace);
+			resource.on(4, this.childLoaded.bind(this));
+		}.bind(this));
+
+		return this;
+	},
+	calcIndex: function(type, namespace) {
+		if (this.response == null) {
+			this.response = {};
+		}
+		switch (type) {
+		case 'js':
+		case 'load':
+		case 'ajax':
+			var key = type + 'Index';
+			if (this.response[key] == null) {
+				this.response[key] = -1;
+			}
+			return ++this.response[key];
+		}
+		return -1;
+	},
+
+	childLoaded: function(resource) {
+
+
+		if (resource && resource.exports) {
+
+			switch (resource.type) {
+			case 'js':
+			case 'load':
+			case 'ajax':
+
+				//////if (this.response == null) {
+				//////	this.response = {};
+				//////}
+				
+				if (resource.route.alias){
+					this.response[resource.route.alias] = resource.exports;
+					break;
+				}
+
+				var obj = (this.response[resource.type] || (this.response[resource.type] = []));
+
+				if (resource.namespace != null) {
+					obj = Helper.ensureArray(obj, resource.namespace);
+				}
+				obj[resource.index] = resource.exports;
+				break;
+			}
+		}
+
+		var includes = this.includes;
+		if (includes && includes.length) {
+			if (this.state < 3 && this.url != null){
+				/** resource still loading/include is in process, but one of sub resources are already done */
+				return;
+			}
+			for (var i = 0; i < includes.length; i++) {
+				if (includes[i].state != 4) {
+					return;
+				}
+			}
+		}
+
+		this.readystatechanged(4);
+
+	},
+
+	onXHRLoaded: function(url, response) {
+		if (response) {
 			switch (this.type) {
 			case 'load':
 			case 'ajax':
-				this.obj = response;
+				this.exports = response;
 				break;
 			case 'lazy':
 				LazyModule.create(this.xpath, response);
 				break;
-			case 'js':
-				this.parsing = true;
-				try {
-					__includeEval(response, this);
-				} catch (error) {
-					error.url = this.url;
-					helper.reportError(error);
-				}
-				break;
-			};
-
-			this.parsing = false;
-
-			this.resourceLoaded(null);
-
-		}
-
-	});
-
-
-	var LazyModule = {
-		create: function(xpath, code) {
-			var arr = xpath.split('.'),
-				obj = window,
-				module = arr[arr.length - 1];
-			while (arr.length > 1) {
-				var prop = arr.shift();
-				obj = obj[prop] || (obj[prop] = {});
 			}
-			arr = null;
-
-			Object.defineProperty(obj, module, {
-				get: function() {
-
-					delete obj[module];
-					try {
-						var r = __includeEval(code, window.include);
-						if (r != null && r instanceof Resource == false) obj[module] = r;
-					} catch (error) {
-						error.xpath = xpath;
-						helper.reportError(e);
-					} finally {
-						code = null;
-						xpath = null;
-						return obj[module];
-					}
-				}
-			})
+			
+		} else {
+			console.warn('Resource cannt be loaded', this.url);
 		}
+
+		this.readystatechanged(4);
 	}
 
+});
+var LazyModule = {
+	create: function(xpath, code) {
+		var arr = xpath.split('.'),
+			obj = global,
+			module = arr[arr.length - 1];
+		while (arr.length > 1) {
+			var prop = arr.shift();
+			obj = obj[prop] || (obj[prop] = {});
+		}
+		arr = null;
 
-	w.include = new Include();
-	w.include.helper = helper;
-	w.IncludeResource = Resource;
+		Object.defineProperty(obj, module, {
+			get: function() {
 
+				delete obj[module];
+				try {
+					var r = __eval(code, global.include);
+					if (!(r == null || r instanceof Resource)){
+						obj[module] = r;
+					}
+				} catch (error) {
+					error.xpath = xpath;
+					Helper.reportError(error);
+				} finally {
+					code = null;
+					xpath = null;
+					return obj[module];
+				}
+			}
+		});
+	}
+};
 
-}(window, window.document);
+global.include = new Include();
+global.include.helper = Helper;
+global.include.Routes = Routes;
 
-window.__includeEval = function(source, include) {
-	return eval(source);
-}
-;include.cfg({"lib":"/.reference/libjs/{name}/lib/{name}.js","framework":"/.reference/libjs/framework/lib/{name}.js","compo":"/.reference/libjs/compos/{name}/lib/{name}.js","lockedToFolder":true,"controller":"/script/component/{name}.js","uicontrol":"/script/control/{name}.js"}); include.register({"css":[{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"controller.view/view.css","url":"view.css"},{"id":"compo.timePicker/css/mobiscroll.css","url":"css/mobiscroll.css"},{"id":"compo.datePicker/css/android.css","url":"css/android.css"},{"id":"compo.prism/prism.lib.css","url":"prism.lib.css"}],"js":[{"id":"/.reference/libjs/ruqq/lib/es5shim.js","url":".reference/libjs/ruqq/lib/es5shim.js","namespace":""},{"id":"/.reference/libjs/class/lib/class.js","url":".reference/libjs/class/lib/class.js","namespace":""},{"id":"/.reference/libjs/include/lib/include.js","url":".reference/libjs/include/lib/include.js","namespace":""},{"id":"/include.routes.js","url":"include.routes.js","namespace":""},{"id":"framework.dom/jquery","url":"/.reference/libjs/framework/lib/dom/jquery.js","namespace":"framework.dom/jquery"},{"id":"framework.ruqq.base","url":"/.reference/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"framework.utils","url":"/.reference/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"framework.routes","url":"/.reference/libjs/framework/lib/routes.js","namespace":"framework.routes"},{"id":"lib.mask","url":"/.reference/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"lib.compo","url":"/.reference/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"lib.ranimate","url":"/.reference/libjs/ranimate/lib/ranimate.js","namespace":"lib.ranimate"},{"id":"compo.scroller/iscroll-full.js","url":"iscroll-full.js"},{"id":"compo.scroller","url":"/.reference/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"compo.prism/prism.lib.js","url":"prism.lib.js"},{"id":"compo.prism","url":"/.reference/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"compo.datePicker/js/glDatePicker.min.js","url":"js/glDatePicker.min.js"},{"id":"compo.datePicker","url":"/.reference/libjs/compos/datePicker/lib/datePicker.js","namespace":"compo.datePicker"},{"id":"compo.timePicker/js/mobiscroll.js","url":"js/mobiscroll.js"},{"id":"compo.timePicker","url":"/.reference/libjs/compos/timePicker/lib/timePicker.js","namespace":"compo.timePicker"},{"id":"compo.layout","url":"/.reference/libjs/compos/layout/lib/layout.js","namespace":"compo.layout"},{"id":"compo.list","url":"/.reference/libjs/compos/list/lib/list.js","namespace":"compo.list"},{"id":"compo.utils","url":"/.reference/libjs/compos/utils/lib/utils.js","namespace":"compo.utils"},{"id":"controller.viewsManager","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"controller.view","url":"/script/component/view.js","namespace":"controller.view"},{"id":"uicontrol.radioButtons","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"uicontrol.pageActivity","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/utils/maskUtils.js","url":"/script/utils/maskUtils.js","namespace":""},{"id":"/script/main.js","url":"script/main.js","namespace":""}]})
+global.IncludeResource = Resource;
+
+})(typeof window === 'undefined' ? global : window, typeof document == 'undefined' ? null : document);
+;include.cfg({"lockedToFolder":true}); include.routes({"lib":["/.reference/libjs/","0","/lib/","1",".js"],"framework":["/.reference/libjs/framework/lib/","0",".js"],"compo":["/.reference/libjs/compos/","0","/lib/","1",".js"],"controller":["/script/component/","0",".js"],"uicontrol":["/script/control/","0",".js"]}); include.register({"css":[{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"controller.view/view.css","url":"view.css"},{"id":"compo.timePicker/css/mobiscroll.css","url":"css/mobiscroll.css"},{"id":"compo.datePicker/css/android.css","url":"css/android.css"},{"id":"compo.prism/prism.lib.css","url":"prism.lib.css"}],"js":[{"id":"/.reference/libjs/ruqq/lib/es5shim.js","url":".reference/libjs/ruqq/lib/es5shim.js","namespace":""},{"id":"/.reference/libjs/class/lib/class.js","url":".reference/libjs/class/lib/class.js","namespace":""},{"id":"/.reference/libjs/include/lib/include.js","url":".reference/libjs/include/lib/include.js","namespace":""},{"id":"/include.routes.js","url":"include.routes.js","namespace":""},{"id":"framework.dom/jquery","url":"/.reference/libjs/framework/lib/dom/jquery.js","namespace":"framework.dom/jquery"},{"id":"framework.ruqq.base","url":"/.reference/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"framework.utils","url":"/.reference/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"framework.routes","url":"/.reference/libjs/framework/lib/routes.js","namespace":"framework.routes"},{"id":"lib.mask","url":"/.reference/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"lib.compo","url":"/.reference/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"lib.ranimate","url":"/.reference/libjs/ranimate/lib/ranimate.js","namespace":"lib.ranimate"},{"id":"compo.scroller/iscroll-full.js","url":"iscroll-full.js"},{"id":"compo.scroller","url":"/.reference/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"compo.prism/prism.lib.js","url":"prism.lib.js"},{"id":"compo.prism","url":"/.reference/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"compo.datePicker/js/glDatePicker.min.js","url":"js/glDatePicker.min.js"},{"id":"compo.datePicker","url":"/.reference/libjs/compos/datePicker/lib/datePicker.js","namespace":"compo.datePicker"},{"id":"compo.timePicker/js/mobiscroll.js","url":"js/mobiscroll.js"},{"id":"compo.timePicker","url":"/.reference/libjs/compos/timePicker/lib/timePicker.js","namespace":"compo.timePicker"},{"id":"compo.layout","url":"/.reference/libjs/compos/layout/lib/layout.js","namespace":"compo.layout"},{"id":"compo.list","url":"/.reference/libjs/compos/list/lib/list.js","namespace":"compo.list"},{"id":"compo.utils","url":"/.reference/libjs/compos/utils/lib/utils.js","namespace":"compo.utils"},{"id":"controller.viewsManager","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"controller.view","url":"/script/component/view.js","namespace":"controller.view"},{"id":"uicontrol.radioButtons","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"uicontrol.pageActivity","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/utils/maskUtils.js","url":"/script/utils/maskUtils.js","namespace":""},{"id":"/script/main.js","url":"script/main.js","namespace":""}]})
 ;include.setCurrent({ id: '/include.routes.js', namespace: '', url: '/include.routes.js'});
-;include.cfg({
-     "lib": "/.reference/libjs/{name}/lib/{name}.js",
-     "framework": "/.reference/libjs/framework/lib/{name}.js",
-     "compo": "/.reference/libjs/compos/{name}/lib/{name}.js"
+;include.routes({
+     "lib": "/.reference/libjs/{0}/lib/{1}.js",
+     "framework": "/.reference/libjs/framework/lib/{0}.js",
+     "compo": "/.reference/libjs/compos/{0}/lib/{1}.js"
 });
 ;include.setCurrent({ id: 'framework.dom/jquery', namespace: 'framework.dom/jquery', url: ''});
 ;/*! jQuery v1.8.2 jquery.com | jquery.org/license */
@@ -1109,24 +1395,24 @@ function(w) { /** convert line parameters to object. : 'e=10' to {e:10} */
 }(window);
 ;include.setCurrent({ id: 'lib.mask', namespace: 'lib.mask', url: ''});
 ;
-!function (global, document) {
+;(function (global, document) {
 
 	"use strict";
 var
-		regexpWhitespace = /\s/g,
-		regexpLinearCondition = /([!]?[A-Za-z0-9_\-\.]+)([!<>=]{1,2})?([^\|&]+)?([\|&]{2})?/g,
-		regexpEscapedChar = {
-			"'": /\\'/g,
-			'"': /\\"/g,
-			'{': /\\\{/g,
-			'>': /\\>/g,
-			';': /\\>/g
-		},
-		regexpTabsAndNL = /[\t\n\r]{1,}/g,
-		regexpMultipleSpaces = / {2,}/g,
+	regexpWhitespace = /\s/g,
+	regexpLinearCondition = /([!]?['"A-Za-z0-9_\-\.]+)([!<>=]{1,2})?([^\|&]+)?([\|&]{2})?/g,
+	regexpEscapedChar = {
+		"'": /\\'/g,
+		'"': /\\"/g,
+		'{': /\\\{/g,
+		'>': /\\>/g,
+		';': /\\>/g
+	},
+	regexpTabsAndNL = /[\t\n\r]{1,}/g,
+	regexpMultipleSpaces = / {2,}/g,
 
 
-		hasOwnProp = {}.hasOwnProperty;
+	hasOwnProp = {}.hasOwnProperty;
 var Helper = {
 	extend: function (target, source) {
 		var key;
@@ -1343,7 +1629,8 @@ function ICustomTag() {
 }
 
 ICustomTag.prototype.render = function (values, stream) {
-	return stream instanceof Array ? Builder.buildHtml(this.nodes, values, stream) : Builder.buildDom(this.nodes, values, stream);
+	//-return stream instanceof Array ? Builder.buildHtml(this.nodes, values, stream) : Builder.buildDom(this.nodes, values, stream);
+	return Builder.build(this.nodes, values, stream);
 };
 
 var CustomTags = (function () {
@@ -1356,12 +1643,11 @@ var CustomTags = (function () {
 
 	List.prototype.render = function (values, container, cntx) {
 		var attr = this.attr,
-				attrTemplate = attr.template,
-				value = Helper.getProperty(values, attr.value),
-				nodes,
-				template,
-				fn,
-				i, length;
+			attrTemplate = attr.template,
+			value = Helper.getProperty(values, attr.value),
+			nodes,
+			template,
+			i, length;
 
 		if (!(value instanceof Array)) {
 			return container;
@@ -1370,7 +1656,7 @@ var CustomTags = (function () {
 
 		if (attrTemplate != null) {
 			template = document.querySelector(attrTemplate).innerHTML;
-			this.nodes = nodes = mask.compile(template);
+			this.nodes = nodes = Mask.compile(template);
 		}
 
 
@@ -1378,11 +1664,10 @@ var CustomTags = (function () {
 			return container;
 		}
 
-		//- fn = container instanceof Array ? 'buildHtml' : 'buildDom';
-		fn = Builder[container.buffer != null ? 'buildHtml' : 'buildDom'];
+		//- var fn = Builder[container.buffer != null ? 'buildHtml' : 'buildDom'];
 
 		for (i = 0, length = value.length; i < length; i++) {
-			fn.call(Builder, this.nodes, value[i], container, cntx);
+			Builder.build(this.nodes, value[i], container, cntx);
 		}
 
 		return container;
@@ -1411,10 +1696,10 @@ var CustomTags = (function () {
 		// lazy self definition
 
 		var
-				objectDefineProperty = Object.defineProperty,
-				supportsDefineProperty = false,
-				watchedObjects,
-				ticker;
+			objectDefineProperty = Object.defineProperty,
+			supportsDefineProperty = false,
+			watchedObjects,
+			ticker;
 
 		// test for support
 		if (objectDefineProperty) {
@@ -1448,9 +1733,9 @@ var CustomTags = (function () {
 
 			objectDefineProperty = function (obj, prop, desc) {
 				var
-						objectWrapper,
-						found = false,
-						i, length;
+					objectWrapper,
+					found = false,
+					i, length;
 
 				for (i = 0, length = watchedObjects.length; i < length; i++) {
 					objectWrapper = watchedObjects[i];
@@ -1466,18 +1751,18 @@ var CustomTags = (function () {
 
 				objectWrapper.props[prop] = {
 					value: obj[prop],
-					set  : desc.set
+					set: desc.set
 				};
 			};
 
 			ticker = function () {
 				var
-						objectWrapper,
-						i, length,
-						props,
-						prop,
-						propObj,
-						newValue;
+					objectWrapper,
+					i, length,
+					props,
+					prop,
+					propObj,
+					newValue;
 
 				for (i = 0, length = watchedObjects.length; i < length; i++) {
 					objectWrapper = watchedObjects[i];
@@ -1503,8 +1788,8 @@ var CustomTags = (function () {
 
 		return (Binding.prototype.render = function (values, container) {
 			var
-					attrValue = this.attr.value,
-					value = values[attrValue];
+				attrValue = this.attr.value,
+				value = values[attrValue];
 
 			objectDefineProperty.call(Object, values, attrValue, {
 				get: function () {
@@ -1518,91 +1803,142 @@ var CustomTags = (function () {
 			container.innerHTML = value;
 			return container;
 		}
-				).apply(this, arguments);
+			).apply(this, arguments);
 	};
 
 	return {
 		all: {
-			list   : List,
+			list: List,
 			visible: Visible,
-			bind   : Binding
+			bind: Binding
 		}
 	};
 
 }());
 
 var ValueUtilities = (function () {
+	
+	function getAssertionValue(value, model){
+		var c = value.charCodeAt(0);
+		if (c === 34 || c === 39) /* ' || " */{
+			return value.substring(1, value.length - 1);
+		} else if (c === 45 || (c > 47 && c < 58)) /* [=] || [number] */{
+			return value << 0;
+		} else {
+			return Helper.getProperty(model, value);
+		}
+		return '';
+	}
 
 	var parseLinearCondition = function (line) {
-		var c = {
-				assertions: []
-			},
-			buffer = {
-				data: line.replace(regexpWhitespace, '')
-			},
-			match, expr;
+			var cond = {
+					assertions: []
+				},
+				buffer = {
+					data: line.replace(regexpWhitespace, '')
+				},
+				match, expr;
 
-		buffer.index = buffer.data.indexOf('?');
+			buffer.index = buffer.data.indexOf('?');
 
-		if (buffer.index === -1) {
-			console.error('Invalid Linear Condition: "?" is not found');
-		}
-
-
-		expr = buffer.data.substring(0, buffer.index);
-
-		while ((match = regexpLinearCondition.exec(expr)) != null) {
-			c.assertions.push({
-				join : match[4],
-				left : match[1],
-				sign : match[2],
-				right: match[3]
-			});
-		}
-
-		buffer.index++;
-		parseCase(buffer, c, 'case1');
-
-		buffer.index++;
-		parseCase(buffer, c, 'case2');
-
-		return c;
-	},
-	parseCase = function (buffer, obj, key) {
-		var c = buffer.data[buffer.index],
-			end = null;
-
-		if (c == null) {
-			return;
-		}
-		if (c === '"' || c === "'") {
-			end = buffer.data.indexOf(c, ++buffer.index);
-			obj[key] = buffer.data.substring(buffer.index, end);
-		} else {
-			end = buffer.data.indexOf(':', buffer.index);
-			if (end === -1) {
-				end = buffer.data.length;
+			if (buffer.index === -1) {
+				console.error('Invalid Linear Condition: "?" is not found');
 			}
-			obj[key] = {
-				value: buffer.data.substring(buffer.index, end)
-			};
-		}
-		if (end != null) {
-			buffer.index = ++end;
-		}
-	},
-	isCondition = function (con, values) {
-		if (typeof con === 'string') {
-			con = parseLinearCondition(con);
-		}
-		var current = false,
-			a, c, value1, value2,
-			i, length;
-		for (i = 0, length = con.assertions.length; i < length; i++) {
-			a = con.assertions[i];
-			if (a.right == null) {
 
-				current = a.left.charCodeAt(0) === 33 ? !Helper.getProperty(values, a.left.substring(1)) : !!Helper.getProperty(values, a.left);
+
+			expr = buffer.data.substring(0, buffer.index);
+
+			while ((match = regexpLinearCondition.exec(expr)) != null) {
+				cond.assertions.push({
+					join: match[4],
+					left: match[1],
+					sign: match[2],
+					right: match[3]
+				});
+			}
+
+			buffer.index++;
+			parseCase(buffer, cond, 'case1');
+
+			buffer.index++;
+			parseCase(buffer, cond, 'case2');
+
+			return cond;
+		},
+		parseCase = function (buffer, obj, key) {
+			var c = buffer.data[buffer.index],
+				end = null;
+
+			if (c == null) {
+				return;
+			}
+			if (c === '"' || c === "'") {
+				end = buffer.data.indexOf(c, ++buffer.index);
+				obj[key] = buffer.data.substring(buffer.index, end);
+			} else {
+				end = buffer.data.indexOf(':', buffer.index);
+				if (end === -1) {
+					end = buffer.data.length;
+				}
+				obj[key] = {
+					value: buffer.data.substring(buffer.index, end)
+				};
+			}
+			if (end != null) {
+				buffer.index = ++end;
+			}
+		},
+		isCondition = function (con, values) {
+			if (typeof con === 'string') {
+				con = parseLinearCondition(con);
+			}
+			var current = false,
+				a,
+				value1,
+				value2,
+				i,
+				length;
+
+			for (i = 0, length = con.assertions.length; i < length; i++) {
+				a = con.assertions[i];
+				if (a.right == null) {
+
+					current = a.left.charCodeAt(0) === 33 ? !Helper.getProperty(values, a.left.substring(1)) : !!Helper.getProperty(values, a.left);
+
+					if (current === true) {
+						if (a.join === '&&') {
+							continue;
+						}
+						break;
+					}
+					if (a.join === '||') {
+						continue;
+					}
+					break;
+				}
+
+				value1 = getAssertionValue(a.left,values);
+				value2 = getAssertionValue(a.right,values);
+				switch (a.sign) {
+					case '<':
+						current = value1 < value2;
+						break;
+					case '<=':
+						current = value1 <= value2;
+						break;
+					case '>':
+						current = value1 > value2;
+						break;
+					case '>=':
+						current = value1 >= value2;
+						break;
+					case '!=':
+						current = value1 !== value2;
+						break;
+					case '==':
+						current = value1 === value2;
+						break;
+				}
 
 				if (current === true) {
 					if (a.join === '&&') {
@@ -1615,50 +1951,8 @@ var ValueUtilities = (function () {
 				}
 				break;
 			}
-			c = a.right.charCodeAt(0);
-			if (c === 34 || c === 39) {
-				value2 = a.right.substring(1, a.right.length - 1);
-			} else if (c > 47 && c < 58) {
-				value2 = a.right;
-			} else {
-				value2 = Helper.getProperty(values, a.right);
-			}
-
-			value1 = Helper.getProperty(values, a.left);
-			switch (a.sign) {
-				case '<':
-					current = value1 < value2;
-					break;
-				case '<=':
-					current = value1 <= value2;
-					break;
-				case '>':
-					current = value1 > value2;
-					break;
-				case '>=':
-					current = value1 >= value2;
-					break;
-				case '!=':
-					current = value1 !== value2;
-					break;
-				case '==':
-					current = value1 === value2;
-					break;
-			}
-
-			if (current === true) {
-				if (a.join === '&&') {
-					continue;
-				}
-				break;
-			}
-			if (a.join === '||') {
-				continue;
-			}
-			break;
-		}
-		return current;
-	};
+			return current;
+		};
 
 	return {
 		condition: function (line, values) {
@@ -1685,9 +1979,10 @@ var Parser = {
 	toFunction: function (template) {
 
 		var arr = template.split('#{'),
-			length = arr.length;
+			length = arr.length,
+			i;
 
-		for (var i = 1; i < length; i++) {
+		for (i = 1; i < length; i++) {
 			var key = arr[i],
 				index = key.indexOf('}');
 			arr.splice(i, 0, key.substring(0, index));
@@ -1699,16 +1994,16 @@ var Parser = {
 		template = null;
 		return function (o) {
 			return Helper.templateFunction(arr, o);
-		}
+		};
 	},
 	parseAttributes: function (T, node) {
 
-		var key, value, _classNames, quote, c;
+		var key, value, _classNames, quote, c, start, i;
 		if (node.attr == null) {
 			node.attr = {};
 		}
 
-		for (; T.index < T.length; T.index++) {
+		loop: for (; T.index < T.length;) {
 			key = null;
 			value = null;
 			c = T.template.charCodeAt(T.index);
@@ -1716,54 +2011,60 @@ var Parser = {
 				case 32:
 					//case 9: was replaced while compiling
 					//case 10:
+					T.index++;
 					continue;
 
 				//case '{;>':
 				case 123:
 				case 59:
 				case 62:
-					if (_classNames != null) {
-						node.attr['class'] = _classNames.indexOf('#{') > -1 ? (T.serialize !== true ? this.toFunction(_classNames) : {
-							template: _classNames
-						}) : _classNames;
-
-					}
-					return;
+					
+					break loop;
 
 				case 46:
 					/* '.' */
 
-					var start = T.index + 1;
+					start = T.index + 1;
 					T.skipToAttributeBreak();
 
 					value = T.template.substring(start, T.index);
 
 					_classNames = _classNames != null ? _classNames + ' ' + value : value;
-					T.index--;
+
 					break;
 				case 35:
 					/* '#' */
 					key = 'id';
 
-					var start = T.index + 1;
+					start = T.index + 1;
 					T.skipToAttributeBreak();
 					value = T.template.substring(start, T.index);
 
-					T.index--;
 					break;
 				default:
-					key = T.sliceToChar('=');
-
+					start = (i = T.index);
+					
+					var whitespaceAt = null;
 					do {
-						quote = T.template.charAt(++T.index)
+						c = T.template.charCodeAt(++i);
+						if (whitespaceAt == null && c === 32){
+							whitespaceAt = i;
+						}
+					}while(c !== 61 /* = */ && i <= T.length);
+					
+					key = T.template.substring(start, whitespaceAt || i);
+					
+					do {
+						quote = T.template.charAt(++i);
 					}
-					while (quote == ' ');
+					while (quote === ' ');
 
-					T.index++;
+					T.index = ++i;
 					value = T.sliceToChar(quote);
-
+					T.index++;
 					break;
 			}
+
 
 			if (key != null) {
 				//console.log('key', key, value);
@@ -1775,10 +2076,17 @@ var Parser = {
 				node.attr[key] = value;
 			}
 		}
+		if (_classNames != null) {
+			node.attr['class'] = _classNames.indexOf('#{') > -1 ? (T.serialize !== true ? this.toFunction(_classNames) : {
+				template: _classNames
+			}) : _classNames;
+
+		}
+		
 
 	},
 	/** @out : nodes */
-	parse: function (T, nodes) {
+	parse: function (T) {
 		var current = T;
 		for (; T.index < T.length; T.index++) {
 			var c = T.template.charCodeAt(T.index);
@@ -1792,7 +2100,7 @@ var Parser = {
 
 					T.index++;
 
-					var content = T.sliceToChar(c == 39 ? "'" : '"');
+					var content = T.sliceToChar(c === 39 ? "'" : '"');
 					if (content.indexOf('#{') > -1) {
 						content = T.serialize !== true ? this.toFunction(content) : {
 							template: content
@@ -1837,6 +2145,7 @@ var Parser = {
 					if (current.nodes != null) {
 						continue;
 					}
+					/* falls through */
 				case 125:
 					/* '}' */
 					if (current == null) {
@@ -1844,23 +2153,26 @@ var Parser = {
 					}
 
 					do {
-						current = current.parent
+						current = current.parent;
 					}
 					while (current != null && current.__single != null);
 
 					continue;
 			}
 
-
-			var start = T.index;
-			do {
-				c = T.template.charCodeAt(++T.index)
+			var tagName = null;
+			if (c === 46 /* . */ || c === 35 /* # */){
+				tagName = 'div';
+			}else{
+				var start = T.index;
+				do {
+					c = T.template.charCodeAt(++T.index);
+				}
+				while (c !== 32 && c !== 35 && c !== 46 && c !== 59 && c !== 123 && c !== 62 && T.index <= T.length);
+				/** while !: ' ', # , . , ; , { <*/
+		
+				tagName = T.template.substring(start, T.index);
 			}
-			while (c !== 32 && c !== 35 && c !== 46 && c !== 59 && c !== 123 && c !== 62 && T.index <= T.length);
-			/** while !: ' ', # , . , ; , { <*/
-
-
-			var tagName = T.template.substring(start, T.index);
 
 			if (tagName === '') {
 				console.error('Parse Error: Undefined tag Name %d/%d %s', T.index, T.length, T.template.substring(T.index, T.index + 10));
@@ -1913,38 +2225,30 @@ var Parser = {
 	}
 };
 
-var Builder = function () {
-	var singleTags = {
-		img  : 1,
-		input: 1,
-		br   : 1,
-		hr   : 1,
-		link : 1
-	};
+var Builder = {
+	build: function (nodes, values, container, cntx) {
+		if (nodes == null) {
+			return container;
+		}
 
+		if (container == null) {
+			container = document.createDocumentFragment();
+		}
+		if (cntx == null) {
+			cntx = {};
+		}
 
-	return {
-		buildDom : function (nodes, values, container, cntx) {
-			if (nodes == null) {
-				return container;
-			}
+		var isarray = nodes instanceof Array,
+			length = isarray === true ? nodes.length : 1,
+			i, node;
 
-			if (container == null) {
-				container = document.createDocumentFragment();
-			}
-			if (cntx == null) {
-				cntx = {};
-			}
+		for (i = 0; i < length; i++) {
+			node = isarray === true ? nodes[i] : nodes;
 
-			var isarray = nodes instanceof Array,
-				length = isarray == true ? nodes.length : 1;
-
-			for (var i = 0, node; isarray == true ? i < length : i < 1; i++) {
-				node = isarray == true ? nodes[i] : nodes;
-
-				if (CustomTags.all[node.tagName] != null) {
-					var handler = CustomTags.all[node.tagName],
-						custom = handler instanceof Function ? new handler(values) : handler;
+			if (CustomTags.all[node.tagName] != null) {
+				try {
+					var Handler = CustomTags.all[node.tagName],
+						custom = Handler instanceof Function ? new Handler(values) : Handler;
 
 					custom.compoName = node.tagName;
 					custom.nodes = node.nodes;
@@ -1953,171 +2257,144 @@ var Builder = function () {
 					(cntx.components || (cntx.components = [])).push(custom);
 					custom.parent = cntx;
 					custom.render(values, container, custom);
-					continue;
+				}catch(error){
+					console.error('Custom Tag Handler:', node.tagName, error);
 				}
-				if (node.content != null) {
-					container.appendChild(document.createTextNode(typeof node.content == 'function' ? node.content(values) : node.content));
-					continue;
-				}
+				continue;
+			}
+			if (node.content != null) {
+				container.appendChild(document.createTextNode(typeof node.content === 'function' ? node.content(values) : node.content));
+				continue;
+			}
 
-				var tag = document.createElement(node.tagName);
-				for (var key in node.attr) {
-					var value = typeof node.attr[key] == 'function' ? node.attr[key](values) : node.attr[key];
+			var tag = document.createElement(node.tagName),
+				attr = node.attr;
+			for (var key in attr) {
+				if (hasOwnProp.call(attr, key) === true){
+					var value = typeof attr[key] === 'function' ? attr[key](values) : attr[key];
 					if (value) {
 						tag.setAttribute(key, value);
 					}
 				}
-
-				if (node.nodes != null) {
-					this.buildDom(node.nodes, values, tag, cntx);
-				}
-				container.appendChild(tag);
-			}
-			return container;
-		},
-		buildHtml: function (nodes, values, writer) {
-			if (writer == null) {
-				writer = {
-					buffer: ''
-				}
 			}
 
-			var isarray = nodes instanceof Array,
-				length = isarray ? nodes.length : 1,
-				node = null;
-
-			for (var i = 0; node = isarray ? nodes[i] : nodes, isarray ? i < length : i < 1; i++) {
-
-				if (CustomTags.all[node.tagName] != null) {
-					var custom = new CustomTags.all[node.tagName]();
-					for (var key in node) {
-						custom[key] = node[key];
-					}
-					custom.render(values, writer);
-					return writer;
-				}
-				if (node.content != null) {
-					writer.buffer += typeof node.content === 'function' ? node.content(values) : node.content;
-					return writer;
-				}
-
-				writer.buffer += '<' + node.tagName;
-				for (var key in node.attr) {
-					var value = typeof node.attr[key] == 'function' ? node.attr[key](values) : node.attr[key];
-					if (value) {
-						writer.buffer += ' ' + key + "='" + value + "'";
-					}
-				}
-				if (singleTags[node.tagName] != null) {
-					writer.buffer += '/>';
-					if (node.nodes != null) {
-						console.error('Html could be invalid: Single Tag Contains children:', node);
-					}
-				} else {
-					writer.buffer += '>';
-					if (node.nodes != null) {
-						this.buildHtml(node.nodes, values, writer);
-					}
-
-					writer.buffer += '</' + node.tagName + '>';
-				}
+			if (node.nodes != null) {
+				this.build(node.nodes, values, tag, cntx);
 			}
-			return writer;
+			container.appendChild(tag);
 		}
-	};
-}();
-global.mask = {
-	/**
-	 * @see renderDom
-	 * @description - normally you should use renderDom, as this function is slower
-	 * @return html {string}
-	 */
-	renderHtml: function (template, values) {
-		if (typeof template === 'string') {
-			template = this.compile(template);
-		}
-		return Builder.buildHtml(template, values).buffer //-join('');
-	},
-
-	/**
-	 * @arg template - {template{string} | maskDOM{array}}
-	 * @arg values - template values
-	 * @arg container - optional, - place to renderDOM, @default - DocumentFragment
-	 * @return container {@default DocumentFragment}
-	 */
-	renderDom: function (template, values, container, cntx) {
-		//////try {
-		if (typeof template === 'string') {
-			template = this.compile(template);
-		}
-		return Builder.buildDom(template, values, container, cntx);
-		//////} catch (e) {
-		//////	console.error('maskJS', e.message, template);
-		//////}
-		//////return null;
-	},
-	/**
-	 *@arg template - string to be parsed into maskDOM
-	 *@arg serializeDOM - build raw maskDOM json, without template functions - used for storing compiled template
-	 *@return maskDOM
-	 */
-	compile: function (template, serializeOnly) {
-		/** remove unimportant whitespaces */
-		template = template.replace(regexpTabsAndNL, '').replace(regexpMultipleSpaces, ' ');
-
-
-		var T = new Template(template);
-		if (serializeOnly == true) {
-			T.serialize = true;
-		}
-
-		return Parser.parse(T, []);
-
-
-	},
-	registerHandler: function (tagName, TagHandler) {
-		CustomTags.all[tagName] = TagHandler;
-	},
-	getHandler: function (tagName) {
-		return tagName != null ? CustomTags.all[tagName] : CustomTags.all;
-	},
-	registerUtility: function (utilityName, fn) {
-		ValueUtilities[utilityName] = fn;
-	},
-	serialize: function (template) {
-		return Parser.cleanObject(this.compile(template, true));
-	},
-	deserialize: function (serialized) {
-		if (serialized instanceof Array) {
-			for (var i = 0; i < serialized.length; i++) {
-				this.deserialize(serialized[i]);
-			}
-			return serialized;
-		}
-		if (serialized.content != null) {
-			if (serialized.content.template != null) {
-				serialized.content = Parser.toFunction(serialized.content.template);
-			}
-			return serialized;
-		}
-		if (serialized.attr != null) {
-			for (var key in serialized.attr) {
-				if (serialized.attr[key].template == null) {
-					continue;
-				}
-				serialized.attr[key] = Parser.toFunction(serialized.attr[key].template);
-			}
-		}
-		if (serialized.nodes != null) {
-			this.deserialize(serialized.nodes);
-		}
-		return serialized;
-	},
-	ICustomTag: ICustomTag,
-	ValueUtils: ValueUtilities
+		return container;
+	}
 };
 
-}(this,document)
+var cache = {},
+	Mask = {
+
+		/**
+		 * @arg template - {template{string} | maskDOM{array}}
+		 * @arg model - template values
+		 * @arg container - optional, - place to renderDOM, @default - DocumentFragment
+		 * @return container {@default DocumentFragment}
+		 */
+		render: function (template, model, container, cntx) {
+			//////try {
+			if (typeof template === 'string') {
+				template = this.compile(template);
+			}
+			return Builder.build(template, model, container, cntx);
+			//////} catch (e) {
+			//////	console.error('maskJS', e.message, template);
+			//////}
+			//////return null;
+		},
+		/**
+		 *@arg template - string to be parsed into maskDOM
+		 *@arg serializeDOM - build raw maskDOM json, without template functions - used for storing compiled template
+		 *@return maskDOM
+		 */
+		compile: function (template, serializeOnly) {
+			if (hasOwnProp.call(cache, template)){
+				/** if Object doesnt contains property that check is faster
+					then "!=null" http://jsperf.com/not-in-vs-null/2 */
+				return cache[template];
+			}
+
+
+			/** remove unimportant whitespaces */
+			var T = new Template(template.replace(regexpTabsAndNL, '').replace(regexpMultipleSpaces, ' '));
+			if (serializeOnly === true) {
+				T.serialize = true;
+			}
+
+			return (cache[template] = Parser.parse(T));
+
+
+		},
+		registerHandler: function (tagName, TagHandler) {
+			CustomTags.all[tagName] = TagHandler;
+		},
+		getHandler: function (tagName) {
+			return tagName != null ? CustomTags.all[tagName] : CustomTags.all;
+		},
+		registerUtility: function (utilityName, fn) {
+			ValueUtilities[utilityName] = fn;
+		},
+		serialize: function (template) {
+			return Parser.cleanObject(this.compile(template, true));
+		},
+		deserialize: function (serialized) {
+			var i, key, attr;
+			if (serialized instanceof Array) {
+				for (i = 0; i < serialized.length; i++) {
+					this.deserialize(serialized[i]);
+				}
+				return serialized;
+			}
+			if (serialized.content != null) {
+				if (serialized.content.template != null) {
+					serialized.content = Parser.toFunction(serialized.content.template);
+				}
+				return serialized;
+			}
+			if (serialized.attr != null) {
+				attr = serialized.attr;
+				for (key in attr) {
+					if (hasOwnProp.call(attr, key) === true){
+						if (attr[key].template == null) {
+							continue;
+						}
+						attr[key] = Parser.toFunction(attr[key].template);
+					}
+				}
+			}
+			if (serialized.nodes != null) {
+				this.deserialize(serialized.nodes);
+			}
+			return serialized;
+		},
+		clearCache: function(key){
+			if (typeof key === 'string'){
+				delete cache[key];
+			}else{
+				cache = {};
+			}
+		},
+		ICustomTag: ICustomTag,
+		ValueUtils: ValueUtilities
+	};
+
+
+/** Obsolete - to keep backwards compatiable */
+Mask.renderDom = Mask.render;
+
+
+if (typeof module !== 'undefined' && module.exports) {
+	module.exports = Mask;
+}else{
+	global.mask = Mask;
+}
+
+})(this, typeof document === 'undefined' ? null : document);
 ;include.setCurrent({ id: 'lib.compo', namespace: 'lib.compo', url: ''});
 ;include.js({
 	lib: 'mask'
@@ -2441,6 +2718,7 @@ global.mask = {
 				} else {
 					if (obj[selector.key] == selector.selector) return true;
 				}
+				
 				return false;
 			},
 			find: function(compo, selector, direction, type) {
@@ -2536,7 +2814,7 @@ var w = window,
     prfx = r.info.cssprefix,
     vendorPrfx = r.info.prefix,
     getTransitionEndEvent = function() {
-		var el = document.createElement('fakeelement'),
+        var el = document.createElement('fakeelement'),
             transitions = {
                 'transition': 'transitionend',
                 'OTransition': 'oTransitionEnd',
@@ -2553,7 +2831,6 @@ var w = window,
             }
         }
 
-		console.log('end event', event);
         getTransitionEndEvent = function() {
             return event;
         };
@@ -2568,9 +2845,6 @@ var w = window,
         timing: prfx + 'transition-timing-function',
         delay: prfx + 'transition-delay'
     };
-	
-	
-	
 var Animate = function (element, property, valueTo, duration, callback, valueFrom, timing) {
 
 	var data = typeof property === 'string' ? {
@@ -2608,13 +2882,15 @@ var Animate = function (element, property, valueTo, duration, callback, valueFro
 
 		$this.css(css);
 
-		if (data.callback) {
-			var timeout = setTimeout(data.callback.bind($this), data.duration);
-			$this.data('cssAnimationCallback', timeout);
+		if (data.callback) {			
+			var callback = function(){
+					element.removeEventListener(getTransitionEndEvent(), callback, false);
+					data.callback();
+			};
+			
+			element.addEventListener(getTransitionEndEvent(), callback, false);					
 		}
-
-		element = null;
-		data = null;
+		
 	}, 0);
 
 	return this;
@@ -2914,8 +3190,7 @@ var Model = Class({
 		this.apply(startCss, css);
 	},
 	transitionEnd: function(event) {
-		
-		if (this.stack.resolve(event.propertyName) === true) {			
+		if (this.stack.resolve(event.propertyName) === true) {
 			var startCss = {},
 				css = {};
 			this.stack.getCss(startCss, css);
@@ -2931,7 +3206,7 @@ var Model = Class({
 	},
 
 	apply: function(startCss, css) {
-		console.log('apply', startCss, css);
+		//-console.log('apply', startCss, css);
 		startCss[prfx + 'transition'] = 'none';
 
 		var style = this.element.style;
@@ -4473,7 +4748,9 @@ function() {
 			}
 
 			if (this.attr.ref != null) {
-				this.nodes = Compo.findNode(this.parent, this.attr.ref).nodes;
+				console.log(mask.templates, this.attr.ref);
+				this.nodes = Compo.findCompo(mask.templates, this.attr.ref).nodes;
+				console.log('found', this.nodes);
 			}
 
 			for (var i = 0, length = values.length; i < length; i++) {
@@ -4481,12 +4758,21 @@ function() {
 			}
 
 			this.$ = $(container);
+			
+			if (container instanceof Array){
+				Compo.shots.on(this, 'DOMInsert',function(){
+					this.$ = this.$.parent();
+				});
+			}
 		},
 		add: function(values) {
 			var dom = mask.renderDom(this.nodes, values, null, this),
 				container = this.$ && this.$.get(0);
 
+			
 			if (!container) return;
+
+
 			if ('id' in values) {
 				var item = container.querySelector('[data-id="' + values.id + '"]');
 				if (item) {
@@ -4501,8 +4787,15 @@ function() {
 ;include.setCurrent({ id: 'compo.utils', namespace: 'compo.utils', url: ''});
 ;void function(){
 
+	
+	var Templates = [];
+	
+	mask.templates = Templates;
 	mask.registerHandler('template',Class({
 		Base: Compo,
+		Construct: function(){
+			mask.templates.push(this);
+		},
 		render: function(){}
 	}));
 
@@ -4560,9 +4853,10 @@ function() {
 			var activity = Compo.findCompo(app, 'pageActivity').show(),
 				name = info.view.replace('View', '');
 
-
+			
+			//include.cfg({eval: true});
 			window.include.js(String.format('/pages/libs/%1/%1.js', name)).done(function() {
-
+				console.log('view loaded');
 				this.append(name + 'View;', {});
 
 				activity.hide();
@@ -4610,6 +4904,7 @@ function() {
 ;include.setCurrent({ id: 'controller.view', namespace: 'controller.view', url: ''});
 ;include.css('view.css').done(function() {
 
+   console.warn('View Loaded');
 
    function when(idfrs, callback) {
       var wait = idfrs.length,
@@ -4688,6 +4983,7 @@ function() {
       }
 
    }));
+
 });
 ;include.setCurrent({ id: 'uicontrol.radioButtons', namespace: 'uicontrol.radioButtons', url: ''});
 ;mask.registerHandler('radioButtons', Class({
@@ -4920,13 +5216,14 @@ window.onerror = function(){
 }
 
 include.cfg({
-	lockedToFolder: true,
-	controller: '/script/component/{name}.js',
-	uicontrol: '/script/control/{name}.js'
+	lockedToFolder: true	
+}).routes({
+	controller: '/script/component/{0}.js',
+	uicontrol: '/script/control/{0}.js'
 }).js({
 	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes'],
-	lib: ['compo','ranimate']
-}).wait().js({
+	lib: ['compo','ranimate'],
+
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],

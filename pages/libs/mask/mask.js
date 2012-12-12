@@ -4,7 +4,7 @@ include.js({
 
 	var w = window;
 
-
+	console.log('register maskView');
 	mask.registerHandler('maskView', Class({
 		Base: mask.getHandler('view'),
 		attr: {

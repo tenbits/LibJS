@@ -5,13 +5,14 @@ window.onerror = function(){
 }
 
 include.cfg({
-	lockedToFolder: true,
-	controller: '/script/component/{name}.js',
-	uicontrol: '/script/control/{name}.js'
+	lockedToFolder: true	
+}).routes({
+	controller: '/script/component/{0}.js',
+	uicontrol: '/script/control/{0}.js'
 }).js({
 	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes'],
-	lib: ['compo','ranimate']
-}).wait().js({
+	lib: ['compo','ranimate'],
+
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
 	controller: ['viewsManager', 'view'],
 	uicontrol: ['radioButtons', 'pageActivity'],

@@ -1,28 +1,18 @@
 
 /**
- *  [renderDom](name=renderDom)
- *  Render DocumentFragment, or if @param container defined,
- *      than render template into that container
- *  (i) Use this fn in in-browser rendering,
- *      cause rendering of DocumentFragment is much more faster
- *      than rendering html-string and its insertion
+ *  [render](name=renderDom)
+ *  Render DocumentFragment when running in Browser or HTML when running in nodejs
  *      
  *  @param template - String Template, OR already compiled template,
  *                  @see mask.compile
  *  @param values - Template Values
- *  @param container - optional, Interface with appendChild function
+ *  @param container - optional, (Interface with appendChild function)
  *  @param cntx - optional, context where to store all Custom Components
  *              and there Events
  *  @returns container
  */
-mask.renderDom(template, ?values, ?container, ?cntx);
+mask.render(template, ?values, ?container, ?cntx);
 
-/**
- *  [renderHtml](name=renderHtml)
- *  @see .renderDom, but HTML-String will be rendered
- *  @param container - here container is {Array}
- */
-mask.renderHtml(template, ?values, ?container, ?cntx)
 
 /**
  *  [registerHandler](name=registerHandler)

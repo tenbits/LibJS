@@ -1,5 +1,6 @@
 include.css('view.css').done(function() {
 
+   console.warn('View Loaded');
 
    function when(idfrs, callback) {
       var wait = idfrs.length,
@@ -78,4 +79,5 @@ include.css('view.css').done(function() {
       }
 
    }));
+
 });

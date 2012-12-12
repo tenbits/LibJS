@@ -35,9 +35,10 @@ include.js({
 			var activity = Compo.findCompo(app, 'pageActivity').show(),
 				name = info.view.replace('View', '');
 
-
+			
+			//include.cfg({eval: true});
 			window.include.js(String.format('/pages/libs/%1/%1.js', name)).done(function() {
-
+				console.log('view loaded');
 				this.append(name + 'View;', {});
 
 				activity.hide();
