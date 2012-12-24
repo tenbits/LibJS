@@ -4,7 +4,7 @@ include.load('includeBuilder.mask').done(function(r) {
         Base: mask.getHandler('view'),
         attr: {
             id: 'includeBuilderView',
-            template: r.load[0]
+            template: r.load.includeBuilder
         }
     }));    
 });

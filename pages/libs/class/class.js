@@ -4,7 +4,7 @@ include.load('class.mask').done(function(r) {
         Base: mask.getHandler('view'),
         attr: {
             id: 'classView',
-            template: r.load[0]
+            template: r.load['class']
         }
     }));
 

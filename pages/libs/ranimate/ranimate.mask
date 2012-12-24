@@ -89,9 +89,6 @@ scroller.content {
 					\t	}, {\n
 					\t\t		model: 'background-color | > blue | 1s',\n
 					\t\t		next: 'background-color | > yellow | 1s',\n
-					\t	}, {\n
-					\t\t		model: 'border-radius | 0% > 60% | 1s',\n
-					\t\t		next: 'border-radius | 60% > 0% | 1s'\n
 					\t	}],\n
 					\t	next: {\n
 					\t\t		model: 'opacity | 0 > 1 | 1.5s',\n

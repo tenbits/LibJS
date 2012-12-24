@@ -18,7 +18,7 @@ ul {
 
 body {
 	height: 100%;
-	background: #E8D1AE url(../images/wood.jpg) 0 0 repeat;
+	background: #E8D1AE url(../images/wood.jpg) 0 0 repeat; 
 	color: #333;
 }
 div {cursor: default;}
@@ -62,8 +62,6 @@ div.footer {
 }
 .view header, .view footer {
     background:#4C3F33; /*rgb(100,100,100); */
-    border-top-left-radius: 14px;
-    border-top-right-radius: 14px;
     
     color:rgb(250,255,250);
     padding: 0px 20px;
@@ -73,8 +71,8 @@ div.footer {
     box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    line-height: 40px;
     position: relative;
     z-index: 100000;
     
@@ -83,15 +81,10 @@ div.footer {
 .view section {
     padding: 10px 20px;
 }
-.view header {
-	height:40px; line-height: 40px;
-}
+
 .view footer {
     position: absolute;    
     bottom: 0px;
-    border-radius: 0px;
-    border-bottom-left-radius: 14px;
-    border-bottom-right-radius: 14px;
     width:100%;
     
     border-bottom:0px solid #333;
@@ -99,12 +92,11 @@ div.footer {
 }
 
 .view div.scroller {
-    position: absolute; top:40px; left:0px; right:0px; bottom: 50px;
+    position: absolute; top:40px; left:0px; right:0px; bottom: 40px;
 }
 
 .view div.scroller.maximized {
-    top:0px; left:0px; right:0px; bottom: 0px;
-	border-radius: 14px;
+    top:0px; left:0px; right:0px; bottom: 0px;	
 }
 
 menu {
@@ -252,6 +244,9 @@ menu:hover > .menu-help { display: block; }
 .github-ribbon:hover{
 	
 	-webkit-transform: scale(1) rotate(360deg);
+	-moz-transform: scale(1) rotate(360deg);
+	-o-transform: scale(1) rotate(360deg);
+	transform: scale(1) rotate(360deg);
 	
 }
 
@@ -320,7 +315,7 @@ div.radioButtons > button.active {
 .view .scroller  {
     /*background: #EEEEEE url(../images/dust.png) 0 0 repeat;*/
 	background: #F3F0ED url(../images/dust2.png) 0 0 repeat;
-	/*background: #EEEEEE url(http://subtlepatterns.com/patterns/absurdidad.png) 0 0 repeat;*/
+	overflow: auto;
 	
 }
 

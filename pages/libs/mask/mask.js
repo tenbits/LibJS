@@ -9,13 +9,13 @@ include.js({
 		Base: mask.getHandler('view'),
 		attr: {
 			id: 'maskView',
-			template: r.load[0]
+			template: r.load.mask
 		}
 	}));
 
 	mask.registerHandler('maskExamples', Class({
 		render: function(values, container, cntx) {
-			var examples = r.load[1].split('===='),
+			var examples = r.load.examples.split('===='),
 				arr = [];
 
 			for (var i = 0; i < examples.length; i++) {

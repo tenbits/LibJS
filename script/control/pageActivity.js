@@ -1,6 +1,4 @@
-void
-
-function() {
+(function() {
 
 
     var I = ruqq.info,
@@ -11,7 +9,7 @@ function() {
                 Transform: I.prefix + 'Transform',
                 Transition: I.prefix + 'Transition',
                 cssTransform: I.cssprefix + 'transform'
-            }
+            };
         };
 
     var Spinner = Class({
@@ -59,19 +57,23 @@ function() {
 
         },
         start: function() {
-            if (this.interval) return;
+            if (this.interval) {
+				return;
+			}
 
 
             var style = this.$.get(0).style;
             if (I.supportTransitions) {
-                if (vendor == null) initVendorStrings();
+                if (vendor == null) {
+					initVendorStrings();
+				}
 
                 
                 style[vendor.TransitionProperty] = 'none';
                 style[vendor.Transform] = 'rotate(0deg)';
 
                 setTimeout(function() {
-                    style[vendor.Transition] = vendor.cssTransform + ' 5s linear'
+                    style[vendor.Transition] = vendor.cssTransform + ' 5s linear';
                     style[vendor.Transform] = 'rotate(720deg)';
                 }, 1);
 
@@ -80,9 +82,9 @@ function() {
                     style[vendor.Transform] = 'rotate(0deg)';
 
                     setTimeout(function() {
-                        style[vendor.Transition] = vendor.cssTransform + ' 5s linear'
+                        style[vendor.Transition] = vendor.cssTransform + ' 5s linear';
                         style[vendor.Transform] = 'rotate(720deg)';
-                    }, 0)
+                    }, 0);
                 }, 5000);
 
             } else {
@@ -133,11 +135,11 @@ function() {
         Construct: function() {
             this.compos = {
                 'spinner': 'compo: spinner'
-            }
+            };
         },
         render: function() {
             this.tagName = 'div';
-            this.attr.style = 'position:fixed; top:0px; left:0px; right: 0px; bottom:0px;background:rgba(0,0,0,.5);display:none;'
+            this.attr.style = 'position:fixed; top:0px; left:0px; right: 0px; bottom:0px;background:rgba(0,0,0,.5);display:none;';
             this.nodes = {
                 tagName: 'spinner',
                 attr: {
@@ -162,4 +164,4 @@ function() {
         }
     }));
 
-}();
+})();

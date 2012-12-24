@@ -16,11 +16,11 @@ include.js({
 				timing: 'cubic-bezier(.58,1.54,.59,.75)'
 			});
 		}
-	}
+	},
+	currentCompo;
 
 
-	var currentCompo;
-	window.ViewsManager = Class({
+	var ViewsManager = Class({
 		Base: Compo,
 		Construct: function() {
 			window.viewsManager = this;
@@ -32,12 +32,13 @@ include.js({
 		},
 		load: function(info) {
 
-			var activity = Compo.findCompo(app, 'pageActivity').show(),
+			var activity = Compo.findCompo(window.app, 'pageActivity').show(),
 				name = info.view.replace('View', '');
 
 			
 			//include.cfg({eval: true});
-			window.include.js(String.format('/pages/libs/%1/%1.js', name)).done(function() {
+			//(new window.includeLib.Resource)
+			include.js(String.format('/pages/libs/%1/%1.js', name)).done(function() {
 				console.log('view loaded');
 				this.append(name + 'View;', {});
 
@@ -55,7 +56,9 @@ include.js({
 			}.bind(this));
 		},
 		show: function(info) {
-			if (info.view) info.view += 'View';
+			if (info.view) {
+				info.view += 'View';
+			}
 
 			var compo = Compo.findCompo(this, info.view);
 
@@ -71,11 +74,15 @@ include.js({
 
 			compo.section(info);
 
-			if (compo == currentCompo) return;
+			if (compo == currentCompo) {
+				return;
+			}
 
 			currentCompo = compo;
 
-			if (this.$) Helper.doSwitch(this.$.children('.active'), compo.$);
+			if (this.$) {
+				Helper.doSwitch(this.$.children('.active'), compo.$);
+			}
 			compo.activate && compo.activate();
 		}
 	});

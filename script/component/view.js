@@ -1,15 +1,15 @@
 include.css('view.css').done(function() {
 
-   console.warn('View Loaded');
-
    function when(idfrs, callback) {
       var wait = idfrs.length,
           ondone = function() {
-            if (--wait == 0) callback();
+            if (--wait === 0) {
+				callback();
+			}
           };
           
-      for (var i = 0, x, length = idfrs.length; x = idfrs[i], i < length; i++) {         
-         x.done(ondone);
+      for (var i = 0, length = idfrs.length; i < length; i++) {         
+         idfrs[i].done(ondone);
       }
    }
 
@@ -45,7 +45,9 @@ include.css('view.css').done(function() {
       },
 
       section: function(info) {
-         if (!info.category) info.category = this.defaultCategory || 'info';
+         if (!info.category) {
+			info.category = this.defaultCategory || 'info';
+		 }
 
          var buttons = Compo.findCompo(this, '.radioButtons');
 

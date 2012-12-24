@@ -4,7 +4,7 @@ include.load('ranimate.mask').done(function(r) {
 		Base: mask.getHandler('view'),
 		attr: {
 			id: 'ranimateView',
-			template: r.load[0]
+			template: r.load.ranimate
 		},
 		Construct: function() {
 

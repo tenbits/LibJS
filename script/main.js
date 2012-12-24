@@ -1,12 +1,9 @@
-console.log("loading - " + typeof include.cfg);
 
 window.onerror = function(){
 	console.log(arguments);
-}
+};
 
-include.cfg({
-	lockedToFolder: true	
-}).routes({
+include.routes({
 	controller: '/script/component/{0}.js',
 	uicontrol: '/script/control/{0}.js'
 }).js({
@@ -103,7 +100,7 @@ include.cfg({
 
 	Compo.config.setDOMLibrary($);
 
-	w.app = new(Class({
+	w.app = new new Class({
 		Base: Compo,
 		attr: {
 			template: '#layout'
@@ -115,7 +112,7 @@ include.cfg({
 				'click: .viewTitle': function(e) {
 					console.log('mouseup');
 					var view = $(e.target).data('view');
-					routes.navigate(view);
+					w.routes.navigate(view);
 				},
 				'click: h3.badge': function() {
 					this.compos.menuHelp.css('opacity', 1);
@@ -125,17 +122,17 @@ include.cfg({
 				}
 			}]
 		},
-	}));
+	});
 
 
 	w.app.render(model).insert(document.body);
 
 	w.routes.add('/:view/?:category/?:anchor', function(current) {
 		console.log('current', current);
-		viewsManager.show(current);
+		w.viewsManager.show(current);
 	});
 
-	viewsManager.show(w.routes.current() || {
+	w.viewsManager.show(w.routes.current() || {
 		view: 'about'
 	});
 

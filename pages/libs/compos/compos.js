@@ -46,7 +46,7 @@ include.load('compos.mask').done(function(r) {
 		Base: mask.getHandler('view'),
 		attr: {
 			id: 'composView',
-			template: r.load[0]
+			template: r.load.compos
 		},
 		compos: {
 			'$panel': '$: .container',

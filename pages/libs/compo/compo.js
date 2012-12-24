@@ -5,7 +5,7 @@ include.load('compo.mask').done(function(r) {
         Base: mask.getHandler('view'),
         attr: {
             id: 'compoView',
-            template: r.load[0]
+            template: r.load.compo
         }
     }));
 });

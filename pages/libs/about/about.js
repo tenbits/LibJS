@@ -1,12 +1,14 @@
-include.load('about.mask').css('about.css').done(function(r) {
+include.load('about.mask').css('about.css').done(function(resp) {
+
+	console.log('resp', resp);
 
     mask.registerHandler('aboutView',Class({
         Base: mask.getHandler('view'),
         attr: {
             id: 'aboutView',
-            template: r.load[0]
+            template: resp.load.about
         }
     }));
 
-    r = null;
+    resp = null;
 });

@@ -10,7 +10,7 @@ mask.registerHandler('radioButtons', Class({
     },
     render: function() {
         this.tagName = 'div';
-        this.attr.class = 'radioButtons ' + (this.attr.class || '');
+        this.attr['class'] = 'radioButtons ' + (this.attr['class'] || '');
         Compo.prototype.render.apply(this, arguments);
     },
     
