@@ -1092,7 +1092,7 @@ global.includeLib = {
 };
 
 })(typeof window === 'undefined' ? global : window, typeof document == 'undefined' ? null : document);
-;include.register({"css":[{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"/script/component/view.css","url":"view.css"},{"id":"/.reference/libjs/compos/timePicker/lib/css/mobiscroll.css","url":"css/mobiscroll.css"},{"id":"/.reference/libjs/compos/datePicker/lib/css/android.css","url":"css/android.css"},{"id":"/.reference/libjs/compos/prism/lib/prism.lib.css","url":"prism.lib.css"}],"js":[{"id":"/.reference/libjs/ruqq/lib/es5shim.js","url":".reference/libjs/ruqq/lib/es5shim.js","namespace":""},{"id":"/.reference/libjs/class/lib/class.js","url":".reference/libjs/class/lib/class.js","namespace":""},{"id":"/.reference/libjs/include/lib/include.js","url":".reference/libjs/include/lib/include.js","namespace":""},{"id":"/include.routes.js","url":"include.routes.js","namespace":""},{"id":"/.reference/libjs/framework/lib/dom/jquery.js","url":"/.reference/libjs/framework/lib/dom/jquery.js","namespace":"framework.dom/jquery"},{"id":"/.reference/libjs/framework/lib/ruqq.base.js","url":"/.reference/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"/.reference/libjs/framework/lib/utils.js","url":"/.reference/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"/.reference/libjs/framework/lib/routes.js","url":"/.reference/libjs/framework/lib/routes.js","namespace":"framework.routes"},{"id":"/.reference/libjs/mask/lib/mask.js","url":"/.reference/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"/.reference/libjs/compo/lib/compo.js","url":"/.reference/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"/.reference/libjs/ranimate/lib/ranimate.js","url":"/.reference/libjs/ranimate/lib/ranimate.js","namespace":"lib.ranimate"},{"id":"/.reference/libjs/compos/scroller/lib/iscroll-full.js","url":"iscroll-full.js"},{"id":"/.reference/libjs/compos/scroller/lib/scroller.js","url":"/.reference/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"/.reference/libjs/compos/prism/lib/prism.lib.js","url":"prism.lib.js"},{"id":"/.reference/libjs/compos/prism/lib/prism.js","url":"/.reference/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"/.reference/libjs/compos/datePicker/lib/js/glDatePicker.min.js","url":"js/glDatePicker.min.js"},{"id":"/.reference/libjs/compos/datePicker/lib/datePicker.js","url":"/.reference/libjs/compos/datePicker/lib/datePicker.js","namespace":"compo.datePicker"},{"id":"/.reference/libjs/compos/timePicker/lib/js/mobiscroll.js","url":"js/mobiscroll.js"},{"id":"/.reference/libjs/compos/timePicker/lib/timePicker.js","url":"/.reference/libjs/compos/timePicker/lib/timePicker.js","namespace":"compo.timePicker"},{"id":"/.reference/libjs/compos/layout/lib/layout.js","url":"/.reference/libjs/compos/layout/lib/layout.js","namespace":"compo.layout"},{"id":"/.reference/libjs/compos/list/lib/list.js","url":"/.reference/libjs/compos/list/lib/list.js","namespace":"compo.list"},{"id":"/.reference/libjs/compos/utils/lib/utils.js","url":"/.reference/libjs/compos/utils/lib/utils.js","namespace":"compo.utils"},{"id":"/script/component/viewsManager.js","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"/script/component/view.js","url":"/script/component/view.js","namespace":"controller.view"},{"id":"/script/control/radioButtons.js","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"/script/control/pageActivity.js","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/utils/maskUtils.js","url":"/script/utils/maskUtils.js","namespace":""},{"id":"/script/main.js","url":"script/main.js","namespace":""}]});
+;include.register({"css":[{"id":"/style/menu.css","url":"style/menu.css","namespace":""},{"id":"/style/main.css","url":"style/main.css","namespace":""},{"id":"/script/component/view.css","url":"view.css"},{"id":"/.reference/libjs/compos/timePicker/lib/css/mobiscroll.css","url":"css/mobiscroll.css"},{"id":"/.reference/libjs/compos/datePicker/lib/css/android.css","url":"css/android.css"},{"id":"/.reference/libjs/compos/prism/lib/prism.lib.css","url":"prism.lib.css"}],"js":[{"id":"/.reference/libjs/ruqq/lib/es5shim.js","url":".reference/libjs/ruqq/lib/es5shim.js","namespace":""},{"id":"/.reference/libjs/class/lib/class.js","url":".reference/libjs/class/lib/class.js","namespace":""},{"id":"/.reference/libjs/include/lib/include.js","url":".reference/libjs/include/lib/include.js","namespace":""},{"id":"/include.routes.js","url":"include.routes.js","namespace":""},{"id":"/.reference/libjs/framework/lib/dom/jquery.js","url":"/.reference/libjs/framework/lib/dom/jquery.js","namespace":"framework.dom/jquery"},{"id":"/.reference/libjs/framework/lib/ruqq.base.js","url":"/.reference/libjs/framework/lib/ruqq.base.js","namespace":"framework.ruqq.base"},{"id":"/.reference/libjs/framework/lib/utils.js","url":"/.reference/libjs/framework/lib/utils.js","namespace":"framework.utils"},{"id":"/.reference/libjs/framework/lib/routes.js","url":"/.reference/libjs/framework/lib/routes.js","namespace":"framework.routes"},{"id":"/.reference/libjs/framework/lib/browser.detect.js","url":"/.reference/libjs/framework/lib/browser.detect.js","namespace":"framework.browser.detect"},{"id":"/.reference/libjs/mask/lib/mask.js","url":"/.reference/libjs/mask/lib/mask.js","namespace":"lib.mask"},{"id":"/.reference/libjs/compo/lib/compo.js","url":"/.reference/libjs/compo/lib/compo.js","namespace":"lib.compo"},{"id":"/.reference/libjs/ranimate/lib/ranimate.js","url":"/.reference/libjs/ranimate/lib/ranimate.js","namespace":"lib.ranimate"},{"id":"/.reference/libjs/compos/scroller/lib/iscroll-full.js","url":"iscroll-full.js"},{"id":"/.reference/libjs/compos/scroller/lib/scroller.js","url":"/.reference/libjs/compos/scroller/lib/scroller.js","namespace":"compo.scroller"},{"id":"/.reference/libjs/compos/prism/lib/prism.lib.js","url":"prism.lib.js"},{"id":"/.reference/libjs/compos/prism/lib/prism.js","url":"/.reference/libjs/compos/prism/lib/prism.js","namespace":"compo.prism"},{"id":"/.reference/libjs/compos/datePicker/lib/js/glDatePicker.min.js","url":"js/glDatePicker.min.js"},{"id":"/.reference/libjs/compos/datePicker/lib/datePicker.js","url":"/.reference/libjs/compos/datePicker/lib/datePicker.js","namespace":"compo.datePicker"},{"id":"/.reference/libjs/compos/timePicker/lib/js/mobiscroll.js","url":"js/mobiscroll.js"},{"id":"/.reference/libjs/compos/timePicker/lib/timePicker.js","url":"/.reference/libjs/compos/timePicker/lib/timePicker.js","namespace":"compo.timePicker"},{"id":"/.reference/libjs/compos/layout/lib/layout.js","url":"/.reference/libjs/compos/layout/lib/layout.js","namespace":"compo.layout"},{"id":"/.reference/libjs/compos/list/lib/list.js","url":"/.reference/libjs/compos/list/lib/list.js","namespace":"compo.list"},{"id":"/.reference/libjs/compos/utils/lib/utils.js","url":"/.reference/libjs/compos/utils/lib/utils.js","namespace":"compo.utils"},{"id":"/script/component/viewsManager.js","url":"/script/component/viewsManager.js","namespace":"controller.viewsManager"},{"id":"/script/component/view.js","url":"/script/component/view.js","namespace":"controller.view"},{"id":"/script/control/radioButtons.js","url":"/script/control/radioButtons.js","namespace":"uicontrol.radioButtons"},{"id":"/script/control/pageActivity.js","url":"/script/control/pageActivity.js","namespace":"uicontrol.pageActivity"},{"id":"/script/utils/maskUtils.js","url":"/script/utils/maskUtils.js","namespace":""},{"id":"/script/main.js","url":"script/main.js","namespace":""}]});
 ;include.setCurrent({ id: '/include.routes.js', namespace: '', url: '/include.routes.js'});
 ;window['DEBUG'] = true;
 
@@ -1131,7 +1131,7 @@ if (DEBUG){
    
    (function(r) {
       var div = document.createElement('div'),
-          I = {};
+          I = r.info || {};
       r.info = I;
 
       I.hasTouchSupport = (function() {
@@ -1512,6 +1512,76 @@ if (DEBUG){
 
 
 }(window));
+;includeLib.ScriptStack.afterScriptRun(include)
+;include.setCurrent({ id: '/.reference/libjs/framework/lib/browser.detect.js', namespace: 'framework.browser.detect', url: '/.reference/libjs/framework/lib/browser.detect.js'});
+;(function() {
+
+	if (typeof navigator == 'undefined') {
+		return;
+	}
+
+	var w = window,
+		r = typeof w.ruqq === 'undefined' ? (w.ruqq = {}) : ruqq,
+		info = r.info || (r.info = {}),
+		ua = navigator.userAgent,
+		_object, _prop1, _prop2;
+
+	function use(container, prop1, prop2) {
+		_object = container;
+		_prop1 = prop1;
+		_prop2 = prop2;
+	}
+
+	function has(str, value, regexp) {
+		if (ua.indexOf(str) == -1) {
+			return false;
+		}
+		_object[_prop1] = value;
+
+		if (regexp && _prop2) {
+			var match = regexp.exec(ua);
+			if (match && match.length > 1) {
+				_object[_prop2] = match[1];
+			}
+		}
+		return true;
+	}
+
+
+	use(info.platform = {}, 'name');
+	if (!( //
+	has('Windows', 'win') || //
+	has('Mac', 'mac') || //
+	has('Linux', 'linux') || //
+	has('iPhone', 'iphone') || //
+	has('Android', 'android'))) {
+		info.platform.name = 'unknown'
+	}
+
+	use(info.browser = {}, 'name', 'version')
+	if (!( //
+	has('MSIE', 'msie', /MSIE (\d+(\.\d+)*)/) || //
+	has('Firefox', 'firefox', /Firefox\/(\d+(\.\d+)*)/) || //
+	has('Safari', 'safari', /Version\/(\d+(\.\d+)*)/) || //
+	has('Opera', 'opera', /Version\/? ?(\d+(\.\d+)*)/))) {
+		info.browser.name = 'unknown';
+		info.browser.version = 0;
+	}
+	has('Chrome', 'chrome', /Chrome\/(\d+(\.\d+)*)/);
+
+
+	use(info.engine = {}, 'name', 'version');
+	if (!( //
+	has('Trident', 'trident', /Trident\/(\d+(\.\d+)*)/) || //
+	has('Gecko', 'gecko', /rv:(\d+(\.\d+)*)/) || //
+	has('Presto', 'presto', /Presto\/(\d+(\.\d+)*)/) || //
+	has('Opera', 'opera', /Version\/? ?(\d+(\.\d+)*)/))) {
+		info.engine.name = 'unknown';
+		info.engine.version = 0;
+	}
+	has('WebKit', 'webkit', /WebKit\/(\d+(\.\d+)*)/);
+
+}());
 ;includeLib.ScriptStack.afterScriptRun(include)
 ;include.setCurrent({ id: '/.reference/libjs/mask/lib/mask.js', namespace: 'lib.mask', url: '/.reference/libjs/mask/lib/mask.js'});
 ;
@@ -4624,7 +4694,6 @@ r.animate.sprite = Sprite;
 		Base: Compo,
 		DOMInsert: function() {
 			if (this.scroller == null) {
-				
 				this.scroller = new window.iScroll(this.$[0], {
 					vScrollbar: true,
 					hScrollbar: true
@@ -5186,7 +5255,10 @@ b[d].toLowerCase())return y+=b[d].length,d+1;return 0},y=0,z=0;z<p.length;z++)if
          
          if (info.anchor){
             var element = this.$.find('a[name="' + info.anchor + '"]').get(0);
-            scroller && scroller.scroller && scroller.scroller.scrollToElement(element, 100);
+			
+			if (scroller && scroller.scroller){
+				scroller.scroller.scrollToElement(element, 100);
+			}
          }
       },
       activate: function() {
@@ -5424,6 +5496,47 @@ b[d].toLowerCase())return y+=b[d].length,d+1;return 0},y=0,z=0;z<p.length;z++)if
             mask.renderDom(this.nodes, values, container, cntx);
         }
     }));
+	
+	
+	
+	if (ruqq.info.engine.name !== 'webkit'){
+		mask.registerHandler('scroller',Class({
+			render: function(model, container,cntx){
+				this.tagName = 'div';
+				this.attr['class'] = (this.attr['class'] ? this.attr['class'] + ' ' : '') + 'scroller';
+				this.nodes = {
+					tagName: 'div',
+					attr: {
+						'class': 'scroller-container'
+					},
+					nodes: this.nodes
+				};
+				Compo.render(this, model, container, cntx);
+				
+				
+				this.attr = null;
+				this.tagName = null;
+				
+				this.scroller = {
+					refresh: function(){},
+					scrollToElement: function(element){
+						var scrollTo = $(element),
+							container = this.$;
+						container.scrollTop(
+							scrollTo.offset().top - container.offset().top + container.scrollTop()
+						);
+					}.bind(this),
+					scrollTo: function(x, y){
+						this.$.scrollTop(y);
+						this.$.scrollLeft(x);
+					}.bind(this)
+				}
+				
+				return this;
+			}
+		}))
+	}
+	
 }());
 ;includeLib.ScriptStack.afterScriptRun(include)
 ;include.setCurrent({ id: '/script/main.js', namespace: '', url: '/script/main.js'});
@@ -5436,7 +5549,7 @@ include.routes({
 	controller: '/script/component/{0}.js',
 	uicontrol: '/script/control/{0}.js'
 }).js({
-	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes'],
+	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
 	lib: ['compo','ranimate'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],

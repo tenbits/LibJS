@@ -28,4 +28,45 @@
             mask.renderDom(this.nodes, values, container, cntx);
         }
     }));
+	
+	
+	
+	if (ruqq.info.engine.name !== 'webkit'){
+		mask.registerHandler('scroller',Class({
+			render: function(model, container,cntx){
+				this.tagName = 'div';
+				this.attr['class'] = (this.attr['class'] ? this.attr['class'] + ' ' : '') + 'scroller';
+				this.nodes = {
+					tagName: 'div',
+					attr: {
+						'class': 'scroller-container'
+					},
+					nodes: this.nodes
+				};
+				Compo.render(this, model, container, cntx);
+				
+				
+				this.attr = null;
+				this.tagName = null;
+				
+				this.scroller = {
+					refresh: function(){},
+					scrollToElement: function(element){
+						var scrollTo = $(element),
+							container = this.$;
+						container.scrollTop(
+							scrollTo.offset().top - container.offset().top + container.scrollTop()
+						);
+					}.bind(this),
+					scrollTo: function(x, y){
+						this.$.scrollTop(y);
+						this.$.scrollLeft(x);
+					}.bind(this)
+				}
+				
+				return this;
+			}
+		}))
+	}
+	
 }());

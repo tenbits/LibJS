@@ -1,3 +1,13 @@
+
+#views {
+    height: 100%;
+	min-height: 300px;
+    line-height: 1.3em;
+	
+	font-size:.95em;
+    margin:0 auto;
+}
+
 #views .view {
     max-width: 800px;
     min-width: 600px;    
@@ -8,14 +18,66 @@
     top: 1%;
     margin: 0 auto;
     
-    box-shadow: 0px 0px 8px #000;
-    
     
     background:rgb(252,252,252);
     
     display: none;
+    
+    border-radius: 18px;
+    border: 2px solid #4C3F33;
 }
 
 #views .view.active {
     display: block;
+}
+
+.view header, .view footer {
+    background:#4C3F33; /*rgb(100,100,100); */
+    
+    color:rgb(250,255,250);
+    padding: 0px 20px;
+    text-shadow: 0px 0px 3px #000;
+    font-size: .95em;
+    letter-spacing: 1px;
+    box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	
+    height: 40px;
+    line-height: 40px;
+    position: relative;
+    z-index: 100000;
+    
+    border-bottom:1px solid #333;    
+}
+
+.view header {    
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.view section {
+    padding: 10px 20px;
+}
+
+.view footer {
+    
+    
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    
+    position: absolute;    
+    bottom: 0px;
+    width:100%;
+    
+    border-bottom:0px solid #333;
+    border-top:1px solid #333;
+}
+
+.view div.scroller {
+    position: absolute; top:40px; left:0px; right:0px; bottom: 40px;
+}
+
+.view div.scroller.maximized {
+    border-radius: 18px;
+    top:0px; left:0px; right:0px; bottom: 0px;	
 }

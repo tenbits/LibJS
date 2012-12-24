@@ -72,7 +72,10 @@ include.css('view.css').done(function() {
          
          if (info.anchor){
             var element = this.$.find('a[name="' + info.anchor + '"]').get(0);
-            scroller && scroller.scroller && scroller.scroller.scrollToElement(element, 100);
+			
+			if (scroller && scroller.scroller){
+				scroller.scroller.scrollToElement(element, 100);
+			}
          }
       },
       activate: function() {
