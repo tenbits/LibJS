@@ -44,9 +44,7 @@ void function(){
 		
 		/**
 		 *	[.embed](name=embed)
-		 *	Loading script with script-tag, while .js loads first and than evals source.
-		 *	This usually used to load cross-domain scripts.
-		 *	(i) Nested dependencies couldnt be handled jet
+		 *	Loading script that will be not included in build by IncludeJS.Builder
 		 */
 		.embed('http://example.com/script.js')
 		
@@ -70,18 +68,7 @@ void function(){
 		.lazy({
 			'ui.notification': '/scripts/ui/notification.js'
 		})
-		
-		/**
-		 *	[.wait](name=wait)
-		 * 	Wait until all upper resources are loaded, and continue to load
-		 * 	all resources that will be included after this function.
-		 * 	(example)
-		 * 	include.js('a.js').wait().inlucde(['b1.js','b2.js']).done(onAandBsLoaded);
-		 * 	(we use it for) if 'a.js' is our application framework and every bN.js needs it,
-		 * 	we use wait() so that the framework is already loaded when evaluating bN.js
-		 */
-		.wait()
-		
+
 		/**
 		 *	[.done](name=done)
 		 *	Fire callback fn when all upper resources and also subresources are loaded
@@ -105,8 +92,30 @@ void function(){
 		 *	In case of .css({styles: 'theme/dark'}) we become 'app/styles/theme/dark.css'
 		 */
 		.cfg({
-			lib: 'file:///c:/dev/libs/{name}/lib/{name}.js',
-			styles: 'app/styles/{name}.css'
+			/**
+			 *	Root Path to use for all resources, @default: NULL
+			 */
+			path: '/resource/',
+			/**
+			 *	@default false.
+			 *		(is same as : .cfg({path: getDir(window.location)}))
+			 *		With true, when you are on
+			 *			{domain}/folder/second/index.html
+			 *		path '/script.js' means -> '/folder/second/script.js',
+			 *		and not '{domain}/script.js'
+			 */
+			lockedToFolder: true,
+			/**
+			 *	@default browser:= true, nodejs:=false
+			 *	with FALSE - scripts will be loaded with script tag
+			 *		this is slower, but best for development, as by errors
+			 *		you see the file and line number
+			 *	with TRUE - scripts will be loaded with XMLHttpRequest and
+			 *		evaluated with eval()
+			 *		its much faster, as scripts will be loaded in async mode,
+			 *		but in browser you'll see no fileName by errors
+			 */
+			eval: true
 		});
 		
 	}

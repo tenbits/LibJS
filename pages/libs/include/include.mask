@@ -34,7 +34,10 @@ scroller.content {
                         prism > 'include.js("myScript.js::MyObj").done(function(resp){ resp.MyObj.someFunction(); })'
                         'or without alias'
                         prism > 'include.js("myScript.js").done(function(resp){ resp.myScript.someFunction(); })'
-                    }                    
+                    }      
+                    li {
+                        'Browser And NodeJS'                        
+                    }              
                     li { 'Builder' div.hint > code > 'Combine all resources in one .JS | .CSS | .HTML file.' }
                     li { 'Callbacks' div.hint > code > 'Sub- and ResourceLoaded and DOMContentLoaded' }
                     li { 'Lazy Modules' div.hint > code > 'Parse(eval) Scripts only when they are needed' }
