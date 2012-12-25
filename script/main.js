@@ -7,7 +7,7 @@ include.routes({
 	controller: '/script/component/{0}.js',
 	uicontrol: '/script/control/{0}.js'
 }).js({
-	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
+	framework: ['dom/jquery', 'es5shim', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
 	lib: ['compo','ranimate'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
@@ -16,6 +16,7 @@ include.routes({
 	'': ['/script/utils/maskUtils.js']
 }).ready(function() {
 
+	
 	var w = window,
 		model = {
 
@@ -137,5 +138,12 @@ include.routes({
 	});
 
 
+	if (ruqq.info.browser.name == 'msie'){
+		var version = parseFloat(ruqq.info.browser.version);
+		if (version <= 8){
+			var dom = mask.render('.ie9Alert > "Sorry, website optimization is comming soon for IE < 9."');
+			document.body.appendChild(dom);
+		}
+	}
 
 });

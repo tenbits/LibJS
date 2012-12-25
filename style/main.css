@@ -109,10 +109,10 @@ div.footer {
 	min-width: 800px;
 	
 	
-	background-color: #E8D1AE;	
-	background-image: url(../images/grass.png),url(../images/wood.jpg);
-	background-position: bottom left,0 0;
-	background-repeat: repeat-x, repeat;
+	background-color: #E8D1AE;
+	
+	background: url(../images/wood.jpg) 0 0 repeat;
+	background: url(../images/grass.png) bottom left no-repeat, url(../images/wood.jpg) 0 0 repeat;
 	
 	border-left: 250px solid transparent;
 }
@@ -311,4 +311,16 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
 
 hr {
 	opacity: .4;
+}
+
+.ie9Alert{
+	position: fixed;
+	top:0px; left:0px; bottom:0px; right:0px;
+	filter: alpha(opacity=80);
+	color:white;
+	font-size: 1.5em;
+	text-align: center;
+	
+	background:#333;
+	z-index: 999999;
 }

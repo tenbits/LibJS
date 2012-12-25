@@ -47,7 +47,9 @@
     position: relative;
     z-index: 100000;
     
-    border-bottom:1px solid #333;    
+    border-bottom:1px solid #333;
+    
+    display: block;
 }
 
 .view header {    

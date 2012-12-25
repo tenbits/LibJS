@@ -1,3 +1,5 @@
+console.log('MASK UTILS');
+
 (function() {
     var replaces = null;
     mask.registerHandler('formatter:pre', Class({

@@ -14,7 +14,7 @@ menu {
     -o-box-sizing: border-box;
     
     background:#2D2C2B url(../images/dark_tire.png) 0 0 repeat;
-    color:rgba(240,245,240, 1);
+    color:rgb(240,245,240);
     /*text-shadow: 0px 0px 4px rgb(0,0,0);*/
     
     -webkit-transition: color 100ms linear;
@@ -30,7 +30,7 @@ menu {
 	box-shadow: inset -10px 0px 20px #000;
 }
 menu:hover {    
-    color:rgba(220,225,220, 1);
+    color:rgb(220,225,220);
     z-index: 999;
 }
 
@@ -198,10 +198,10 @@ div.footer {
 	min-width: 800px;
 	
 	
-	background-color: #E8D1AE;	
-	background-image: url(../images/grass.png),url(../images/wood.jpg);
-	background-position: bottom left,0 0;
-	background-repeat: repeat-x, repeat;
+	background-color: #E8D1AE;
+	
+	background: url(../images/wood.jpg) 0 0 repeat;
+	background: url(../images/grass.png) bottom left no-repeat, url(../images/wood.jpg) 0 0 repeat;
 	
 	border-left: 250px solid transparent;
 }
@@ -402,6 +402,18 @@ hr {
 	opacity: .4;
 }
 
+.ie9Alert{
+	position: fixed;
+	top:0px; left:0px; bottom:0px; right:0px;
+	filter: alpha(opacity=80);
+	color:white;
+	font-size: 1.5em;
+	text-align: center;
+	
+	background:#333;
+	z-index: 999999;
+}
+
 
 #views {
     height: 100%;
@@ -451,7 +463,9 @@ hr {
     position: relative;
     z-index: 100000;
     
-    border-bottom:1px solid #333;    
+    border-bottom:1px solid #333;
+    
+    display: block;
 }
 
 .view header {    

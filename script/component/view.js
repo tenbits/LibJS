@@ -18,7 +18,7 @@ include.css('view.css').done(function() {
       Base: Compo,
       Extends: CompoUtils,
       Construct: function() {
-         (this.attr || (this.attr = {})).class = 'view';
+         (this.attr || (this.attr = {}))['class'] = 'view';
       },
       render: function(values, container, cntx) {
          this.tagName = 'div';
