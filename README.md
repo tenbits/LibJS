@@ -3,3 +3,5 @@
 	<a href='http://libjs.it/'>@Reference</a>
 </p>
 
+<p><i>License: MIT</i></p>
+
