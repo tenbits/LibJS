@@ -7,9 +7,38 @@ header {
 scroller.content {
     p.tabPanel {
         div.info.active {
-            h3 >  'node.js Command-Line Tool'
-            
-            prism.builder src='/api.help/include.builder.help.js';
+            div {
+                ul {
+                    li { 
+                        'Builder - Combine Resources included with IncludeJS' 
+                        div.hint > 'Javascript, Style, HTML, Image' 
+                        div.hint > 'Images that are in styles, that are not in working directory (are referenced), will be copied into working directory'
+                        div > ul {
+                            li > 'include.js'
+                            li > 'include.css'
+                            li > 'include.load'
+                            li > 'include.lazy'
+                        }
+                    }
+                    li { 'Minify' 
+                        div.hint > code {
+                          a href='https://npmjs.org/package/uglify-js' target='_blank' > 'UglifyJS'
+                          ' and '
+                          a href='https://npmjs.org/package/clean-css' target='_blank' > 'clean-css'
+                          ' are used'
+                        }
+                        div.hint > code > 'For UglifyJS you can specify compressor settings (So you can set defines to cut off DEBUG/TEST code from Release)
+                            See UglifyJS documentation.'
+                    }
+                    li { 'JSHINT' div.hint > code { 'See ' a href='http://jshint.com/docs/' target='_blank' > 'JSHINT'} }
+                    li { 
+                        'Integrated Web Server with Browser AutoReload Feature'                        
+                    }
+                    li {
+                        'Handles Resource Referencing and Importing '                        
+                    }                    
+                }
+            }
         }
         
         div.commands {
@@ -48,7 +77,16 @@ scroller.content {
                             }
                         }
                         
-                        li > '"minify" — {Boolean} — minify scripts and styles'
+                        li > '"minify" — {Boolean} — run MinifyJS and clean-css'
+                        li > '"uglify" - {Object:optional} - UglifyJS compressor settings. @default {global_defs: {DEBUG: false}}'
+                        li  {
+                            '"jshint" : {'
+                            ul {
+                                li > '"options" - {Object} - JSHINT options'
+                                li > '"globals" - {Object} - global variables. @default {"window": false, "document": false}'
+                                li > '"ignore" - {Object} - file names to ingore'
+                            }
+                        }
                         li > '"outputMain" — output name of a built html — @default "{name}.build.html"'
                         li > '"outputSources" — directory of combined/copied resources — @default "{name}.build/"'
                         li > '}'

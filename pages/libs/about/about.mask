@@ -91,12 +91,21 @@ scroller.content.about > p.container.tabPanel{
             }
             li {
                 h5 > 'Component Fabric Pattern'
-                prism > 'screenDependedComponet small="copmp1" big="compo2" { <!-- content --> }'
+                prism > 'screenDependedComponet small="Compo1" big="Compo2" { <!-- content --> }'
+                'or event better per Javascript'
+                prism > "mask.registerHandler('myCompo', Info.smallScreen ? Compo1 : Compo2); "
             }
             li {
                 h5 > 'Inheritance'
-                div > 'You need scroller component with additional features, use ClassJS and inherit from its custom handler'                
+                div > 'You need scroller component with additional features? Your markup can stay untouched, just inherit from Scroller Component, 
+                    add required features, and finally register that new component as "scroller" tag handler.'
             }
+            li {
+                h5 > 'Injection'
+                div > 'Replace any element (even "div" tag) with your implementation (for tests, debug, release). Wrap any markup parts with your handler 
+                    and control any behavior.'
+            }
+            
             li {
                 '... and much more things you can start with it.'
             }
