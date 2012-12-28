@@ -1,4 +1,3 @@
-console.log('MASK UTILS');
 
 (function() {
     var replaces = null;
