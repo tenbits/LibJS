@@ -7,7 +7,7 @@
 		var disqus_shortname = 'libjs',
 			disqus_identifier = 'libjs/comment',
 			disqus_url = 'http://libjs.it/',
-			disqus_developer = 1;		
+			disqus_developer = 0;		
 		include.embed('http://libjs.disqus.com/embed.js');			
 		"
 		
