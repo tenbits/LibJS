@@ -61,7 +61,6 @@ include.js({
 			}
 
 			var compo = Compo.findCompo(this, info.view);
-
 			if (compo == null) {
 				this.$.children('.active').removeClass('active');
 				this.load(info);
@@ -72,6 +71,8 @@ include.js({
 		},
 		performShow: function(compo, info) {
 
+			
+		
 			compo.section(info);
 
 			if (compo == currentCompo) {

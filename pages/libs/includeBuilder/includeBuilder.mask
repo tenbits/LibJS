@@ -21,19 +21,25 @@ scroller.content {
                         }
                     }
                     li { 'Minify' 
-                        div.hint > code {
+                        div.hint {
                           a href='https://npmjs.org/package/uglify-js' target='_blank' > 'UglifyJS'
                           ' and '
                           a href='https://npmjs.org/package/clean-css' target='_blank' > 'clean-css'
                           ' are used'
                         }
-                        div.hint > code > 'For UglifyJS you can specify compressor settings (So you can set defines to cut off DEBUG/TEST code from Release)
+                        div.hint > 'For UglifyJS you can specify compressor settings (So you can set defines to cut off DEBUG/TEST code from Release)
                             See UglifyJS documentation.'
                     }
-                    li { 'JSHINT' div.hint > code { 'See ' a href='http://jshint.com/docs/' target='_blank' > 'JSHINT'} }
+                    li { 'JSHINT' div.hint { 'See ' a href='http://jshint.com/docs/' target='_blank' > 'JSHINT'} }
                     li { 
-                        'Integrated Web Server with Browser AutoReload Feature'                        
+                        'Integrated Web Server'
+                        div.hint > 'With Browser AutoReload Feature'                        
                     }
+                    li { 
+                        'Shell Commands'
+                        div.hint > 'As Builder is action-based, shell commands could be used as pre-build or post-build.'
+                    }
+
                     li {
                         'Handles Resource Referencing and Importing '                        
                     }                    
@@ -44,7 +50,7 @@ scroller.content {
         div.commands {
             ul {
                 li {
-                    code > 'includejs [*.html] -minify'
+                    code > 'includejs [*.html] -minify -KEY VALUE'
                     ul {
                         li > 'parse html and Resolve all Resources'
                         li > 'parse scripts and Resolve all Resources'
@@ -62,34 +68,11 @@ scroller.content {
                     }
                 }
                 li {
-                    code > 'includejs [*.config]'
-                    code > ul {
-                        li > '{'
-                        li > '"file" — {String} - HTML input file'
-                        li > '"vars" — {Object} — Variables used when parsing includes'
-                        li {
-                            '"action" — '
-                            ul {
-                                li > '"build" — @default — combine resources'
-                                li > font color='#999' > '@see next page'
-                                li > '"import" — copy outer resources into projects directory'
-                                li > '"reference"'
-                            }
-                        }
-                        
-                        li > '"minify" — {Boolean} — run MinifyJS and clean-css'
-                        li > '"uglify" - {Object:optional} - UglifyJS compressor settings. @default {global_defs: {DEBUG: false}}'
-                        li  {
-                            '"jshint" : {'
-                            ul {
-                                li > '"options" - {Object} - JSHINT options'
-                                li > '"globals" - {Object} - global variables. @default {"window": false, "document": false}'
-                                li > '"ignore" - {Object} - file names to ingore'
-                            }
-                        }
-                        li > '"outputMain" — output name of a built html — @default "{name}.build.html"'
-                        li > '"outputSources" — directory of combined/copied resources — @default "{name}.build/"'
-                        li > '}'
+                    code > 'includejs [*.config | *.js]'
+                    p {
+                        'Loading Config File'
+                        div > '.config - JSON'
+                        div > '.js - Must export config to global'
                     }
                 }
                 li {
@@ -101,6 +84,51 @@ scroller.content {
                     code > 'includejs globals'
                     p > 'Open global routes file'
                 }
+            }
+            h3 > 'Config'
+            div.hint {
+                'Config contains one or more actions. (One action is an Object, more actions is Array of Objects) '
+            }
+            div {
+                'Available actions and their settings:'
+            }
+            ul{
+
+                li {
+                    ul {
+                        li > '{'
+                        li > '"action": "build"'
+                        li > '"file" — {String} - HTML input file'
+                        li > '"vars" — {Object} — Variables used when parsing includes'
+                        
+                            
+                        li > '"minify" — {Boolean} — run MinifyJS and clean-css'
+                        li > '"uglify" - {Object:optional} - UglifyJS compressor settings. @default {global_defs: {DEBUG: false}}'
+                        li  {
+                            '"jshint" : {'
+                            ul {
+                                li > '"options" - {Object} - JSHINT options'
+                                li > '"globals" - {Object} - global variables. @default {"window": false, "document": false}'
+                                li > '"ignore" - {Object} - file names to ignore'
+                                li > '}'
+                            }
+                        }
+                        li > '"outputMain" — output name of a built html — @default "{name}.build.html"'
+                        li > '"outputSources" — directory of combined/copied resources — @default "{name}.build/"'
+                        li > '}'
+                    }
+                }
+                li {
+                    ul{
+                        li > '{'
+                        li > '"action": "shell"'
+                        li > '"command": /** Array or String :: string commands*/ ['
+                        li > '"cmd /C copy /B index.html c:/app",'
+                        li > '"cmd /C copy /B index.build/ c:/app/index.build" ]'
+                        li > '}'
+                    }
+                }
+                
             }
         }
         div.resources {

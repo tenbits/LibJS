@@ -25,10 +25,11 @@ include.routes({
 				items: [{
 					view: 'about',
 					title: 'About'
-				}/*, {
-					view: 'blog',
-					title: 'Blog'
-				}*/]
+				}, {
+					view: 'comment',
+					title: 'Comment',
+					controller: 'default'
+				}]
 			}, {
 				title: 'Library',
 				items: [{

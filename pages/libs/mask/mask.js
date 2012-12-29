@@ -4,6 +4,8 @@ include.js({
 
 	var w = window;
 
+	console.log('r',r);
+
 	console.log('register maskView');
 	mask.registerHandler('maskView', Class({
 		Base: mask.getHandler('view'),
@@ -15,12 +17,14 @@ include.js({
 
 	mask.registerHandler('maskExamples', Class({
 		render: function(values, container, cntx) {
-			var examples = r.load.examples.split('===='),
+			var examples = r.load['mask.examples'].split('===='),
 				arr = [];
 
 			for (var i = 0; i < examples.length; i++) {
 				var item = new Example(examples[i]);
-				if (item.valid != false) arr.push(item);
+				if (item.valid != false) {
+					arr.push(item);
+				}
 			}
 
 			var Template = "div.example {\
