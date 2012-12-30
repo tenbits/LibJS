@@ -10,7 +10,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/prism/lib/prism.js'
     source {
-        a href='http://github.com/tenbits/Compos/prism/lib/prism.js' target='_blank' > 'github/compos/prism.js'   
+        a href='https://github.com/tenbits/Compos/blob/master/prism/lib/prism.js' target='_blank' > 'github/compos/prism.js'   
     }
     attributes {
         tr {            

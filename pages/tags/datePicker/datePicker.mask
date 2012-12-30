@@ -10,7 +10,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/datePicker/lib/datePicker.js'
     source {
-        a href='http://github.com/tenbits/Compos/datePicker/lib/datePicker.js' target='_blank' > 'github/compos/datePicker.js'   
+        a href='https://github.com/tenbits/Compos/blob/master/datePicker/lib/datePicker.js' target='_blank' > 'github/compos/datePicker.js'   
     }
     attributes {
         '...'

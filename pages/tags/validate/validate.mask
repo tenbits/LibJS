@@ -15,7 +15,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/validation/lib/validation.js'
     source {
-        a href='http://github.com/tenbits/Compos/validation/lib/validation.js' target='_blank' > 'GitHub'   
+        a href='https://github.com/tenbits/Compos/blob/master/validation/lib/validation.js' target='_blank' > 'GitHub'   
     }
     attributes {
         tr {

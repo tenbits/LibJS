@@ -22,7 +22,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/scroller/lib/scroller.js'
     source {
-        a href='http://github.com/tenbits/Compos/scroller/lib/scroller.js' target='_blank' > 'GitHub'   
+        a href='https://github.com/tenbits/Compos/blob/master/scroller/lib/scroller.js' target='_blank' > 'GitHub'   
     }
     attributes {
         tr {

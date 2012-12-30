@@ -12,7 +12,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/layout/lib/layout.js'
     source {
-        a href='http://github.com/tenbits/Compos/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'   
+        a href='https://github.com/tenbits/Compos/blob/master/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'   
     }
     attributes {
         tr {            

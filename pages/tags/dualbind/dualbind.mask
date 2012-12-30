@@ -19,7 +19,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/binding/lib/binding.js'
     source {
-        a href='http://github.com/tenbits/Compos/binding/lib/binding.js' target='_blank' > 'GitHub'   
+        a href='https://github.com/tenbits/Compos/blob/master/binding/lib/binding.js' target='_blank' > 'GitHub'   
     }
     attributes {
         tr {

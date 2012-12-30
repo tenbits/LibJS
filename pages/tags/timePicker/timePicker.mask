@@ -10,7 +10,7 @@ layout:view master='tagApiItem' {
 
     include > '{libjs}/compos/timePicker/lib/timePicker.js'
     source {
-        a href='http://github.com/tenbits/Compos/timePicker/lib/timePicker.js' target='_blank' > 'github/compos/timePicker.js'   
+        a href='https://github.com/tenbits/Compos/blob/master/timePicker/lib/timePicker.js' target='_blank' > 'github/compos/timePicker.js'   
     }
     attributes {
         tr {
