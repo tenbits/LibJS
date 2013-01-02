@@ -41,6 +41,13 @@ scroller.content {
                     }
 
                     li {
+                        'Custom Scripts as Actions'
+                        div.hint {
+                            prism > 'include.exports = { process: function(config, idfr) { /* ... */ idfr.resolve(); } }'
+                        }
+                    }
+
+                    li {
                         'Handles Resource Referencing and Importing '                        
                     }                    
                 }
@@ -126,6 +133,17 @@ scroller.content {
                         li > '"cmd /C copy /B index.html c:/app",'
                         li > '"cmd /C copy /B index.build/ c:/app/index.build" ]'
                         li > '}'
+                    }
+                }
+                li {
+                    ul {
+                        li > '{'
+                        li > '"action": "custom"'
+                        li > '"script": "scriptPath.js"'
+                        li > div.hint {
+                            div > 'Script shoud export object with .process(config, idfr) function.'
+                            div > 'After script is ready call idfr.resolve()'
+                        }
                     }
                 }
                 

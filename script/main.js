@@ -26,8 +26,8 @@ include.routes({
 					view: 'about',
 					title: 'About'
 				}, {
-					view: 'comment',
-					title: 'Comment',
+					view: 'feedback',
+					title: 'Feedback',
 					controller: 'default'
 				}]
 			}, {
