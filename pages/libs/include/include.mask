@@ -38,7 +38,15 @@ scroller.content {
                         prism > 'include.js("myScript.js::MyObj").done(function(resp){ resp.MyObj.someFunction(); })'
                         'or without alias'
                         prism > 'include.js("myScript.js").done(function(resp){ resp.myScript.someFunction(); })'
-                    }      
+                    }  
+                    li {
+                        'Custom Loader. Already supports: *.coffee, *.less'
+                        div.hint {
+                            div > 'Best to use in development - no more need to build coffee or less resources before test it'
+                            div > 'Any *.js can be replaced with *.coffee equivalent, and you do not even notice this'
+                            div > 'IncludeJS.Builder will compile/parse that resource for better Performance'
+                        }
+                    }    
                     li {
                         'Browser And NodeJS'                        
                     }              

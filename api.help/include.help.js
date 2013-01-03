@@ -115,7 +115,21 @@ void function(){
 			 *		its much faster, as scripts will be loaded in async mode,
 			 *		but in browser you'll see no fileName by errors
 			 */
-			eval: true
+			eval: true,
+
+			/**
+			*  Define Custom Resource Loader 
+			*  Resource will be loaded with XMLHttpRequest and then handled with defined loader.
+			*     For example: Coffee Loader will compile coffeescript to javascript before processing
+			*/
+			loader: {
+				/** @key - file extension
+				 *  @value - route to the loader - (it will be loaded also with includejs)
+				 */
+				coffee: {
+					lib: 'include/loader/coffee/loader'
+				}
+			}
 		});
 		
 	}
