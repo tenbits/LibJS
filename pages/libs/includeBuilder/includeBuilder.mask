@@ -46,6 +46,10 @@ scroller.content {
                             prism > 'include.exports = { process: function(config, idfr) { /* ... */ idfr.resolve(); } }'
                         }
                     }
+					
+					li {
+						'CoffeeScript and Less support'
+					}
 
                     li {
                         'Handles Resource Referencing and Importing '                        
