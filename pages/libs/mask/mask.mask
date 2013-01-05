@@ -8,14 +8,29 @@ scroller.content#maskScroller {
     div.container.tabPanel {
         div.info.active {
             ul {
-                li { 'Zen Coding Style' div.hint > tt > 'Write Less, Do More' }
+                li { 'Zen Coding Templates' div.hint > tt > 'Write Less, Do More' }
                 li { 'Dry & Highly Customizable' div.hint > tt > 'Custom Tags, Custom Value Preprocessors' }
-                li { 'For NodeJS and Browsers' }
+                li { 
+                    'For NodeJS and Browsers' 
+                    ul {
+                        li {
+                            'Browsers: DOM Builder direct from JSON tree'  
+                            div.hint > 'Is Faster as we skip html building and its parsing by browser. 
+                            And creation of JSON tree could be compared to native JSON.parse function.'
+                        } 
+                        li {
+                            'NodeJS: HTML Builder for sending it to client over http.'
+                            div.hint > 'Usually you do not need this, as building UI with Mask Template on client or mobile app is very fast, 
+                            and you should use it.'
+                        }
+                    }
+                }
                 li {
                     'Performance '
-                    a href='http://jsperf.com/javascript-template-engine-compare/27' > 'jsperf.com'
+                    div > a href='http://jsperf.com/javascript-template-engine-compare/27' > 'jsperf.com /1'
+                    div > a href='http://jsperf.com/dom-vs-innerhtml-based-templating/604' > 'jsperf.com /2'
                     
-                    div.hint > tt { '... is even faster than native JSON.parse ' a href='http://jsperf.com/maskjs-vs-json/4'> 'jsperf' }
+                    div.hint > tt { 'Building JSON tree:' a href='http://jsperf.com/maskjs-vs-json/4'> 'jsperf' }
                 }                
                 li > 'No Dependencies'
             }            
