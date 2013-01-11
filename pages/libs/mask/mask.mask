@@ -44,6 +44,7 @@ scroller.content#maskScroller {
                 h5 > 'Tag Declaration'
                 code.api > 'tag#id.class{0,} key=[\'"]value[\'"]{0,}'
                 div.hint > 'Similar to CSS, but tag name is required, and attributes are not in square brackets «[ ]»'
+                div.hint > 'Starting from version .5.1 Tag Name can be omitted if class or id declaration is used. Tag Name will be then "div"'
                 h5 > 'Tags Items'        
                 table style='margin-left:30px;'  {
                     tr { td > '«;»' td > ' — close tag, if it has no content' }
@@ -61,7 +62,7 @@ scroller.content#maskScroller {
             h4 > 'Template Values'            
             p {
                 code.api {
-                    '#' '{property_Name_To_Extract_From_Json_Values.and_Chaining_Is_Also_Possible}'
+                    '#' '{propertyName.andChainingAlsoPossible}'
                 }
                 h5 > 'Template Value Conditions'
                 code.api {
@@ -72,7 +73,9 @@ scroller.content#maskScroller {
                 code.api {
                     '#' '{utilityName:data}'
                 }
-                div.hint > '@see mask.registerUtility'
+                div.hint {
+                    a href='#/mask/api/registerUtility' > '@see mask.registerUtility'  
+                } 
                 
             }
         }
