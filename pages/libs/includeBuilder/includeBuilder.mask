@@ -33,7 +33,9 @@ scroller.content {
                     li { 'JSHINT' div.hint { 'See ' a href='http://jshint.com/docs/' target='_blank' > 'JSHINT'} }
                     li { 
                         'Integrated Web Server'
-                        div.hint > 'With Browser AutoReload Feature'                        
+						
+                        div.hint > b > 'with auto-refresh feature'
+						div.hint > 'HOT Reload of *.css files and *.js files, for other stuff page reload triggers'
                     }
                     li { 
                         'Shell Commands'
@@ -45,10 +47,12 @@ scroller.content {
                         div.hint {
                             prism > 'include.exports = { process: function(config, idfr) { /* ... */ idfr.resolve(); } }'
                         }
+						div.hint > 'Could be used as shell scripts. Note that you also receive in file includejs api classes'
                     }
 					
 					li {
 						'CoffeeScript and Less support'
+						div.hint > 'less will be compiled and joined with regular css files, as also coffeescript will be joined into one main js file'
 					}
 
                     li {
@@ -60,40 +64,28 @@ scroller.content {
         
         div.commands {
             ul {
+				li {
+					code > ' > includejs [action] [arg] [...] -KEY VALUE [...]'
+					div {
+						div > 'All this arguments will be parsed to a config object'
+						div.hint > '@see supported actions'						
+					}
+				}
                 li {
-                    code > 'includejs [*.html] -minify -KEY VALUE'
-                    ul {
-                        li > 'parse html and Resolve all Resources'
-                        li > 'parse scripts and Resolve all Resources'
-                        li > 'parse dependency-scripts and Resolve all Resources'
-                        li > '... and so on'
-                        li > 'combine all resources into separate single files'
-                        li {
-                            'create new HTML with'
-                            ul {
-                                li > 'embedded Lazy- and Loaddata'
-                                li > 'only one script tag - linked to combined script file'
-                                li > 'only one style tag - linked to combined style file'
-                            }
-                        }
-                    }
+                    code > ' > includejs [*.html] -minify -KEY VALUE'
+                    
+					div > '
+					If first argument is html file, then this path will be set in config for "file" property, and "build" for action. 
+					You can also sepcify some additional config values for this build - @see "build" action.
+					'
                 }
                 li {
-                    code > 'includejs [*.config | *.js]'
+                    code > ' > includejs [*.config | *.js]'
                     p {
-                        'Loading Config File'
+                        'Load config and process'
                         div > '.config - JSON'
-                        div > '.js - Must export config to global'
+                        div > '.js - This javascript must set config to globals: global.config = {OBJECT}'
                     }
-                }
-                li {
-                    code > 'includejs template [name]'
-                    p > 'Create Empty Project in {current} directory'
-                    p > 'Available: "starter"'
-                }
-                li {
-                    code > 'includejs globals'
-                    p > 'Open global routes file'
                 }
             }
             h3 > 'Config'
@@ -108,7 +100,7 @@ scroller.content {
                 li {
                     ul {
                         li > '{'
-                        li > '"action": "build"'
+                        li { '"action": "' b > 'build' '"' }
                         li > '"file" — {String} - HTML input file'
                         li > '"vars" — {Object} — Variables used when parsing includes'
                         
@@ -128,35 +120,148 @@ scroller.content {
                         li > '"outputSources" — directory of combined/copied resources — @default "{name}.build/"'
                         li > '}'
                     }
+					
+					p {
+						'Build includejs project.'
+						div.hint > 'It will parse specified file and its resources, and will recursive collect all includes'
+					}
                 }
                 li {
                     ul{
                         li > '{'
-                        li > '"action": "shell"'
+                        li { '"action": "' b > 'project-import' '"' }
+                        li > '}'
+                    }   
+                    p {
+                      'Copy all resources, that are used by current project, from referenced directories in ' 
+                        tt > '.reference/*' ' to ' tt >'.import' ' directory'  
+                    }                     
+                }
+                li {
+                    ul{
+                        li > '{'
+                        li { '"action": "' b > 'project-reference' '"' }
+                        li > '}'
+                    }   
+                    p {
+                      'Create outer referencing in ' tt > '.reference/*' 'acording to routing defined in ' 
+                      tt > '%npm-global-directory%/includejs/globals.txt'
+                    }                     
+                }
+                li {
+                    ul{
+                        li > '{'
+                        li { '"action": "' b > 'shell' '"' }
                         li > '"command": /** Array or String :: string commands*/ ['
                         li > '"cmd /C copy /B index.html c:/app",'
                         li > '"cmd /C copy /B index.build/ c:/app/index.build" ]'
                         li > '}'
-                    }
+                    }	
+                    p > 'Execuate shell commands'				
                 }
                 li {
                     ul {
                         li > '{'
-                        li > '"action": "custom"'
+                        li { '"action": "' b > 'custom' '"' }
                         li > '"script": "scriptPath.js"'
-                        li > div.hint {
-                            div > 'Script shoud export object with .process(config, idfr) function.'
-                            div > 'After script is ready call idfr.resolve()'
-                        }
+						li > '}'                                                
                     }
+                    p > 'Execuate custom scripts'
+					div.hint {
+						div > 'Script shoud export object with .process(config, idfr) function.'
+						div > 'After script is ready call idfr.resolve() for processing next actions'						
+					}
+					div.hint {
+						'If you want to call just that action only, you can do it from command line:'
+						div > code > ' > includejs custom scriptPath.js'
+					}
                 }
                 
+				li {
+					ul{
+                        li > '{'
+                        li { '"action": "' b > 'server' '"' }
+                        li > '"port": NUMBER /* optional @default  5777 */'
+                        li > '"open": Filename to open in browser /* optional */'
+                        li > '}'
+                    }
+                    p { 'Create server in ' tt > '%current-directory%' }
+					div.hint {
+						'To not create config file only for this action, you can use raw cli command with action argument:'
+						div > code > ' > includejs server'
+                        'To open browser and additionally to define port:'
+                        div > code > ' >  includejs server index.dev.html -port 7777'
+					}
+				}
+				li {
+					ul{
+                        li > '{'
+                        li { '"action": "' b > 'reference' '"' }
+                        li > '"path": directory path'
+                        li > '"name": reference name /* optional @default directory name*/'
+                        li > '}'
+                    }
+                    p > 'Creates symbolic link to specified path in %current_directory%/.reference/%name%'
+					div.hint {
+						'Usually you may want to call this command direct as'
+						div > code > ' > includejs reference c:/development/mylib'
+					}
+				}
+                li {
+                    ul{
+                        li > '{'
+                        li { '"action": "' b > 'template' '"' }
+                        li > '"name": name'
+                        li > '}'
+                    }
+
+                    p > 'Create Template Project in %current_dir%'
+                    p > 'Available: "starter" , "todomvc" (@sample application to fiddle around with maskjs,includejs etc.)'
+                    div.hint {
+                        'You can create any other templates with just coping needed files to '
+                        tt > '%npm-global-directory%/node_modules/includejs/template/%YourTemplateName%'
+                    }
+                    div.hint {
+                        'Raw cli command:'
+                        div > code > ' > includejs template starter'
+                    }
+                }
+                li {
+                    ul{
+                        li > '{'
+                        li { '"action": "' b > 'git-clone' '"' }
+                        li > '}'
+                    }
+                    p > 'Clones LibJS Libraries into current directory'
+                    div { 
+                        'It will also save this path intern, for future routing - so calling this action, 
+                            includejs, or better said - nodejs, should have 
+                            write permissions to ' tt > '%npm-global-directory%/includejs' ' directory'
+                    }
+                    div.hint {
+                        'Command Line: '
+                        code > ' > includejs git-clone'
+                    }
+                }
+                li {
+                    ul{
+                        li > '{'
+                        li { '"action": "' b > 'globals' '"' }
+                        li > '}'
+                    }
+                    code > ' > includejs globals'
+
+                    p > 'Open global.txt of includejs for editing of your routes, etc. Example of globals.txt:'
+
+                    prism src='/api.help/globals.js';
+
+                }
             }
         }
         div.resources {
             h6 > 'Small note about external resources'
             p > 'Every application has some outer dependencies. Lets say you created empty project and want to use some classes, styles and images
-            from you own library "MyCoolStuff". There are 3 ways you can do it.'
+            from you own library "MyCoolStuff". There are several ways you can do it.'
             ul {
                 li {
                     i > 'Bad — ''Copy them into working project. '
@@ -169,43 +274,37 @@ scroller.content {
                         li > 'harms code organization energy'
                     }
                 }
-                li {
-                    i > 'Better — ''Use IncludeJS Routing to reference to the directory'
-                    code > 'include.cfg(coolStuff: "file:///c:/dev/MyCoolStuff/classes/{name}.js")'
-                    u > 'Contra'' — '
-                    ul {
-                        li > 'Though after project build you dont have any absolute paths more, but not in Development'
-                        li > 'When you develop a web site (not a html5 application), you definitely 
-                            want to test on local server - is not possible with file:/// links'
-                    }
-                }
+               
                 li {
                     i > 'Best — ''Use symbolic links'
+                    div > 'Example:'
                     ul {
-                        li > code > ' > npm install includejs -g'
-                        li > code > ' > mkdir testProject && cd testProject'
                         li {
-                            code > ' > includejs globals'                            
-                            ul {
-                                li > 'Add/Edit Paths to project directories, such as LibJS'
-                                li > 'Add/Edit Default Routes'
-                            }
+                            'Install IncludeJS.Builder and LibJS libraries: ' a href='#/about/install' > '@how-to'
                         }
                         li {
-                            code > ' > includejs template starter'
-                            'And now, under "testProject/.reference/libjs" you find a symbolic link to libjs project
-                             and all requests to libjs libraries, such as '
-                             code > 'include.js({ lib: "mask" })' 'will path through that symbolic link'
-                        }
+                            'Create template project'
+                            div > code > '> mkdir testProject && cd testProject && includejs template starter'
+                            div {
+                                'And now, under "testProject/.reference/libjs" you find a symbolic link to libjs project
+                                and all requests to libjs libraries, such as '
+                                tt > 'include.js({ lib: "mask" })' 'will path through that symbolic link'
+                            }                            
+                        }                        
                     }
                     
-                    b>'! ' 'Any time you can import all referenced resources into working project with:'
-                    code > ' > includejs build.config -action import'
-                    div {
-                        'You find that referenced resources now in ' tt > q > 'testProject/.import' ' directory'
-                    }
-                    div { b>'! '  'Any time you can also switch back to referencing with:'}
-                    code > ' > includejs build.config -action reference'
+                    p {
+                        'After your application is ready for release, you can build it - all resources will be combined, and no more referencing will occure'
+
+                        div.hint {
+                          'Any time you can import all referenced resources to projects directory. '
+                          i > 'You may need this, for example, for sending your dev-project to smbd. else.'
+
+                          p > code > ' > includejs project-import'                          
+                        } 
+                        
+                        p.hint > 'This will import only resources you use in your project (scripts, images, views, etc.), and not the whole directories.'
+                    }                    
                 }
             }
             

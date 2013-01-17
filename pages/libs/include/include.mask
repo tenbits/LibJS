@@ -75,11 +75,12 @@ scroller.content {
                 li > a href='#/include/api/load' > '.load(package)'
                 li > a href='#/include/api/ajax' > '.ajax(package)'
                 li > a href='#/include/api/embed' > '.embed(package)'
-                li > a href='#/include/api/lazy' > '.lazy(package)'
-                li > a href='#/include/api/wait' > '.wait()'
+                li > a href='#/include/api/lazy' > '.lazy(package)'                
                 li > a href='#/include/api/done' > '.done(fn)'
                 li > a href='#/include/api/ready' > '.ready(fn)'
-                li > a href='#/include/api/cfg' > '.cfg(routes)'
+                li > a href='#/include/api/cfg' > '.cfg(cfg)'
+                li > a href='#/include/api/cfg' > '.routes(routes)'
+                li > a href='#/include/api/cfg' > '.instance()'
             }
             prism src='/api.help/include.help.js';   
         }

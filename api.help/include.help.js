@@ -82,7 +82,7 @@ void function(){
 		 */
 		.ready(function() { console.log('dom ready'); });
 		
-	/** .cfg - define routing */
+	/** .cfg -  */
 	
 	include
 		/**
@@ -130,7 +130,38 @@ void function(){
 					lib: 'include/loader/coffee/loader'
 				}
 			}
-		});
+		})
+		
+		/**
+		 *	[.routes](name=routes)
+		 *
+		 *	For a namespace you define some formatted route, ex.: '/lib/{0}/{1}.js',
+		 *	then template path for this route can be - ex.: 'jquery/mywidget'.
+		 *	If you specify less "breadcrumbs" as needed, for example
+		 *	for this path: 'jquery' - this url will be resolved as '/lib/jquery/jquery.js'
+		 *	
+		 *	Note that forward slash means, that the resource path is relative to
+		 *		applications root path, as without that forward slash this path will be
+		 *		relative to current resource's path.
+		 */
+		.routes({
+			/**
+			 *	Resolve example:
+			 *		{lib: 'jquery/mywidget'} -> /.reference/jquery/mywidget.js
+			 *		{lib: 'jquery'} -> /.reference/jquery/jquery.js
+			 */
+			lib: '/.reference/{0}/{1}.js',
+			/**
+			 *	Resolve example:
+			 *		{style: 'form/dark'} -> styles/form/dark.css
+			 */
+			style: '/sctyles/{0}.css'			
+		})
+		
+		/**
+		 *	Create new Include Instance
+		 */		
+		.instance()
 		
 	}
 }();
