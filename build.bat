@@ -1,1 +1,1 @@
-includejs build.config
+includejs

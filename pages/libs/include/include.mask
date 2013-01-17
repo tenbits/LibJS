@@ -17,16 +17,16 @@ scroller.content {
                     li { 'Inline Declaration' div.hint > 'No external files (such as "package.json")' }
                     li { 
                         'No prerequest for module definitions' 
-                        div.hint > 'Can be load any javascript file'
+                        div.hint > 'Can load any javascript file'
                     }
                     li { 
-                        'Routing'
+                        'Namespaced Routing'
                         prism > 'include.routes({ lib: "/src/myLib/{0}.js" }); /*...*/ include.js({ lib:"myScript"})'
                     }
                     li {
                         'Parameterized Include'
                         prism > 'include.js({compo: "myComponent?color=white"})'
-                        'And myComponent.js could be as such:'
+                        'And ' tt > 'myComponent.js'  ' could be as such:'
                         prism > 'document.body.style.backgroundColor = include.iparams.color'
                     }
                     li {
@@ -47,9 +47,6 @@ scroller.content {
                             div > 'IncludeJS.Builder will compile/parse that resource for better Performance'
                         }
                     }    
-                    li {
-                        'Browser And NodeJS'                        
-                    }              
                     li { 'Callbacks' div.hint > 'Sub- and ResourceLoaded and DOMContentLoaded' }
                     li { 'Lazy Modules' div.hint > 'Parse(eval) Scripts only when they are needed' }
                     li {
@@ -65,8 +62,8 @@ scroller.content {
 
 
                     
-                    li { 'Size ' div.hint > 'Uglified only 8.6KB' }                
-                    li > 'Also can be used in NodeJS environment'
+                    li { 'Size ' div.hint > 'Uglified 11KB' }                
+                    li > 'Browser and NodeJS environment'
                 }
                 'No Dependencies'
             }

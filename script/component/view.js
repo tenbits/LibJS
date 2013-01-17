@@ -57,9 +57,9 @@ include.css('view.css').done(function() {
          }
          
          
-         var prisms = this.all('prism','compo');
+         var prisms = this.findAll('prism','compo');
          if (prisms && prisms.length){
-            when(this.all('prism', 'compo'), this.update.bind(this, info));
+            when(this.findAll('prism', 'compo'), this.update.bind(this, info));
             return;
          }
          

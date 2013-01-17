@@ -7,7 +7,7 @@ include.routes({
 	controller: '/script/component/{0}.js',
 	uicontrol: '/script/control/{0}.js'
 }).js({
-	framework: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
+	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
 	lib: ['compo','ranimate'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
@@ -16,7 +16,6 @@ include.routes({
 	'': ['/script/utils/maskUtils.js']
 }).ready(function() {
 
-	
 	var w = window,
 		model = {
 
@@ -98,10 +97,6 @@ include.routes({
 			}]
 		};
 
-
-
-	Compo.config.setDOMLibrary($);
-
 	w.app = new new Class({
 		Base: Compo,
 		attr: {
@@ -112,7 +107,6 @@ include.routes({
 			menu: ['$: menu',
 			{
 				'click: .viewTitle': function(e) {
-					console.log('mouseup');
 					var view = $(e.target).data('view');
 					w.routes.navigate(view);
 				},
@@ -129,10 +123,11 @@ include.routes({
 
 	w.app.render(model).insert(document.body);
 
-	w.routes.add('/:view/?:category/?:anchor', function(current) {
-		console.log('current', current);
+
+	w.routes.add('/:view/?:category/?:anchor', function(current) {		
 		w.viewsManager.show(current);
 	});
+
 
 	w.viewsManager.show(w.routes.current() || {
 		view: 'about'

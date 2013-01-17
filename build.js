@@ -1,4 +1,4 @@
-{
+global.config = {
 	"file": "index.dev.html",
 	"outputMain": "index.html",
 	"outputSources": "index.build/",
