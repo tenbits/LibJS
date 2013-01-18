@@ -129,7 +129,16 @@
 				coffee: {
 					lib: 'include/loader/coffee/loader'
 				}
-			}
+			},
+			
+			/**
+			 *	Enable AMD module and exports object per resource
+			 *
+			 *	Are aliases for include.exports = ...
+			 *
+			 *	@default FALSE
+			 */
+			modules: true
 		})
 		
 		/**

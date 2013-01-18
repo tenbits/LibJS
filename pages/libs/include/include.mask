@@ -60,7 +60,11 @@ scroller.content {
                         div.hint > 'We use it for Mobile Development mainly' 
                     }
 
-
+					li {
+						'"module" and "exports" can be enabled with .cfg({modules:true})'
+						div.hint > 'That objects are aliases for include.exports'
+						div.hint > '.defineProperty is required'						
+					}
                     
                     li { 'Size ' div.hint > 'Uglified 11KB' }                
                     li > 'Browser and NodeJS environment'
