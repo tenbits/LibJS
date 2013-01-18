@@ -1,4 +1,4 @@
-void function(){
+(function(){
 	
 	/** "Best Documentation is in simple, but full use case with comments" */
 
@@ -161,7 +161,30 @@ void function(){
 		/**
 		 *	Create new Include Instance
 		 */		
-		.instance()
+		.instance();
+
+
+
+		/**
+		 *	Define exports
+		 *
+		 *	It can be any instance - {Function} {Object} {String} ...
+		 *
+		 *	This is optional, and can be then accessed by parent resource in
+		 *	.done/.ready callback.
+		 *	*/
 		
+		include.exports = function(){ /* ... */ }
+		
+		/**
+		 *	If you use autoreload feature of includejs.builder, then
+		 *	specify reload function of current resource, then this wll be fired if resource file has changed.
+		 *	Default: If *.js file changes, then complete window reload occures
+		 */
+		include.reload = function(newSource){
+			/** ... some unload logic ... */
+			__eval(newSource);
+			/** ... some init logic ... */
+		}
 	}
-}();
+}());
