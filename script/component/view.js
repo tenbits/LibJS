@@ -16,14 +16,13 @@ include.css('view.css').done(function() {
 
    mask.registerHandler('view', Class({
       Base: Compo,
-      Extends: CompoUtils,
       Construct: function() {
          (this.attr || (this.attr = {}))['class'] = 'view';
       },
-      render: function(values, container, cntx) {
+      render: function(model, container, cntx) {
          this.tagName = 'div';
-
-         Compo.prototype.render.apply(this, arguments);
+         
+         Compo.render(this, model, container, cntx);
       },
       events: {
          'changed: .radioButtons': function(e, target) {
@@ -57,9 +56,9 @@ include.css('view.css').done(function() {
          }
          
          
-         var prisms = this.findAll('prism','compo');
+         var prisms = Compo.findAll(this, 'prism','compo');
          if (prisms && prisms.length){
-            when(this.findAll('prism', 'compo'), this.update.bind(this, info));
+            when(Compo.findAll(this, 'prism', 'compo'), this.update.bind(this, info));
             return;
          }
          
