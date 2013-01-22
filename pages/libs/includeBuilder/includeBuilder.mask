@@ -16,6 +16,7 @@ layout:view master='view' {
 		p.container.tabPanel {
 			div.info.active {
 				div {
+				    prism > ' > npm install -g includejs'
 					ul {
 						li {
 							'Builder - Combine Resources included with IncludeJS'
