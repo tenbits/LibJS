@@ -68,7 +68,7 @@
 					initVendorStrings();
 				}
 
-                
+
                 style[vendor.TransitionProperty] = 'none';
                 style[vendor.Transform] = 'rotate(0deg)';
 
@@ -113,7 +113,7 @@
         },
         show: function() {
             this.start();
-            this.$.show();            
+            this.$.show();
             return this;
         },
         hide: function() {
@@ -139,7 +139,7 @@
         },
         render: function() {
             this.tagName = 'div';
-            this.attr.style = 'position:fixed; top:0px; left:0px; right: 0px; bottom:0px;background:rgba(0,0,0,.5);display:none;';
+            this.attr.style = 'position:fixed; top:0px; left:0px; right: 0px; bottom:0px; display:none;';
             this.nodes = {
                 tagName: 'spinner',
                 attr: {
@@ -150,9 +150,9 @@
                 }
             };
 
-            Compo.prototype.render.apply(this, arguments);            
+            Compo.prototype.render.apply(this, arguments);
         },
-        show: function() {            
+        show: function() {
             this.$.show();
             this.compos.spinner.show();
             return this;

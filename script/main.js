@@ -4,20 +4,22 @@ window.onerror = function(){
 };
 
 include.routes({
-	controller: '/script/component/{0}.js',
-	uicontrol: '/script/control/{0}.js'
+	controller: '/script/controller/{0}.js',
+	uicontrol: '/script/control/{0}.js',
+	script: '/script/{0}.js'
 }).js({
 	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
 	lib: ['compo','ranimate'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
-	controller: ['viewsManager', 'view'],
+	controller: ['viewsManager', 'view', 'default'],
 	uicontrol: ['radioButtons', 'pageActivity'],
-	'': ['/script/utils/maskUtils.js']
+	script: ['utils/maskUtils', 'pages']
 }).ready(function() {
 
-	var w = window,
-		model = {
+	var w = window;
+
+	window.model = {
 
 			menuModel: [{
 				title: 'About',
@@ -53,15 +55,15 @@ include.routes({
 						view: 'ruqq/routing',
 						title: 'Routing'
 					}, {
-						view: 'ruqq/arr',
+						view: 'ruqq/array',
 						title: 'Array Helper'
 					}, {
-						view: 'ruqq/obj',
+						view: 'ruqq/object',
 						title: 'Object Helper'
 					}, ]
 				},{
 					view: 'ranimate',
-					title: 'RAnimateJS',					
+					title: 'RAnimateJS',
 				},
 
 				]
@@ -124,7 +126,7 @@ include.routes({
 	w.app.render(model).insert(document.body);
 
 
-	w.routes.add('/:view/?:category/?:anchor', function(current) {		
+	w.routes.add('/:view/?:category/?:anchor', function(current) {
 		w.viewsManager.show(current);
 	});
 

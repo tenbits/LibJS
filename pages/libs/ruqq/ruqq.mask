@@ -1,54 +1,56 @@
+layout:view master='view' {
 
-header {
-    'RuqqJS'
-    a.github-ribbon href='https://github.com/tenbits/RuqqJS';
-}
+    header {
+        a.github-ribbon href='https://github.com/tenbits/RuqqJS';
+    }
 
-scroller.content#maskScroller {
-    p.container.tabPanel {
-        div.info.active {
-            div > 'Here are helper classes for "daily dev". '
-            div.hint > 'This Lib is still in work, as it is pretty dirty.'
-            
-            ul {
-                li {
-                    code > 'ruqq.arr'
-                    div > 'Array Helpers'
+    tabs {
+        radioButtons{
+            button.active name='info' > 'Info'
+            button name='routing' > 'Routing'
+            button name='array' > 'Array'
+            button name='object' > 'Object'
+        }
+    }
+
+    content {
+        p.container.tabPanel {
+            div.info.active {
+                div > 'Here are helper classes for "daily dev". '
+                div.hint > 'This Lib is still in work, as it is pretty dirty.'
+
+                ul {
+                    li {
+                        code > 'ruqq.arr'
+                        div > 'Array Helpers'
+                    }
+                    li {
+                        code > 'ruqq.animate'
+                        div > 'Animation Helpers / CssSprite Animation'
+                    }
+                    li {
+                        code > 'ruqq.events'
+                        div > 'Event Helpers'
+                    }
+                    li {
+                        code > 'utils'
+                        div > 'Object. , String. , Date. Helpers'
+                    }
+                    li {
+                        code > 'ruqq.net.URI'
+                        div > 'URI Class'
+                    }
                 }
-                li {
-                    code > 'ruqq.animate'
-                    div > 'Animation Helpers / CssSprite Animation'
-                }
-                li {
-                    code > 'ruqq.events'
-                    div > 'Event Helpers'
-                }                
-                li {
-                    code > 'utils'
-                    div > 'Object. , String. , Date. Helpers'
-                }
-                li {
-                    code > 'ruqq.net.URI'
-                    div > 'URI Class'
-                }
+
             }
-            
-        }      
-        div.animation {
-            
             div.animation {
-                div.animatedPanel style='width:100px; height:100px; background:red;';  
+
+                div.animation {
+                    div.animatedPanel style='width:100px; height:100px; background:red;';
+                }
             }
         }
     }
-}
 
-footer {
-    radioButtons{
-        button.active name='info' > 'Info'        
-        button name='animation' > 'Animation'
-        button name='routing' > 'Routing'
-        button name='array' > 'Array'
-        button name='object' > 'Object'
-    }
+
 }

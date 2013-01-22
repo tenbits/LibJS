@@ -1,4 +1,5 @@
-include.css('view.css').done(function() {
+include.css('view.css').done(function(resp) {
+
 
    function when(idfrs, callback) {
       var wait = idfrs.length,

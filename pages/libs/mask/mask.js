@@ -1,19 +1,7 @@
-include.js({
-	compo: 'scroller'
-}).load(['mask.mask', 'mask.examples.txt']).done(function(r) {
+include.load('mask.examples.txt').done(function(r) {
 
-	var w = window;
 
-	console.log('r',r);
-
-	console.log('register maskView');
-	mask.registerHandler('maskView', Class({
-		Base: mask.getHandler('view'),
-		attr: {
-			id: 'maskView',
-			template: r.load.mask
-		}
-	}));
+	include.exports = window.DefaultController;
 
 	mask.registerHandler('maskExamples', Class({
 		render: function(values, container, cntx) {
@@ -29,12 +17,13 @@ include.js({
 
 			var Template = "div.example {\
 								h4 {\
-									'#{title}'\
+									\
 									span.collapsable.#{:index==0?'':'closed'} {\
 										span > '∨' span > '∨' span > '∨' span > '∨'\
 									}\
+									'#{title}'\
 								}\
-								div.data style='#{:index > 0 ? \"display:none\"}' {\
+								div.data style='#{:index > 0 ? \"display:none\"}; padding-left:20px;' {\
 									h6 > 'Template'\
 									prism > '#{template}'\
 									h6 > 'Javascript'\

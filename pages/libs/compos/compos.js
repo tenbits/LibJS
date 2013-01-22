@@ -1,4 +1,4 @@
-include.load('compos.mask').done(function(r) {
+(function() {
 
 	var tags = {};
 	var TagItem = Class({
@@ -28,26 +28,22 @@ include.load('compos.mask').done(function(r) {
 			}
 		}
 	});
-    
-    
+
+
 
 	function doSwitch($current, $next, $container) {
 
 		$current.removeClass('active');
 		$next.addClass('active');
-		
+
 		new ruqq.animate.Model({
-			model: 'opacity | .3 > 1 | 300ms' //				
+			model: 'opacity | .3 > 1 | 300ms' //
 		}).start($container.parent()[0]);
-		
+
 	}
 
-	mask.registerHandler('composView', Class({
-		Base: mask.getHandler('view'),
-		attr: {
-			id: 'composView',
-			template: r.load.compos
-		},
+	include.exports = Class({
+		Base: DefaultController,
 		compos: {
 			'$panel': '$: .container',
 			'scroller': 'compo: scroller'
@@ -56,7 +52,7 @@ include.load('compos.mask').done(function(r) {
 
 			var tag = route.category,
                 item = tags[tag];
-                
+
 			if (item) {
 				this.show(tag);
 				item.update();
@@ -70,8 +66,8 @@ include.load('compos.mask').done(function(r) {
 
                 var item = new TagItem().render(tag, response, this.compos.$panel[0], this.compos.scroller);
 				tags[tag] = item;
-				
-                this.show(tag);                
+
+                this.show(tag);
                 item.update();
 			}.bind(this));
 		},
@@ -89,9 +85,8 @@ include.load('compos.mask').done(function(r) {
 			}
 			return;
 		}
-	}));
+	});
 
 	window.tags = tags;
 
-	r = null;
-});
+}());

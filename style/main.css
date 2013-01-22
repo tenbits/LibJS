@@ -2,14 +2,14 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: rgb(250,253,250);    
+    background: rgb(250,253,250);
     min-width: 600px;
-	
+
     font-family: 'Segoe UI', 'Helvetica', sans-serif;
 	position: relative;
-	
+
 	min-height: 500px;
-	height: 100%;    
+	height: 100%;
 }
 
 ul {
@@ -17,7 +17,7 @@ ul {
 }
 
 body {
-	height: 100%;	
+	height: 100%;
 	color: #333;
 	background-color:#222;
 }
@@ -49,7 +49,7 @@ div.footer {
     width:100%;
     z-index: 0;
     background: url(../images/grass.png) bottom left repeat-x;
-	background-size: 100%;	
+	background-size: 100%;
 }
 
 
@@ -59,7 +59,7 @@ div.footer {
     border:1px solid rgba(230,230,230,1);
     color: rgb(50,70,50);
 	text-shadow: 0px 0px 4px #eee;
-	
+
 	font-family: monospace;
 }
 
@@ -67,23 +67,23 @@ div.footer {
     position:absolute;
     top: -12px;
     right: -12px;
-	
+
 	width:64px;
 	height:64px;
 	background: url(../images/github.png) 0 0 no-repeat;
-	
+
 	-webkit-transform: scale(.5) rotate(0deg);
-	-webkit-transition: -webkit-transform 200ms ease-in;	
+	-webkit-transition: -webkit-transform 200ms ease-in;
 	-moz-transform: scale(.5) rotate(0deg);
-	-moz-transition: -webkit-transform 200ms ease-in;	
+	-moz-transition: -webkit-transform 200ms ease-in;
 	-o-transform: scale(.5) rotate(0deg);
-	-o-transition: -webkit-transform 200ms ease-in;	
+	-o-transition: -webkit-transform 200ms ease-in;
 	transform: scale(.5) rotate(0deg);
 	transition: -webkit-transform 200ms ease-in;
-	
-	
+
+
 	z-index: 5;
-	
+
 }
 .github-ribbon:before {
 	content: 'Fork';
@@ -96,26 +96,26 @@ div.footer {
 }
 
 .github-ribbon:hover{
-	
+
 	-webkit-transform: scale(1) rotate(360deg);
 	-moz-transform: scale(1) rotate(360deg);
 	-o-transform: scale(1) rotate(360deg);
 	transform: scale(1) rotate(360deg);
-	
+
 }
 
 
 .page {
 	height:100%;
-	min-height:100%;	
+	min-height:100%;
 	min-width: 800px;
-	
-	
+
+
 	background-color: #E8D1AE;
-	
+
 	background: url(../images/wood.jpg) 0 0 repeat;
 	background: url(../images/grass.png) bottom left no-repeat, url(../images/wood.jpg) 0 0 repeat;
-	
+
 	border-left: 250px solid transparent;
 }
 
@@ -136,7 +136,7 @@ button{
     background: -moz-linear-gradient(top, #e1e1e1, #aaa);
     background: -o-linear-gradient(top, #e1e1e1, #aaa);
     background: -ms-linear-gradient(top, #e1e1e1, #aaa);
-    
+
 	text-overflow: ellipsis;
 	cursor: pointer;
     letter-spacing: 1px;
@@ -145,30 +145,35 @@ button:active {
 	background: -webkit-linear-gradient(top, #aaa, #e1e1e1); top: 1px;
     background: -moz-linear-gradient(top, #aaa, #e1e1e1);
     background: -o-linear-gradient(top, #aaa, #e1e1e1);
-    
+
+}
+div.radioButtonsfg {
+	float:left;
+	margin-right: 15px;
 }
 div.radioButtons > button {
     border-right-width: 0px;
     border-radius: 0px;
     border-left: 1px solid rgba(15,15,15,.4);
-	
+
 	-webkit-transition: box-shadow 100ms linear, background-color 200ms linear;
 	-moz-transition: box-shadow 100ms linear, background-color 200ms linear;
 	-o-transition: box-shadow 100ms linear, background-color 200ms linear;
-	
+
 	line-height: 1em;
-	
+
 	text-shadow: none;
 }
 div.radioButtons > button:first-child{
     border-left-width: 1px;
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
+    /*border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;*/
 }
 div.radioButtons > button:last-child{
-    border-right-width: 0px;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
+
+    border-right-width: 1px;
+    /*border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;*/
 }
 div.radioButtons > button.active {
     box-shadow: inset 0px 0px 10px #000;
@@ -188,12 +193,12 @@ div.radioButtons > button.active {
     /*background: #EEEEEE url(../images/dust.png) 0 0 repeat;*/
 	background: #F3F0ED url(../images/dust2.png) 0 0 repeat;
 	overflow: auto;
-	
+
 }
 
 .container {
     /*min-height:100%;*/
-    padding: 10px;    
+    padding: 10px;
 }
 
 h6, h5, h4 { margin:3px 0px; padding: 4px 0px; }
@@ -213,7 +218,7 @@ pre > code {
 
 code, pre{
     padding: 0px 5px !important;
-    margin: 2px !important;    
+    margin: 2px !important;
 }
 ul.tiny {margin-left: 8px; padding-left: 5px;}
 ul.tiny li { margin-bottom: 4px; padding-bottom: 4px; border-bottom: 2px dotted #bbb; }
@@ -224,13 +229,13 @@ p {
 }
 
 
-.collapsable { margin-left: 30px; cursor: pointer; }
-.collapsable > span {    
+.collapsable { margin-right: 30px; cursor: pointer; }
+.collapsable > span {
     -webkit-transition: -webkit-transform 100ms linear;
     -moz-transition: -moz-transform 100ms linear;
     -o-transition: -o-transform 100ms linear;
     -ms-transition: -ms-transform 100ms linear;
-    
+
     display: inline-block;
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
@@ -254,13 +259,13 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
 }
 #includeView .scroller{
     border-top:1px solid #333;
-    border-bottom: 1px solid #333;    
+    border-bottom: 1px solid #333;
 }
 
 #maskView .examples {
     padding-bottom: 40px;
 }
-#maskView .example {    
+#maskView .example {
     margin: 10px 0px;
     padding-bottom: 5px;
 	border-bottom: 2px dotted #888;
@@ -299,7 +304,7 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
 	height:16px;
 	line-height: 16px;
 	text-align: center;
-	
+
 	left: -16px;
 	top: -5px;
 	background: rgba(255,255,255,.7);
@@ -322,7 +327,7 @@ hr {
 	color:white;
 	font-size: 1.5em;
 	text-align: center;
-	
+
 	background:#333;
 	z-index: 999999;
 }

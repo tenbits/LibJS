@@ -1,7 +1,7 @@
 
 layout:master#tagApiItem {
     div {
-        hr;                
+        hr;
         h4 > code > placeholder#title;
         p.description {
             placeholder#description;
@@ -11,7 +11,7 @@ layout:master#tagApiItem {
             div {
                 placeholder#include;
             }
-            div {               
+            div {
                 placeholder#source;
             }
         }
@@ -24,7 +24,7 @@ layout:master#tagApiItem {
             div > 'Component: '
             table.api-list cellspacing='0' > placeholder#component;
         }
-        
+
 
         p {
             div > 'Depends: '
@@ -37,7 +37,9 @@ layout:master#tagApiItem {
     }
 }
 
+layout:view master='viewFull' {
 
-scroller.content.maximized.tagAPI > p.container.tabPanel{
-    
+    content > .content.maximized.tagAPI > p.container.tabPanel{
+
+    }
 }

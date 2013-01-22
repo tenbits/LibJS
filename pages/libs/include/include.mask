@@ -1,99 +1,100 @@
+layout:view master='view' {
 
-header {
-    'IncludeJS'
-    a.github-ribbon href='https://github.com/tenbits/IncludeJS';
-}
+	title {
+		a.github-ribbon href='https://github.com/tenbits/IncludeJS';
+	}
 
-scroller.content {
-    p.tabPanel{
-        div.info.active {
-            div {            
-                ul {
-                    li { 
-                        'Resource Loader' 
-                        div.hint > 'Javascript, Style, HTML, Ajax, Image' 
-                        div.hint > 'Javascript can be loaded using XMLHttpRequest with eval() and also by embedding script tags with "src=%path%" attribute'
-                    }
-                    li { 'Inline Declaration' div.hint > 'No external files (such as "package.json")' }
-                    li { 
-                        'No prerequest for module definitions' 
-                        div.hint > 'Can load any javascript file'
-                    }
-                    li { 
-                        'Namespaced Routing'
-                        prism > 'include.routes({ lib: "/src/myLib/{0}.js" }); /*...*/ include.js({ lib:"myScript"})'
-                    }
-                    li {
-                        'Parameterized Include'
-                        prism > 'include.js({compo: "myComponent?color=white"})'
-                        'And ' tt > 'myComponent.js'  ' could be as such:'
-                        prism > 'document.body.style.backgroundColor = include.iparams.color'
-                    }
-                    li {
-                        'Module Exports. Example: myScript.js'
-                        prism > 'include.exports = { someFunction: function(){ console.log("hey"); } }'
-                    }
-                    li { 
-                        'Javascript Aliases'
-                        prism > 'include.js("myScript.js::MyObj").done(function(resp){ resp.MyObj.someFunction(); })'
-                        'or without alias'
-                        prism > 'include.js("myScript.js").done(function(resp){ resp.myScript.someFunction(); })'
-                    }  
-                    li {
-                        'Custom Loader. Already supports: *.coffee, *.less'
-                        div.hint {
-                            div > 'Best to use in development - no more need to build coffee or less resources before test it'
-                            div > 'Any *.js can be replaced with *.coffee equivalent, and you do not even notice this'
-                            div > 'IncludeJS.Builder will compile/parse that resource for better Performance'
-                        }
-                    }    
-                    li { 'Callbacks' div.hint > 'Sub- and ResourceLoaded and DOMContentLoaded' }
-                    li { 'Lazy Modules' div.hint > 'Parse(eval) Scripts only when they are needed' }
-                    li {
-                        'Stand alone'                        
-                    }
-                    li { 
-                        'Performance ' 
-                        div.hint > 'Loading with script tag is slower, as XMLHttpRequest, 
-                                        but good for development, as by exceptions file name and line number are shown.'
-                        div.hint > 'After IncludeJS.Builder builds the project no more needed' 
-                        div.hint > 'We use it for Mobile Development mainly' 
-                    }
+	tabs {
+		radioButtons{
+			button.active name='info' > 'Info'
+			button name='api' > 'Api'
+		}
+	}
+	content {
+		p.container.tabPanel{
+			div.info.active {
+				div {
+					ul {
+						li {
+							'Resource Loader'
+							div.hint > 'Javascript, Style, HTML, Ajax, Image'
+							div.hint > 'Javascript can be loaded using XMLHttpRequest with eval() and also by embedding script tags with "src=%path%" attribute'
+						}
+						li { 'Inline Declaration' div.hint > 'No external files (such as "package.json")' }
+						li {
+							'No prerequest for module definitions'
+							div.hint > 'Can load any javascript file'
+						}
+						li {
+							'Namespaced Routing'
+							prism > 'include.routes({ lib: "/src/myLib/{0}.js" }); /*...*/ include.js({ lib:"myScript"})'
+						}
+						li {
+							'Parameterized Include'
+							prism > 'include.js({compo: "myComponent?color=white"})'
+							'And ' tt > 'myComponent.js'  ' could be as such:'
+							prism > 'document.body.style.backgroundColor = include.iparams.color'
+						}
+						li {
+							'Module Exports. Example: myScript.js'
+							prism > 'include.exports = { someFunction: function(){ console.log("hey"); } }'
+						}
+						li {
+							'Javascript Aliases'
+							prism > 'include.js("myScript.js::MyObj").done(function(resp){ resp.MyObj.someFunction(); })'
+							'or without alias'
+							prism > 'include.js("myScript.js").done(function(resp){ resp.myScript.someFunction(); })'
+						}
+						li {
+							'Custom Loader. Already supports: *.coffee, *.less'
+							div.hint {
+								div > 'Best to use in development - no more need to build coffee or less resources before test it'
+								div > 'Any *.js can be replaced with *.coffee equivalent, and you do not even notice this'
+								div > 'IncludeJS.Builder will compile/parse that resource for better Performance'
+							}
+						}
+						li { 'Callbacks' div.hint > 'Sub- and ResourceLoaded and DOMContentLoaded' }
+						li { 'Lazy Modules' div.hint > 'Parse(eval) Scripts only when they are needed' }
+						li {
+							'Stand alone'
+						}
+						li {
+							'Performance '
+							div.hint > 'Loading with script tag is slower, as XMLHttpRequest,
+											but good for development, as by exceptions file name and line number are shown.'
+							div.hint > 'After IncludeJS.Builder builds the project no more needed'
+							div.hint > 'We use it for Mobile Development mainly'
+						}
 
-					li {
-						'"module" and "exports" can be enabled with .cfg({modules:true})'
-						div.hint > 'That objects are aliases for include.exports'
-						div.hint > '.defineProperty is required'						
+						li {
+							'"module" and "exports" can be enabled with .cfg({modules:true})'
+							div.hint > 'That objects are aliases for include.exports'
+							div.hint > '.defineProperty is required'
+						}
+
+						li { 'Size ' div.hint > 'Uglified 11KB' }
+						li > 'Browser and NodeJS environment'
 					}
-                    
-                    li { 'Size ' div.hint > 'Uglified 11KB' }                
-                    li > 'Browser and NodeJS environment'
-                }
-                'No Dependencies'
-            }
-        }
-        div.api {
-            ul.anchors {
-                li > a href='#/include/api/js' > '.js(package)'
-                li > a href='#/include/api/css' > '.css(package)'
-                li > a href='#/include/api/load' > '.load(package)'
-                li > a href='#/include/api/ajax' > '.ajax(package)'
-                li > a href='#/include/api/embed' > '.embed(package)'
-                li > a href='#/include/api/lazy' > '.lazy(package)'                
-                li > a href='#/include/api/done' > '.done(fn)'
-                li > a href='#/include/api/ready' > '.ready(fn)'
-                li > a href='#/include/api/cfg' > '.cfg(cfg)'
-                li > a href='#/include/api/cfg' > '.routes(routes)'
-                li > a href='#/include/api/cfg' > '.instance()'
-            }
-            prism src='/api.help/include.help.js';   
-        }
-    }
-}
+					'No Dependencies'
+				}
+			}
+			div.api {
+				ul.anchors {
+					li > a href='#/include/api/js' > '.js(package)'
+					li > a href='#/include/api/css' > '.css(package)'
+					li > a href='#/include/api/load' > '.load(package)'
+					li > a href='#/include/api/ajax' > '.ajax(package)'
+					li > a href='#/include/api/embed' > '.embed(package)'
+					li > a href='#/include/api/lazy' > '.lazy(package)'
+					li > a href='#/include/api/done' > '.done(fn)'
+					li > a href='#/include/api/ready' > '.ready(fn)'
+					li > a href='#/include/api/cfg' > '.cfg(cfg)'
+					li > a href='#/include/api/cfg' > '.routes(routes)'
+					li > a href='#/include/api/cfg' > '.instance()'
+				}
+				prism src='/api.help/include.help.js';
+			}
+		}
+	}
 
-footer {
-    radioButtons{
-        button.active name='info' > 'Info'
-        button name='api' > 'Api'        
-    }
 }

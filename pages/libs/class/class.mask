@@ -1,11 +1,21 @@
+layout:view master='view' {
 
-header {
-    'ClassJS'
-    a.github-ribbon href='https://github.com/tenbits/ClassJS';
-}
+    title {
+        a.github-ribbon href='https://github.com/tenbits/ClassJS';
+    }
 
-scroller.content#maskScroller {
-    div.container.tabPanel {
+
+
+
+    tabs {
+        radioButtons {
+            button.active name='info' > 'Info'
+            button name='api' > 'API'
+        }
+    }
+
+
+    content > .container.tabPanel {
         div.info.active {
             ul {
                 li {
@@ -18,15 +28,9 @@ scroller.content#maskScroller {
                     div.hint > 'Compiled: 1.3KB'
                 }
                 li > 'No Dependencies'
-            }            
-        }      
+            }
+        }
         div.api > prism src='/api.help/class.api.js';
     }
-}
 
-footer {
-    radioButtons{
-        button.active name='info' > 'Info'
-        button name='api' > 'API'        
-    }
 }

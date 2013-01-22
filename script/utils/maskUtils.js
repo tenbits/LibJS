@@ -26,13 +26,13 @@
         },
         render: function(values, container, cntx) {
             this.makePre(this.nodes);
-            mask.renderDom(this.nodes, values, container, cntx);
+            mask.render(this.nodes, values, container, cntx);
         }
     }));
 	
 	
 	
-	if (ruqq.info.engine.name !== 'webkit'){
+	if (ruqq.info.engine.name !== 'webkit' || 1){
 		mask.registerHandler('scroller',Class({
 			render: function(model, container,cntx){
 				this.tagName = 'div';

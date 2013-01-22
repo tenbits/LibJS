@@ -1,177 +1,182 @@
-header {
-    'LibJS Project'
-    div style='text-align:right; float:right;' > 'Tao 道 Application Framework'
-}
 
-scroller.content.about > p.container.tabPanel{
-    div.info.active {
-        h4 > 'Component Composition in HTML5 Application without Javascript'
-        
-        div style='text-align:justify; padding-right: 15px;' {
-            div >"
-                This is called a Project, as I don't want to keep things tight together as one monolith framework. 
-                Here are several libraries, which gained to reduce development time, and increase fun a lot. 
+layout:view master='view' {
 
-                At first, you should know, that everything is done with mobile performance in mind."
-            p > "Here are first steps to get acquainted with the project."
+    title {
+        'LibJS Project  道 '
+    }
 
-            ol {
-                li {
-                    a href='#mask' > 'MaskJS' 
-                    " — Zen-Coding Dom-Based Template Engine. Render and Build Engine is fast enough, that no template precompile before production 
-                        is required. "
-
-                    "  Syntax of Mask Markup is almost completely declarative, means - contains no (or little) javascript logic. The most powerful feature is 
-                     the ability to apply custom handlers to your tags. This opens door for such components as Two-Way-DataModel Bindings, Data Validations, 
-                     MasterViews. No more placeholders for your widgets — embed them directly."
-                }
-                
-                li {
-                    a href='#compo' > "CompoJS" " — this small lib is build on top of MaskJS Custom Tag Feature. It
-                     will bring MVC structure to your views and components. "
-                }
-                
-                li {
-                    a href='http://github.com/tenbits/Compos' target='_blank' > "Compos" " — there are all my components or wrappers of well known widgets. 
-                    Some of them you may need rare, some of them may become integral part of MaskJS. Everything depends on your needs."
-                }
-
-                li {
-                    a href='#include' > "IncludeJS" 
-                    " — Resource Loader for your components and models. You will definitely think, that I could use any loader out there, 
-                        like RequireJS. But there was plenty of features, that I missed. And I hope, you like them too."
-                }
-
-                li {
-                    a href='#includeBuilder' > 'IncludeJS.Builder' " — a big brother of IncludeJS.
-                        Combines all included resources. It also runs jshint, uglify, css-min and etc."                
-                }
-
-                li {
-                    a href='#ranimate' > "RAnimate" " — a CSS3 Animation Library"                 
-                }
-
-                li {
-                    a href='#ruqq' > 'RuqqJS' " — contains some other helper classes, as routing, Array and Object utils, etc."
-                }
-
-                li {
-                    a href='#class' > 'ClassJS' " — yes, this is Class Implementation, but small and very fast one."
-                }
-            } 
+    tabs {
+        radioButtons{
+            button.active name='info' > 'Info'
+            button name='com' > 'COM'
+            button name='install' > 'Install'
         }
+    }
 
+    content > .container.tabPanel{
+        div.info.active {
+            h4 > 'Component Composition in HTML5 Application without Javascript'
 
-        div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
-        div.hint > '∗ Almost all libraries could be used in nodejs environment'
-        
-        div {
-            h6;
-            'So, what does this mean — "without Javascript"?'
-            ' As for example, lets look at jQuery widget initialization — '
-            ol {
-                li > code > 'Define placeholder or container in HTML markup'
-                li > code > '"Somewhere" in code — $("#myCompo").initMyComponent(config)'
-            }
-            'It looks simple — only 2 lines. ' b > i > 'BUT' ', this 2 lines have also 2 Problems.'
-            ol {
-                li {
-                    div > 'Tao'
-                    div >'You separate this two lines. (1) is in markup and (2) is "somewhere" in javascript file.'
-                    div > 'Smth. must be defined only once - not twice.'
-                }
-                li {
-                    div > 'Actual Performance'
-                    div > '(2) line has performance issues - '
-                    ul  {
-                       li > 'additional DOM Querying'
-                       li > 'additional DOM Re-flow and Repaint, while rendering in that HTMLElement'
+            div style='text-align:justify; padding-right: 15px;' {
+                div > "
+                    This is called a Project, as I don't want to keep things tight together as one monolith framework.
+                    Here are several libraries, which gained to reduce development time, and increase fun a lot.
+
+                    At first, you should know, that everything is done with mobile performance in mind."
+
+                p > "Here are first steps to get acquainted with the project."
+
+                ol {
+                    li {
+                        a href='#mask' > 'MaskJS'
+                        " — Zen-Coding Dom-Based Template Engine. Render and Build Engine is fast enough, that no template precompile before production
+                            is required. "
+
+                        "  Syntax of Mask Markup is almost completely declarative, means - contains no (or little) javascript logic. The most powerful feature is
+                         the ability to apply custom handlers to your tags. This opens door for such components as Two-Way-DataModel Bindings, Data Validations,
+                         MasterViews. No more placeholders for your widgets — embed them directly."
+                    }
+
+                    li {
+                        a href='#compo' > "CompoJS" " — this small lib is build on top of MaskJS Custom Tag Feature. It
+                         will bring MVC structure to your views and components. "
+                    }
+
+                    li {
+                        a href='http://github.com/tenbits/Compos' target='_blank' > "Compos" " — there are all my components or wrappers of well known widgets.
+                        Some of them you may need rare, some of them may become integral part of MaskJS. Everything depends on your needs."
+                    }
+
+                    li {
+                        a href='#include' > "IncludeJS"
+                        " — Resource Loader for your components and models. You will definitely think, that I could use any loader out there,
+                            like RequireJS. But there was plenty of features, that I missed. And I hope, you like them too."
+                    }
+
+                    li {
+                        a href='#includeBuilder' > 'IncludeJS.Builder' " — a big brother of IncludeJS.
+                            Combines all included resources. It also runs jshint, uglify, css-min and etc."
+                    }
+
+                    li {
+                        a href='#ranimate' > "RAnimate" " — a CSS3 Animation Library"
+                    }
+
+                    li {
+                        a href='#ruqq' > 'RuqqJS' " — contains some other helper classes, as routing, Array and Object utils, etc."
+                    }
+
+                    li {
+                        a href='#class' > 'ClassJS' " — yes, this is Class Implementation, but small and very fast one."
                     }
                 }
             }
-            
-            'This Project aims to cut off this two problems and the third one — ' b > i > 'Source Code Organization'
-            
+
+
+            div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
+            div.hint > '∗ Almost all libraries could be used in nodejs environment'
+
+            div {
+                h6;
+                'So, what does this mean — "without Javascript"?'
+                ' As for example, lets look at jQuery widget initialization — '
+                ol {
+                    li > code > 'Define placeholder or container in HTML markup'
+                    li > code > '"Somewhere" in code — $("#myCompo").initMyComponent(config)'
+                }
+                'It looks simple — only 2 lines. ' b > i > 'BUT' ', this 2 lines have also 2 Problems.'
+                ol {
+                    li {
+                        div > 'Tao'
+                        div >'You separate this two lines. (1) is in markup and (2) is "somewhere" in javascript file.'
+                        div > 'Smth. must be defined only once - not twice.'
+                    }
+                    li {
+                        div > 'Actual Performance'
+                        div > '(2) line has performance issues - '
+                        ul  {
+                           li > 'additional DOM Querying'
+                           li > 'additional DOM Re-flow and Repaint, while rendering in that HTMLElement'
+                        }
+                    }
+                }
+
+                'This Project aims to cut off this two problems and the third one — ' b > i > 'Source Code Organization'
+
+                p {
+                    'What is jQuery Widget usually consists of? Right — javascript, css, images ...' br;
+                    'So to use this widget you have to copy images and scripts into project directory, copy css into application styles.' br;
+                    'Comfortable? Definitely no. With IncludeJS you "include" this all with only 1 line of code.'
+                }
+
+                'Interested? Look at the libraries and examples.'
+
+            }
+
+            h6;
+        }
+
+        div.com {
+            h4 > 'Custom Tags with MaskJS = Component Oriented Markup (COM)'
+            div > 'With this small note i would like to point out the ability to bind custom handlers to tag names. You become really smart templates
+                where you can take the benefit of old good OOP, and i would call that Component Oriented Programming:'
+            ul {
+                li {
+                    h5 > 'Abstraction'
+                    'Usually dialogs markup looks as such:'
+                    prism language="html" > formatter:pre >
+                            "<div class='overlay'> \n\t
+                                <div class='container'> \n \t\t
+                                    <div class='dialog'> \n \t\t\t
+                                        <!--content--> \n
+                            </div></div></div>"
+                    'With MaskJS it could be:'
+                    prism > "dialog { <!-- content --> }"
+                }
+                li {
+                    h5 > 'Component Fabric Pattern'
+                    prism > 'screenDependedComponet small="Compo1" big="Compo2" { <!-- content --> }'
+                    'or event better per Javascript'
+                    prism > "mask.registerHandler('myCompo', Info.smallScreen ? Compo1 : Compo2); "
+                }
+                li {
+                    h5 > 'Inheritance'
+                    div > 'You need scroller component with additional features? Your markup can stay untouched, just inherit from Scroller Component,
+                        add required features, and finally register that new component as "scroller" tag handler.'
+                }
+                li {
+                    h5 > 'Injection'
+                    div > 'Replace any element (even "div" tag) with your implementation (for tests, debug, release). Wrap any markup parts with your handler
+                        and control any behavior.'
+                }
+
+                li {
+                    '... and much more things you can start with it.'
+                }
+            }
+        }
+
+        div.install {
+            div.hint {
+                'Pre request: ' a href='http://nodejs.org/download/' target='_blank' > 'nodejs'
+            }
             p {
-                'What is jQuery Widget usually consists of? Right — javascript, css, images ...' br;
-                'So to use this widget you have to copy images and scripts into project directory, copy css into application styles.' br;
-                'Comfortable? Definitely no. With IncludeJS you "include" this all with only 1 line of code.'
+                div > code > ' > npm install includejs -g'
+                div > code > ' > cd c:/some/path'
+                div > code > ' > includejs git-clone libjs'
             }
-            
-            'Interested? Look at the libraries and examples.'
-            
+            div.hint > tt {
+                'Now all LibJS libraries are downloaded into  c:/some/path/libjs/'
+            }
+            p {
+                div > code > ' > cd c:/some/temp/test'
+                div > code > ' > includejs template starter'
+            }
+            div.hint > tt {
+                'Now under "c:/some/temp/test/" is "Hello World" small app - can see libjs in work'
+            }
+
         }
-        
-        h6;
     }
 
-    div.com {
-        h4 > 'Custom Tags with MaskJS = Component Oriented Markup (COM)'
-        div > 'With this small note i would like to point out the ability to bind custom handlers to tag names. You become really smart templates 
-            where you can take the benefit of old good OOP, and i would call that Component Oriented Programming:'
-        ul {
-            li {
-                h5 > 'Abstraction'
-                'Usually dialogs markup looks as such:'
-                prism language="html" > formatter:pre >
-                        "<div class='overlay'> \n\t
-                            <div class='container'> \n \t\t
-                                <div class='dialog'> \n \t\t\t
-                                    <!--content--> \n
-                        </div></div></div>"
-                'With MaskJS it could be:'
-                prism > "dialog { <!-- content --> }"
-            }
-            li {
-                h5 > 'Component Fabric Pattern'
-                prism > 'screenDependedComponet small="Compo1" big="Compo2" { <!-- content --> }'
-                'or event better per Javascript'
-                prism > "mask.registerHandler('myCompo', Info.smallScreen ? Compo1 : Compo2); "
-            }
-            li {
-                h5 > 'Inheritance'
-                div > 'You need scroller component with additional features? Your markup can stay untouched, just inherit from Scroller Component, 
-                    add required features, and finally register that new component as "scroller" tag handler.'
-            }
-            li {
-                h5 > 'Injection'
-                div > 'Replace any element (even "div" tag) with your implementation (for tests, debug, release). Wrap any markup parts with your handler 
-                    and control any behavior.'
-            }
-            
-            li {
-                '... and much more things you can start with it.'
-            }
-        }
-    }
-    
-    div.install {
-        div.hint {
-            'Pre request: ' a href='http://nodejs.org/download/' target='_blank' > 'nodejs'
-        }
-        p {
-            div > code > ' > npm install includejs -g'
-            div > code > ' > cd c:/some/path'
-            div > code > ' > includejs git-clone libjs'
-        }
-        div.hint > tt {
-            'Now all LibJS libraries are downloaded into  c:/some/path/libjs/'
-        }
-        p {
-            div > code > ' > cd c:/some/temp/test'
-            div > code > ' > includejs template starter'
-        }
-        div.hint > tt {
-            'Now under "c:/some/temp/test/" is "Hello World" small app - can see libjs in work'
-        }
-		
-    }
-}
-
-footer {
-    radioButtons{
-        button.active name='info' > 'Info'
-        button name='com' > 'COM'
-        button name='install' > 'Install'
-    }
 }

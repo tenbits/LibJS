@@ -1,26 +1,32 @@
+layout:view master='viewFull' {
 
-div style='padding:20px;' {
-	div style='margin-bottom:50px;'{
-		table {
-			tr {
-				td style='font-weight:bold; font-style:italic;' target='_blank' > 'email'
-				td > a href='mailto:source.kit@gmail.com' target='_blank' > 'source.kit@gmail.com'
+	
+
+	content {
+		div style='padding:20px;' {
+			div style='margin-bottom:50px;'{
+				table {
+					tr {
+						td style='font-weight:bold; font-style:italic;' target='_blank' > 'email'
+						td > a href='mailto:source.kit@gmail.com' target='_blank' > 'source.kit@gmail.com'
+					}
+					tr {
+						td style='font-weight:bold; font-style:italic;' > 'twitter'
+						td > a href='http://twitter.com/tenbits_' > '@tenbits_'
+					}
+
+				}
 			}
-			tr {
-				td style='font-weight:bold; font-style:italic;' > 'twitter'
-				td > a href='http://twitter.com/tenbits_' > '@tenbits_'
-			}
-			
+			#disqus_thread style_no='position:absolute; top:20px; left: 10px; bottom:20px; right: 10px;';
+
+			script type="text/javascript" >
+				"
+				var disqus_shortname = 'libjs',
+					disqus_identifier = 'libjs/comment',
+					disqus_url = 'http://libjs.it/',
+					disqus_developer = 0;
+				include.embed('http://libjs.disqus.com/embed.js');
+				"
 		}
 	}
-	#disqus_thread style_no='position:absolute; top:20px; left: 10px; bottom:20px; right: 10px;';
-		
-	script type="text/javascript" >
-		"
-		var disqus_shortname = 'libjs',
-			disqus_identifier = 'libjs/comment',
-			disqus_url = 'http://libjs.it/',
-			disqus_developer = 0;		
-		include.embed('http://libjs.disqus.com/embed.js');			
-		"
 }

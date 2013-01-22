@@ -7,12 +7,13 @@ include.js({
 			$current.removeClass('active');
 			$next.addClass('active');
 
+
 			var prfx = ruqq.info.cssprefix;
-			ruqq.animate($next, {				
-				property: prfx + 'transform',
-				valueFrom: 'translate3d(0px, -110%, 0px)',
-				valueTo: 'translate3d(0px, 0px, 0px)',
-				duration: 300,
+			ruqq.animate($next, {
+				property: 'opacity',
+				valueFrom: '0',
+				valueTo: '.9',
+				duration: 500,
 				timing: 'cubic-bezier(.58,1.54,.59,.75)'
 			});
 		}
@@ -28,39 +29,48 @@ include.js({
 		render: function(values, container, cntx) {
 			this.nodes = mask.compile('list value="views" > view;');
 			this.tagName = 'div';
-			Compo.prototype.render.call(this, values, container, cntx);
+			Compo.render(this, values, container, cntx);
 		},
 		load: function(info) {
 
 			var activity = Compo.findCompo(window.app, 'pageActivity').show(),
 				name = info.view.replace('View', '');
 
-			
-			//include.cfg({eval: true});
-			//(new window.includeLib.Resource)
-			include.js(String.format('/pages/libs/%1/%1.js', name)).done(function() {
-				console.log('view loaded');
-				this.append(name + 'View;', {});
+			window.Page.resolve(name, function(controller, template){
+
+				controller.prototype.attr = {
+					template: template,
+					id: name
+				};
+
+				mask.registerHandler(name + 'View', controller);
+
+				this.append(name + 'View', {});
 
 				activity.hide();
 
 
-				var compo = Compo.findCompo(this, info.view);
+				var compo = Compo.findCompo(this,  name + 'View');//'#' + name);
 				if (compo == null) {
-					console.error('Cannt be loaded', info.view);
+					console.error('Cannt be loaded', name);
 					return;
 				}
 
 				this.performShow(compo, info);
 
 			}.bind(this));
+
 		},
 		show: function(info) {
-			if (info.view) {
-				info.view += 'View';
-			}
 
-			var compo = Compo.findCompo(this, info.view);
+			var $menu = $(document.getElementsByTagName('menu'));
+
+			$menu.find('.selected').removeClass('selected');
+			$menu.find('[data-view="'+info.view+'"]').addClass('selected');
+
+			
+
+			var compo = Compo.findCompo(this, info.view + 'View');
 			if (compo == null) {
 				this.$.children('.active').removeClass('active');
 				this.load(info);
@@ -71,8 +81,6 @@ include.js({
 		},
 		performShow: function(compo, info) {
 
-			
-		
 			compo.section(info);
 
 			if (compo == currentCompo) {
@@ -85,6 +93,12 @@ include.js({
 				Helper.doSwitch(this.$.children('.active'), compo.$);
 			}
 			compo.activate && compo.activate();
+
+			info = Page.getInfo(info.view);
+
+			if (info && info.title){
+				document.title = info.title;
+			}
 		}
 	});
 
