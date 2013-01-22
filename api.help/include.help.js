@@ -132,7 +132,7 @@
 			},
 			
 			/**
-			 *	Enable AMD module and exports object per resource
+			 *	Enable NodeJS exports object per resource
 			 *
 			 *	Are aliases for include.exports = ...
 			 *

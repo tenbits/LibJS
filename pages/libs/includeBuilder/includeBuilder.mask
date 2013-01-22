@@ -43,7 +43,7 @@ layout:view master='view' {
 							'Integrated Web Server'
 
 							div.hint > b > 'with auto-refresh feature'
-							div.hint > 'HOT Reload of *.css files and *.js files, for other stuff page reload triggers'
+							div.hint > 'HOT Reload of *.css, *.js and *.mask files, for other stuff page reload triggers'
 						}
 						li {
 							'Shell Commands'
@@ -55,16 +55,16 @@ layout:view master='view' {
 							div.hint {
 								prism > 'include.exports = { process: function(config, idfr) { /* ... */ idfr.resolve(); } }'
 							}
-							div.hint > 'Could be used as shell scripts. Note that you also receive in file includejs api classes'
+							div.hint > 'Could be used as shell scripts. Note that you can use includejs api classes'
 						}
 
 						li {
 							'CoffeeScript and Less support'
-							div.hint > 'less will be compiled and joined with regular css files, as also coffeescript will be joined into one main js file'
+							div.hint > '*.less will be compiled and joined with regular css files, as also CoffeeScript will be joined into one main js file'
 						}
 
 						li {
-							'Handles Resource Referencing and Importing '
+							'Handle Resource Referencing and Importing'
 						}
 					}
 				}
@@ -84,15 +84,17 @@ layout:view master='view' {
 
 						div > '
 						If first argument is html file, then this path will be set in config for "file" property, and "build" for action.
-						You can also sepcify some additional config values for this build - @see "build" action.
+						 You can also sepcify some additional config values for this build - @see "build" action.
 						'
 					}
 					li {
 						code > ' > includejs [*.config | *.js]'
 						p {
 							'Load config and process'
-							div > '.config - JSON'
-							div > '.js - This javascript must set config to globals: global.config = {OBJECT}'
+							div > '*.config — JSON'
+							div {
+							 	'*.js — This javascript must set "config" to globals: ' tt > 'global.config = {OBJECT}'
+							}
 						}
 					}
 				}
@@ -141,7 +143,7 @@ layout:view master='view' {
 							li > '}'
 						}
 						p {
-						  'Copy all resources, that are used by current project, from referenced directories in '
+						  'Copy resources, that are used by current project, from referenced directories in '
 							tt > '.reference/*' ' to ' tt >'.import' ' directory'
 						}
 					}
@@ -205,14 +207,16 @@ layout:view master='view' {
 						ul{
 							li > '{'
 							li { '"action": "' b > 'reference' '"' }
-							li > '"path": directory path'
+							li > '"path": directory path || name of a project from globals.txt'
 							li > '"name": reference name /* optional @default directory name*/'
 							li > '}'
 						}
 						p > 'Creates symbolic link to specified path in %current_directory%/.reference/%name%'
 						div.hint {
-							'Usually you may want to call this command direct as'
+							div > 'Command Line calls: '
 							div > code > ' > includejs reference c:/development/mylib'
+							div > 'You can add this path to globals.txt, so afterwards you can call this as such:'
+							div > code > ' > includejs reference mylib'
 						}
 					}
 					li {
@@ -243,7 +247,7 @@ layout:view master='view' {
 						p > 'Clones LibJS Libraries into current directory'
 						div {
 							'It will also save this path intern, for future routing - so calling this action,
-								includejs, or better said - nodejs, should have
+								includejs should have
 								write permissions to ' tt > '%npm-global-directory%/includejs' ' directory'
 						}
 						div.hint {
@@ -259,7 +263,7 @@ layout:view master='view' {
 						}
 						code > ' > includejs globals'
 
-						p > 'Open global.txt of includejs for editing of your routes, etc. Example of globals.txt:'
+						p > 'Open globals.txt of includejs for editing of your routes, etc. Example of globals.txt:'
 
 						prism src='/api.help/globals.js';
 

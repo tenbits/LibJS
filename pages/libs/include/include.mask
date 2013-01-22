@@ -38,6 +38,10 @@ layout:view master='view' {
 						li {
 							'Module Exports. Example: myScript.js'
 							prism > 'include.exports = { someFunction: function(){ console.log("hey"); } }'
+							div.hint { 
+								'It is also possible to use nodejs module exports patterns (but it should be enabled globally before in include.js config).'
+								div > code > 'exports.someFunction = function(){ ... }'
+							}
 						}
 						li {
 							'Javascript Aliases'
@@ -50,7 +54,7 @@ layout:view master='view' {
 							div.hint {
 								div > 'Best to use in development - no more need to build coffee or less resources before test it'
 								div > 'Any *.js can be replaced with *.coffee equivalent, and you do not even notice this'
-								div > 'IncludeJS.Builder will compile/parse that resource for better Performance'
+								div > 'IncludeJS.Builder will compile/parse that resources for better performance'
 							}
 						}
 						li { 'Callbacks' div.hint > 'Sub- and ResourceLoaded and DOMContentLoaded' }
