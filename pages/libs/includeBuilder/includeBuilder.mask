@@ -9,6 +9,7 @@ layout:view master='view' {
 			button.active name='info' > 'Info'
 			button name='commands' > 'Commands'
 			button name='resources' > 'Resources'
+			button name='sample' > 'Sample'
 		}
 	}
 
@@ -321,6 +322,16 @@ layout:view master='view' {
 					}
 				}
 
+			}
+
+			div.sample {
+				h4 > 'To try includejs/includejsBuilder'
+				div > code > 'npm install -g includejs'
+				div > code > 'cd some/folder/'
+				div > code > 'includejs template sample'
+				div > code > 'includejs server index.dev.html'
+
+				p > 'It will run browser and loads index.dev.html'
 			}
 		}
 	}
