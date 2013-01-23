@@ -192,7 +192,7 @@
 		 */
 		include.reload = function(newSource){
 			/** ... some unload logic ... */
-			__eval(newSource);
+			eval(newSource);
 			/** ... some init logic ... */
 		}
 	}
