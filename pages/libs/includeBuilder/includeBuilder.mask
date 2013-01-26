@@ -230,14 +230,30 @@ layout:view master='view' {
 						}
 
 						p > 'Create Template Project in %current_dir%'
-						p > 'Available: "starter" , "todomvc" (@sample application to fiddle around with maskjs,includejs etc.)'
+						p {
+							'Available:'
+							ul {
+								li > '"starter" - MaskJS/IncludeJS/ClassJS/CompoJS + appropriate routing as defined in globals.txt'
+								li {
+									'"compo" - create component template, requires component name.'
+									div.hint > code > ' > includejs template compo ComponentName'
+								}
+								li > '"todomvc" - @sample todomvc application to fiddle around with maskjs,includejs etc.)'
+								li > '"sample" - simple component autoreload example'
+							}
+						}
+
+						div.hint {
+							'Raw cli command:'
+							div > code > ' > includejs template %name%'
+						}
 						div.hint {
 							'You can create any other templates with just coping needed files to '
 							tt > '%npm-global-directory%/node_modules/includejs/template/%YourTemplateName%'
 						}
 						div.hint {
-							'Raw cli command:'
-							div > code > ' > includejs template starter'
+							'It is also possible to define any setup logic to your templates using handlers, look at '
+							a target='_blank' href='https://github.com/tenbits/IncludeJS.Builder/blob/master/template/compo/.handler/handler.js' > 'compo template' '. Here handler takes care about setting component name.'
 						}
 					}
 					li {
