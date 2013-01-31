@@ -66,6 +66,17 @@ layout:view master='view' {
 						}
 
 						li {
+							'Remove include statements in release, as the resource are already there. (But it will stay untouched if you access the resource with response object)'
+							code > "
+								include.js('jquery.js').done(function() { $('body').htm('Hello'); })
+							"
+							' is parsed to '
+							code > "
+									(function(){  $('body').html('Hello');  }());
+							"
+						}
+
+						li {
 							'Handle Resource Referencing and Importing'
 						}
 					}

@@ -14,6 +14,8 @@ include.css('view.css').done(function(resp) {
       }
    }
 
+   include.js({lib:'mask'}).done(function(){ console.log('mask done')});
+
 
    mask.registerHandler('view', Class({
       Base: Compo,
