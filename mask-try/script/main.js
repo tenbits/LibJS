@@ -132,6 +132,8 @@ include.routes({
 		var code = UrlCode.parse();
 		if (code){
 			setValues(code);
+		}else{
+			setValues(resp.presets[1]);
 		}
 
 		app.compos.btnSetLink.on('click', function(){
