@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<link rel='stylesheet' href='style/main.css'/>
+
+
+
+    <script type='text/javascript' src='http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js' ignore='ignore' ></script>
+
+    <script type='text/javascript' src='.reference/libjs/class/lib/class.js'></script>
+    <script type='text/javascript' src='.reference/libjs/include/lib/include.js'></script>
+
+    <script type='text/javascript' src='include.routes.js'></script>
+
+	<script type='text/javascript' src='script/htmlbeautify.js'></script>
+
+    <script type='text/javascript' src='script/main.js'></script>
+
+</head>
+<body>
+
+    <script type="mask/template" id='layout'>
+        .container {
+            tabs{
+                .header.radioButtons {
+					.toolbar {
+						button.small#setLink > '<link>';
+						button.small#getShortend > '<bitly>';
+						dropdownMenu.dropdownMenu {
+							button.caption > 'Presets'
+							.-ddmenu.items {
+								list value='presets' > .-ddmenu.item data-id='#{id}' > '#{title}'
+							}
+						}
+					}
+
+                    button.active name='mask' > 'MASK'
+                    button name='javascript' > 'JS'
+                    button name='style' > 'CSS'
+
+					span.hint {
+						'Shift+Tab'
+					}
+
+
+                }
+                .panels.editors {
+                    #editor-mask.editor.active name='mask';
+                    #editor-javascript.editor name='javascript' > ;
+                    #editor-style.editor name='style';
+                }
+            }
+
+            preview#preview;
+        }
+
+    </script>
+
+</body>
+</html>

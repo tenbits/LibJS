@@ -1,0 +1,41 @@
+/**
+ * dropdownMenu Styles
+ */
+
+.dropdownMenu {
+	position: relative;
+	margin-right: 10px;
+	display: inline-block;
+	margin: 0 5px;
+}
+.-ddmenu.items {
+	position: absolute;
+	top: 100%;
+	right: 0px;
+	min-width: 100%;
+	box-shadow: 0px 0px 5px #000;
+	display: none;
+}
+.dropdownMenu.visible > .-ddmenu.items{
+	display: block;
+}
+
+.-ddmenu.item {
+	background: #eee;
+	color:#333;
+	white-space: nowrap;
+	border-bottom:1px solid #555;
+	padding: 5px 10px;
+	line-height: 1.2em;
+
+	cursor: pointer;
+}
+
+.-ddmenu.item:hover{
+	background:#333;
+	color:#eee;
+}
+
+.-ddmenu.item:last-child{
+	border-bottom-width: 0px;
+}

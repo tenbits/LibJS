@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	
+
+
+
+    <script type="text/javascript" src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" ignore="ignore"></script>
+
+    
+    
+
+    
+
+	
+
+    
+
+<link rel="stylesheet" href="index.build/style.css" /></head>
+<body>
+
+    <script type="mask/template" id="layout">
+        .container {
+            tabs{
+                .header.radioButtons {
+					.toolbar {
+						button.small#setLink > '<link>';
+						button.small#getShortend > '<bitly>';
+						dropdownMenu.dropdownMenu {
+							button.caption > 'Presets'
+							.-ddmenu.items {
+								list value='presets' > .-ddmenu.item data-id='#{id}' > '#{title}'
+							}
+						}
+					}
+
+                    button.active name='mask' > 'MASK'
+                    button name='javascript' > 'JS'
+                    button name='style' > 'CSS'
+
+					span.hint {
+						'Shift+Tab'
+					}
+
+
+                }
+                .panels.editors {
+                    #editor-mask.editor.active name='mask';
+                    #editor-javascript.editor name='javascript' > ;
+                    #editor-style.editor name='style';
+                }
+            }
+
+            preview#preview;
+        }
+
+    </script>
+
+<div id="build.release.xhr" style="display: none;" hidden="hidden"><script type="include/load" id="includejs-scriptshortenddialogshortenddialogmask" data-appuri="/script/shortend-dialog/shortend-dialog.mask"> .modalOverlay  > .modalPanel > .cell {
+
+    .shortend-container {
+	    .progress.active {
+	    	.title {
+	    		'Processing...'
+	    		.spinner;
+	    	}
+	    }
+
+	    .result {
+	    	.title > 'Link to this snippet:'
+	    	.value > input#shortendResult type='text';
+	    }
+	}
+}
+ </script>
+<script type="include/load" id="includejs-presetspresetstxt" data-appuri="/presets/presets.txt"> ====
+title:
+Simple
+----
+mask:
+div.simple style="background:#6BA43C; color:#1E5043;" > "#{text}"
+----
+javascript:
+var model = {
+    text: "Hello, World!"
+};
+----
+====
+title:
+Collapsible
+----
+mask:
+collapsible {
+    button.header > 'Toggle'
+    .content {
+        'Some Content, #{name}!'
+    }
+}
+----
+javascript:
+/** create custom Control: */
+mask.registerHandler('collapsible', Class({
+    Base: Compo,
+    Construct: function() {
+        this.tagName = 'div';
+
+        this.compos = {
+            container: '$: .content'
+        }
+    },
+    events: {
+       'click: .header': function(e){
+            this.compos.container.toggle();
+       }
+    }
+}));
+
+/** This will be used as model */
+window.model = {
+    name: 'World'
+}
+----
+style:
+.header{
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+}
+----
+ </script></div><script type="text/javascript" src="index.build/script.js"></script></body>
+</html>

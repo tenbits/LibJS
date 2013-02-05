@@ -1,0 +1,55 @@
+====
+title:
+Simple
+----
+mask:
+div.simple style="background:#6BA43C; color:#1E5043;" > "#{text}"
+----
+javascript:
+var model = {
+    text: "Hello, World!"
+};
+----
+====
+title:
+Collapsible
+----
+mask:
+collapsible {
+    button.header > 'Toggle'
+    .content {
+        'Some Content, #{name}!'
+    }
+}
+----
+javascript:
+/** create custom Control: */
+mask.registerHandler('collapsible', Class({
+    Base: Compo,
+    Construct: function() {
+        this.tagName = 'div';
+
+        this.compos = {
+            container: '$: .content'
+        }
+    },
+    events: {
+       'click: .header': function(e){
+            this.compos.container.toggle();
+       }
+    }
+}));
+
+/** This will be used as model */
+window.model = {
+    name: 'World'
+}
+----
+style:
+.header{
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+}
+----

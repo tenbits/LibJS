@@ -1,0 +1,43 @@
+/**
+ * preview Styles
+ */
+
+#preview > iframe {
+	border: 0;
+	margin: 0;
+	width: 100%;
+	height:100%;
+}
+
+#preview > .notification {
+	position: absolute;
+	height:4px;
+
+	width:100%;
+
+	top:0px;
+	left: 0px;
+	opacity: 0;
+	-webkit-transition: opacity 100ms linear;
+}
+#preview > .notification.red, #preview > .notification.green {
+	opacity: 1;
+}
+
+.notification.red {
+	background: red;
+}
+.notification.green {
+	background: green;
+}
+
+
+#btnHTML {
+	position: absolute;
+	top:5px;
+	right: 5px;
+	opacity: .8;
+}
+#btnHTML.active {
+	background: #272822;
+}
