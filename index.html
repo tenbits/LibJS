@@ -68,7 +68,7 @@
 
 <script type="mask/template" id="menuItemTemplate">
 	li {
-		div.viewTitle data-view='#{view}' > '#{title}'
+		.viewTitle data-view='#{view}' data-navigate='#{navigate}' > '#{title}'
 		ul > list value='items' template='#menuItemTemplate';
 	}
 </script>
