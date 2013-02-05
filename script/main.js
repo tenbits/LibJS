@@ -38,7 +38,11 @@ include.routes({
 					title: 'ClassJS'
 				}, {
 					view: 'mask',
-					title: 'MaskJS'
+					title: 'MaskJS',
+					items: [{
+						title: 'Live Test',
+						navigate: '/mask-try/'
+					}]
 				}, {
 					view: 'include',
 					title: 'IncludeJS'
@@ -110,7 +114,14 @@ include.routes({
 			{
 				'click: .viewTitle': function(e) {
 					var view = $(e.target).data('view');
-					w.routes.navigate(view);
+					if (view){
+						w.routes.navigate(view);
+						return;
+					}
+					var navigate = $(e.target).data('navigate');
+					if (navigate){
+						window.location.href = navigate;
+					}
 				},
 				'click: h3.badge': function() {
 					this.compos.menuHelp.css('opacity', 1);
