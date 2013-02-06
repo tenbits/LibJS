@@ -5168,7 +5168,6 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     start = T.index + 1;
                     T.skipToAttributeBreak();
                     value = T.template.substring(start, T.index);
-
                     break;
 
                   default:
