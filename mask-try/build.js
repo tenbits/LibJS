@@ -4,7 +4,7 @@ global.config = [{
 	outputMain: "index.html",
 	outputSources: "index.build",
 	action: "build",
-	minify: true,
+	minify: false,
 	/** UglifyJS compressor settings */
 	uglify: {		
 	},

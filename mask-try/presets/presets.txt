@@ -15,7 +15,7 @@ title:
 Collapsible
 ----
 mask:
-collapsible {
+collapsible.classA {
     button.header > 'Toggle'
     .content {
         'Some Content, #{name}!'
@@ -46,6 +46,10 @@ window.model = {
 }
 ----
 style:
+.classA {
+    display:inline-block;
+    background-color: rgb(150,240,150);
+}
 .header{
     cursor: pointer;
     padding: 10px;
