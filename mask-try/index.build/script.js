@@ -5185,9 +5185,6 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     T.index++;
                 }
                 if (null != key) {
-                    if (key == null && value =='active'){
-                        debugger;
-                    }
                     if (value.indexOf("#{") > -1) value = true !== T.serialize ? this.toFunction(value) : {
                         template: value
                     };
