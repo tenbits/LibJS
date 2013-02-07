@@ -1,0 +1,37 @@
+/**
+ * tabs Styles
+ */
+.tabs > .header {
+	height: 40px;
+	
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width:100%;
+	padding-left: 10px;
+}
+.tabs > .header > button{
+	display: inline-block;
+	cursor: pointer;
+}
+
+.tabs > .header > div.active{
+	background: #333;
+	color: #eee;
+}
+
+.tabs > .panels {
+	position: absolute;
+	top:40px;
+	bottom:0px;
+	width:100%;
+}
+
+.tabs > .panels > div{
+ 	position: relative;
+ 	display: none;
+ }
+
+ .tabs > .panels > .active{
+ 	display: block;
+ }

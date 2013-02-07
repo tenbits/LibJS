@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	
+
+
+
+    <script type="text/javascript" src="http://d1n0x3qji82z53.cloudfront.net/src-min-noconflict/ace.js" ignore="ignore"></script>
+
+    
+    
+
+    
+
+	
+
+    
+
+<link rel="stylesheet" href="index.build/style.css" /></head>
+<body>
+
+    <script type="mask/template" id="layout">
+        .container {
+            tabs{
+                .header.radioButtons {
+					.toolbar {
+						button.small#setLink > '<link>';
+						button.small#getShortend > '<bitly>';
+						
+					}
+
+                    button.active name='html' > 'HTML'
+
+                }
+                .panels.editors {
+                    div#editor-html.editor.active name='html';
+                }
+            }
+
+            preview#preview;
+        }
+
+    </script>
+
+<div id="build.release.xhr" style="display: none;" hidden="hidden"><script type="include/load" id="includejs-scriptshortenddialogshortenddialogmask" data-appuri="/script/shortend-dialog/shortend-dialog.mask"> .modalOverlay  > .modalPanel > .cell {
+
+    .shortend-container {
+	    .progress.active {
+	    	.title {
+	    		'Processing...'
+	    		.spinner;
+	    	}
+	    }
+
+	    .result {
+	    	.title > 'Link to this snippet:'
+	    	.value > input#shortendResult type='text';
+	    }
+	}
+}
+ </script></div><script type="text/javascript" src="index.build/script.js"></script></body>
+</html>

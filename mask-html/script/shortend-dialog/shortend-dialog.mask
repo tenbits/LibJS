@@ -1,0 +1,16 @@
+.modalOverlay  > .modalPanel > .cell {
+
+    .shortend-container {
+	    .progress.active {
+	    	.title {
+	    		'Processing...'
+	    		.spinner;
+	    	}
+	    }
+
+	    .result {
+	    	.title > 'Link to this snippet:'
+	    	.value > input#shortendResult type='text';
+	    }
+	}
+}
