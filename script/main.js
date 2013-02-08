@@ -43,8 +43,8 @@ include.routes({
 						title: 'Live Test',
 						navigate: '/mask-try/'
 					},{
-						title: 'Html Converter',
-						navigate: '/mask-html/'
+						title: 'Html To Mask',
+						navigate: '/html2mask/'
 					}]
 				}, {
 					view: 'include',
