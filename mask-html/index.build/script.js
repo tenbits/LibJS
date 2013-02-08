@@ -5137,7 +5137,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             };
         },
         parseAttributes: function(T, node) {
-            var key, value, _classNames, quote, c, start, i;
+            var template = T.template, key, value, _classNames, quote, c, start, i;
             if (null == node.attr) node.attr = {};
             loop: for (;T.index < T.length; ) {
                 key = null;
@@ -5168,17 +5168,12 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     break;
 
                   default:
-                    start = i = T.index;
-                    var whitespaceAt = null;
-                    do {
-                        c = T.template.charCodeAt(++i);
-                        if (null == whitespaceAt && 32 === c) whitespaceAt = i;
-                    } while (61 !== c && i <= T.length);
-                    key = T.template.substring(start, whitespaceAt || i);
-                    do quote = T.template.charAt(++i); while (" " === quote);
-                    T.index = ++i;
-                    value = T.sliceToChar(quote);
-                    T.index++;
+                    key = this.parseAttributeValue(T);
+                    if (61 !== T.template.charCodeAt(T.index)) value = key; else {
+                        T.index++;
+                        T.skipWhitespace();
+                        value = this.parseAttributeValue(T);
+                    }
                 }
                 if (null != key) {
                     if (value.indexOf("#{") > -1) value = true !== T.serialize ? this.toFunction(value) : {
@@ -5190,6 +5185,20 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             if (null != _classNames) node.attr["class"] = _classNames.indexOf("#{") > -1 ? true !== T.serialize ? this.toFunction(_classNames) : {
                 template: _classNames
             } : _classNames;
+        },
+        parseAttributeValue: function(T) {
+            var c = T.template.charCodeAt(T.index), value;
+            if (34 === c || 39 === c) {
+                T.index++;
+                value = T.sliceToChar(34 === c ? '"' : "'");
+                T.index++;
+                return value;
+            }
+            var start = T.index, c;
+            do c = T.template.charCodeAt(++T.index); while (61 != c && 32 !== c && 123 !== c && 62 !== c && 59 !== c && T.index < T.length);
+            value = T.template.substring(start, T.index);
+            if (32 === c) T.skipWhitespace();
+            return value;
         },
         parse: function(T) {
             var current = T;
@@ -6037,6 +6046,8 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             return node.nodes;
         }
         function wrapString(str) {
+            if (str.indexOf('"') == -1) return '"' + str.trim() + '"';
+            if (str.indexOf("'") == -1) return "'" + str.trim() + "'";
             return '"' + str.replace(/"/g, '\\"').trim() + '"';
         }
         return function(input) {
@@ -6047,8 +6058,8 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
     var HTMLtoMask = function() {
         var startTag = /^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>/, endTag = /^<\/(\w+)[^>]*>/, attr = /(\w+)(?:\s*=\s*(?:(?:"((?:\\.|[^"])*)")|(?:'((?:\\.|[^'])*)')|([^>\s]+)))?/g;
         var empty = makeMap("area,base,basefont,br,col,frame,hr,img,input,isindex,link,meta,param,embed");
-        var block = makeMap("address,applet,blockquote,button,center,dd,del,dir,div,dl,dt,fieldset,form,frameset,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul");
-        var inline = makeMap("a,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var");
+        var block = makeMap("a, address,applet,blockquote,button,center,dd,del,dir,div,dl,dt,fieldset,form,frameset,hr,iframe,ins,isindex,li,map,menu,noframes,noscript,object,ol,p,pre,script,table,tbody,td,tfoot,th,thead,tr,ul,abbr,acronym,applet,b,basefont,bdo,big,br,button,cite,code,del,dfn,em,font,i,iframe,img,input,ins,kbd,label,map,object,q,s,samp,script,select,small,span,strike,strong,sub,sup,textarea,tt,u,var");
+        var inline = makeMap("");
         var closeSelf = makeMap("colgroup,dd,dt,li,options,p,td,tfoot,th,thead,tr");
         var fillAttrs = makeMap("checked,compact,declare,defer,disabled,ismap,multiple,nohref,noresize,noshade,nowrap,readonly,selected");
         var special = makeMap("script,style");
@@ -6143,7 +6154,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     results += "}";
                 },
                 chars: function(text) {
-                    results += '"' + text.replace(/'/g, "\\") + '"';
+                    results += '"' + text.replace(/"/g, '\\"') + '"';
                 },
                 comment: function(text) {}
             });
