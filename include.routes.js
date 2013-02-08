@@ -6,7 +6,7 @@ include.routes({
      "compo": "/.reference/libjs/compos/{0}/lib/{1}.js"
 }).cfg({
 	lockedToFolder: true,
-	version: 1.2
+	version: '1.2.1'
 });
 
 
