@@ -7,6 +7,7 @@ include.routes({
 	ruqq: ['dom/jquery', 'utils', 'arr', 'es5shim'],
 	lib: ['compo','ranimate'],
 	component: ['preview', 'tabs', 'dropdownMenu', 'shortend-dialog'],
+	compo: ['binding', 'validation', 'utils', 'datePicker'],
 	vendor: 'keymaster',
 	script: ['presets', 'urlcode']
 }) //
@@ -39,6 +40,7 @@ include.routes({
 	}
 
 	createEditor('mask', 'coffee');
+	createEditor('model', 'json');
 	createEditor('javascript');
 	createEditor('style', 'css');
 
@@ -55,6 +57,14 @@ include.routes({
 
 		function getSource(type) {
 			return editors[type].getValue();
+		}
+
+		function collectSource(){
+			var source = {};
+			for(var type in editors){
+				source[type] = editors[type].getValue();
+			}
+			return source;
 		}
 
 		////function deferUpdate() {
@@ -84,18 +94,13 @@ include.routes({
 				source[x] = getSource(x);
 			}
 			types = null;
-			preview.update(source.javascript, source.style, source.mask);
+			preview.update(source);
 		}
 
-		////function setValue(editor, string) {
-		////	var doc = new(editor.getSession().getDocument().constructor)(string);
-		////
-		////	editor.setSession(doc);
-		////}
 
-		function setValues(source){
+		function setValues(source, keepOnEmpty){
 			for (var key in editors) {
-				if (!source[key]){
+				if (!source[key] && keepOnEmpty){
 					continue;
 				}
 				editors[key].setValue(source[key], 1);
@@ -133,15 +138,15 @@ include.routes({
 		if (code){
 			setValues(code);
 		}else{
-			setValues(resp.presets[1]);
+			setValues(resp.presets[2]);
 		}
 
 		app.compos.btnSetLink.on('click', function(){
-			UrlCode.set(getSource('javascript'), getSource('style'), getSource('mask'));
+			UrlCode.set(collectSource());
 		});
 
 		app.compos.btnShortend.on('click', function(){
-			UrlCode.set(getSource('javascript'), getSource('style'), getSource('mask'));
+			UrlCode.set(collectSource());
 			window.compo.shortendDialog.show().process(window.location.toString());
 		});
 

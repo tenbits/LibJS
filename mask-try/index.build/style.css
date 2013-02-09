@@ -88,7 +88,7 @@ button:active {
 }
 
 button.active {
-    box-shadow: inset 0px 0px 10px #000;
+    box-shadow: inset 0px 0px 10px #eee;
     border-color: rgba(0,0,0,.5);
     background:transparent;
     color:#fff;
@@ -152,6 +152,172 @@ input[type=text]{
 	outline: none;
 }
 
+/*
+	glDatePicker style inspired by the calendar app in FireFly 3.0 rom
+
+	http://code.gautamlad.com/glDatePicker/
+	https://github.com/glad/glDatePicker/
+	http://forum.xda-developers.com/showthread.php?t=914284
+*/
+
+/* Calendar container div */
+.gldp-android
+{
+	float:left;
+	font-family:"trebuchet ms" !important;
+	background-color:#222 !important;
+	font-size:0.8em !important;
+	font-weight:bold !important;
+	border:solid 1px #222;
+}
+
+/* Table style */
+.gldp-android table
+{
+	border-spacing:1px;
+	border-collapse:inherit;
+}
+
+/* Default row height */
+.gldp-android tr
+{
+	line-height:28px;
+}
+
+/* Default style of cell */
+.gldp-android td
+{
+	margin:0;
+	padding:0;
+	width:33px;
+	text-align:center;
+}
+
+/* Previous and Next arrows */
+.gldp-android-prevnext
+{
+	font-family:"times new roman";
+	background-color:#222;
+	color:#fff;
+	cursor:pointer;
+}
+
+/* Month Year title */
+.gldp-android-monyear
+{
+	background-color:#222;
+	color:#fff;
+	font-size:0.9em;
+}
+
+/* Days of the week (Sun, Mon, ...) */
+.gldp-android-dow
+{
+	background-color:#424852;
+	color:#ddd;
+	font-size:0.8em;
+}
+
+/* Selectable days */
+.gldp-android-day
+{
+	background-color:#000;
+	color:#fff;
+	border:solid 1px #000;
+}
+.gldp-android-day-hover
+{
+	background-color:#000;
+	color:#fff;
+	border:solid 1px #00afff;
+	cursor:pointer;
+}
+
+/* Selected days */
+.gldp-android-selected
+{
+	background-color:#024;
+	color:#fff;
+	border:solid 1px #008faf;
+	cursor:wait;
+}
+
+/* Today */
+.gldp-android-today
+{
+	background-color:#00afff;
+	color:#fff;
+	border:solid 1px #00afff;
+}
+.gldp-android-today-hover
+{
+	background-color:#fff;
+	color:#00afff;
+	border:solid 1px #00afff;
+	cursor:pointer;
+}
+
+/* Weekends */
+.gldp-android-sat, .gldp-android-sat-hover
+{
+	background-color:#000;
+	color:#00afff;
+	border:solid 1px #000;
+}
+
+.gldp-android-sun, .gldp-android-sun-hover
+{
+	background-color:#000;
+	color:#ff4f00;
+	border:solid 1px #000;
+}
+
+/* Non-selectable day.  Includes: previous/next month days and days that fall in the allowOld and endDate conditions */
+.gldp-android-noday
+{
+	background-color:#222;
+	border:solid 1px #222;
+	color:#666;
+	font-weight:normal;
+	cursor:wait;
+}
+.invalid {
+	
+	background: -moz-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(169,3,41,1)), color-stop(44%,rgba(143,2,34,1)), color-stop(100%,rgba(109,0,25,1))); 
+	background: -webkit-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); 
+	background: -o-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); 
+	background: -ms-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%);
+	background: linear-gradient(to bottom, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%);
+	border:1px solid #000;
+	box-shadow: 0px 0px 4px #000;
+	
+	display: inline-block;
+	position: relative;
+	
+	padding: 10px 15px;
+	
+	color:rgb(255,240,240);	
+	font-weight: bold;	
+}
+
+.invalid:before {
+	content: ' ';
+	position: absolute;
+	top:30%;
+	left: -10px;	
+	width: 0;
+    height: 0;
+    
+	border-top: 7px solid transparent;
+    border-right: 10px solid rgba(0,0,0,.7);
+    border-bottom: 7px solid transparent;	
+}
+
+.invalid > button {
+	font-size: .9em;
+	font-family: monospace;
+}
 .modalOverlay {
     position: fixed;
     top: 0px;
@@ -307,11 +473,16 @@ input[type=text]{
  * preview Styles
  */
 
-#preview > iframe {
+#preview > iframe, #preview-container{
 	border: 0;
 	margin: 0;
 	width: 100%;
 	height:100%;
+}
+
+#preview-container{
+	padding:10px;
+	box-sizing: border-box;
 }
 
 #preview > .notification {

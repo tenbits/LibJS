@@ -791,6 +791,12 @@ include.register({
         url: "/style/main.css",
         namespace: ""
     }, {
+        id: "/.reference/libjs/compos/datePicker/lib/css/android.css",
+        url: "/.reference/libjs/compos/datePicker/lib/css/android.css"
+    }, {
+        id: "/.reference/libjs/compos/validation/lib/styles.css",
+        url: "/.reference/libjs/compos/validation/lib/styles.css"
+    }, {
         id: "/script/shortend-dialog/shortend-dialog.css",
         url: "/script/shortend-dialog/shortend-dialog.css"
     }, {
@@ -874,6 +880,25 @@ include.register({
         id: "/script/shortend-dialog/shortend-dialog.js",
         url: "/script/shortend-dialog/shortend-dialog.js",
         namespace: "component.shortend-dialog"
+    }, {
+        id: "/.reference/libjs/compos/binding/lib/binding.js",
+        url: "/.reference/libjs/compos/binding/lib/binding.js",
+        namespace: "compo.binding"
+    }, {
+        id: "/.reference/libjs/compos/validation/lib/validation.js",
+        url: "/.reference/libjs/compos/validation/lib/validation.js",
+        namespace: "compo.validation"
+    }, {
+        id: "/.reference/libjs/compos/utils/lib/utils.js",
+        url: "/.reference/libjs/compos/utils/lib/utils.js",
+        namespace: "compo.utils"
+    }, {
+        id: "/.reference/libjs/compos/datePicker/lib/js/glDatePicker.min.js",
+        url: "/.reference/libjs/compos/datePicker/lib/js/glDatePicker.min.js"
+    }, {
+        id: "/.reference/libjs/compos/datePicker/lib/datePicker.js",
+        url: "/.reference/libjs/compos/datePicker/lib/datePicker.js",
+        namespace: "compo.datePicker"
     }, {
         id: "/.reference/libjs/vendor-lib/keymaster/keymaster.js",
         url: "/.reference/libjs/vendor-lib/keymaster/keymaster.js",
@@ -5140,7 +5165,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             };
         },
         parseAttributes: function(T, node) {
-            var key, value, _classNames, quote, c, start, i;
+            var template = T.template, key, value, _classNames, quote, c, start, i;
             if (null == node.attr) node.attr = {};
             loop: for (;T.index < T.length; ) {
                 key = null;
@@ -5171,17 +5196,12 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     break;
 
                   default:
-                    start = i = T.index;
-                    var whitespaceAt = null;
-                    do {
-                        c = T.template.charCodeAt(++i);
-                        if (null == whitespaceAt && 32 === c) whitespaceAt = i;
-                    } while (61 !== c && i <= T.length);
-                    key = T.template.substring(start, whitespaceAt || i);
-                    do quote = T.template.charAt(++i); while (" " === quote);
-                    T.index = ++i;
-                    value = T.sliceToChar(quote);
-                    T.index++;
+                    key = this.parseAttributeValue(T);
+                    if (61 !== T.template.charCodeAt(T.index)) value = key; else {
+                        T.index++;
+                        T.skipWhitespace();
+                        value = this.parseAttributeValue(T);
+                    }
                 }
                 if (null != key) {
                     if (value.indexOf("#{") > -1) value = true !== T.serialize ? this.toFunction(value) : {
@@ -5193,6 +5213,20 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             if (null != _classNames) node.attr["class"] = _classNames.indexOf("#{") > -1 ? true !== T.serialize ? this.toFunction(_classNames) : {
                 template: _classNames
             } : _classNames;
+        },
+        parseAttributeValue: function(T) {
+            var c = T.template.charCodeAt(T.index), value;
+            if (34 === c || 39 === c) {
+                T.index++;
+                value = T.sliceToChar(34 === c ? '"' : "'");
+                T.index++;
+                return value;
+            }
+            var start = T.index, c;
+            do c = T.template.charCodeAt(++T.index); while (61 != c && 32 !== c && 123 !== c && 62 !== c && 59 !== c && T.index < T.length);
+            value = T.template.substring(start, T.index);
+            if (32 === c) T.skipWhitespace();
+            return value;
         },
         parse: function(T) {
             var current = T;
@@ -5360,8 +5394,10 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
         delegateReload: function() {}
     };
     Mask.renderDom = Mask.render;
-    if ("undefined" !== typeof module && module.exports) module.exports = Mask; else global.mask = Mask;
-})(this, "undefined" === typeof document ? null : document);
+    if ("undefined" !== typeof module && module.exports) module.exports = Mask;
+    var _cachedGlobalMask = global.mask;
+    global.mask = Mask;
+})("undefined" !== typeof window ? window : global, "undefined" === typeof document ? null : document);
 
 (function() {
     "use strict";
@@ -5986,7 +6022,7 @@ include.setCurrent({
     var _window, _document, _body, _iframe, _style;
     var Window = function() {
         return {
-            init: function(iframe) {
+            init: function(iframe, preview) {
                 if (null != {}.__proto__ && 0) {
                     _window = iframe.contentWindow;
                     _window.Function.prototype.apply.prototype = Function.prototype.apply.bind(Function);
@@ -6000,11 +6036,19 @@ include.setCurrent({
                         Object: Object
                     });
                 } else _window = window;
-                _document = iframe.contentDocument || iframe.contentWindow.contentDocument;
-                _document.open();
-                _document.write("<html><head><style></style><style>body{font-family:sans-serif;}</style></head><body></body></html>");
-                _document.close();
-                _style = _document.getElementsByTagName("style")[0];
+                if (iframe) {
+                    _document = iframe.contentDocument || iframe.contentWindow.contentDocument;
+                    _document.open();
+                    _document.write("<html><head><style></style><style>body{font-family:sans-serif;}</style></head><body></body></html>");
+                    _document.close();
+                    _style = _document.getElementsByTagName("style")[0];
+                } else {
+                    _document = {
+                        body: preview.$.find("#preview-container")[0]
+                    };
+                    _style = preview.$.find("style")[0];
+                }
+                window.D = _document;
             },
             eval: function(code) {
                 _window.eval(code);
@@ -6038,6 +6082,9 @@ include.setCurrent({
                 _document.body.innerHTML = "<pre><code></code></pre>";
                 var $code = _document.body.getElementsByTagName("code")[0], html = style_html(div.innerHTML);
                 $code.textContent = html;
+            },
+            setModel: function(preview, model) {
+                _window.model = _window.eval("(" + model + ")");
             }
         };
     }();
@@ -6052,17 +6099,22 @@ include.setCurrent({
         events: {
             "click: #btnHTML": function() {
                 this.asHTML = this.compos.$btnHTML.toggleClass("active").hasClass("active");
-                this.update(this._code, this._style, this._template);
+                this.update({
+                    javascript: this._code,
+                    style: this._style,
+                    mask: this._template,
+                    model: this._model
+                });
             }
         },
         render: function(model, container, cntx) {
             this.tagName = "div";
-            this.nodes = mask.compile('.notification; iframe src="about:blank"; button#btnHTML > "HTML"');
+            this.nodes = mask.compile('.notification; style type="text/css";div#preview-container; button#btnHTML > "HTML"');
             Compo.render(this, model, container, cntx);
             Compo.shots.on(this, "DOMInsert", this.DOMInsert);
         },
         DOMInsert: function() {
-            Window.init(_iframe = this.$.find("iframe")[0]);
+            Window.init(_iframe = this.$.find("iframe")[0], this);
         },
         prepair: function(code, style, template, callback) {
             if (_document) {
@@ -6079,10 +6131,12 @@ include.setCurrent({
             });
         },
         resolveHTML: function() {},
-        update: function(code, style, template) {
+        update: function(source) {
+            var code = source.javascript, style = source.style, template = source.mask, model = source.model;
             this.prepair(code, style, template, function() {
                 var error;
                 try {
+                    model && Window.setModel(this, model);
                     if (template && this.asHTML) {
                         code && Window.setCode(this, code);
                         Window.setHTML(this, template);
@@ -6286,6 +6340,417 @@ include.load("shortend-dialog.mask::Template").done(function(resp) {
 });
 
 include.getResource("/script/shortend-dialog/shortend-dialog.js", "js").readystatechanged(3);
+
+(function() {
+    mask.registerHandler("visible", Class({
+        Extends: mask.ValueUtils.out,
+        refresh: function(values, container) {
+            container.style.display = this.isCondition(this.attr.check, values) ? "" : "none";
+        },
+        render: function(values, container, cntx) {
+            this.refresh(values, container);
+            if (this.attr.bind) Object.observe(values, this.attr.bind, this.refresh.bind(this, values, container));
+            if (this.nodes) mask.renderDom(this.nodes, values, container, cntx);
+        }
+    }));
+    mask.registerHandler("bind", Class({
+        refresh: function(values, container, x) {
+            if (null != this.attr.attr) {
+                container.setAttribute(this.attr.attr, x);
+                return;
+            }
+            if (null != this.attr.prop) {
+                container[this.attr.prop] = x;
+                return;
+            }
+            container.innerHTML = x;
+        },
+        render: function(values, container, cntx) {
+            this.refresh(values, container, Object.getProperty(values, this.attr.value));
+            Object.observe(values, this.attr.value, this.refresh.bind(this, values, container));
+            if (this.nodes) mask.render(this.nodes, values, container, cntx);
+        }
+    }));
+    var Providers = {}, BindingProvider = null;
+    mask.registerBinding = function(type, binding) {
+        Providers[type] = binding;
+    };
+    mask.BindingProvider = BindingProvider = Class({
+        Construct: function(model, element, node) {
+            if (this.constructor == BindingProvider) {
+                var type = node.attr.bindingProvider || element.tagName.toLowerCase();
+                if (Providers[type] instanceof Function) return new Providers[type](model, element, node); else Object.extend(this, Providers[type]);
+            }
+            this.node = node;
+            this.model = model;
+            this.element = element;
+            this.property = node.attr.property || "element.value";
+            this.setter = node.attr.setter;
+            this.getter = node.attr.getter;
+            var event = node.attr.changeEvent || "change";
+            Object.observe(model, node.attr.value, this.objectChanged.bind(this));
+            $(element).on(event, this.domChanged.bind(this));
+            this.objectChanged();
+            return this;
+        },
+        objectChanged: function(x) {
+            if (this.dismiss-- > 0) return;
+            if (null == x) x = this.objectWay.get(this.model, this.node.attr.value);
+            this.domWay.set(this, x);
+            if (x instanceof Array && true !== x.hasObserver) observeArray(x, this.objectChanged.bind(this));
+        },
+        domChanged: function() {
+            var x = this.domWay.get(this);
+            if (this.node.validations) for (var i = 0, validation, length = this.node.validations.length; i < length; i++) {
+                validation = this.node.validations[i];
+                if (false === validation.validate(x, this.element, this.objectChanged.bind(this))) return;
+            }
+            this.dismiss = 1;
+            this.objectWay.set(this.model, this.node.attr.value, x);
+            this.dismiss = 0;
+        },
+        objectWay: {
+            get: function(obj, property) {
+                return Object.getProperty(obj, property);
+            },
+            set: function(obj, property, value) {
+                Object.setProperty(obj, property, value);
+            }
+        },
+        domWay: {
+            get: function(provider) {
+                if (provider.getter) return provider.node.parent[provider.getter]();
+                return Object.getProperty(provider, provider.property);
+            },
+            set: function(provider, value) {
+                if (provider.setter) provider.node.parent[provider.setter](value); else Object.setProperty(provider, provider.property, value);
+            }
+        }
+    });
+    function observeArray(arr, callback) {
+        Object.defineProperty(arr, "hasObserver", {
+            value: true,
+            enumerable: false,
+            writable: false
+        });
+        function wrap(method) {
+            arr[method] = function() {
+                Array.prototype[method].apply(this, arguments);
+                callback(this, method, arguments);
+            };
+        }
+        var i = 0, fns = [ "push", "unshift", "splice", "pop", "shift", "reverse", "sort" ], length = fns.length;
+        for (;i < length; i++) wrap(fns[i]);
+    }
+    mask.registerHandler("dualbind", Class({
+        render: function(model, container, cntx) {
+            if (this.nodes) mask.renderDom(this.nodes, model, container, cntx);
+            if (cntx.components) for (var i = 0, x, length = cntx.components.length; i < length; i++) {
+                x = cntx.components[i];
+                if ("validate" == x.compoName) (this.validations || (this.validations = [])).push(x);
+            }
+            new BindingProvider(model, container, this);
+        }
+    }));
+})();
+
+include.setCurrent({
+    id: "/.reference/libjs/compos/validation/lib/validation.js",
+    namespace: "compo.validation",
+    url: "/.reference/libjs/compos/validation/lib/validation.js"
+});
+
+window.include && include.css();
+
+(function() {
+    var DOM = {
+        notifyInvalid: function(element, message, oncancel) {
+            console.warn("Validation Notification:", element, message);
+            var next = $(element).next(".invalid");
+            if (0 == next.length) next = $("<div>").addClass("invalid").html("<span></span><button>cancel</button>").insertAfter(element);
+            next.children("button").off().on("click", function() {
+                next.hide();
+                oncancel && oncancel();
+            }).end().children("span").text(message).end().show();
+        },
+        isValid: function(element) {
+            $(element).next(".invalid").hide();
+        }
+    };
+    var Validators = {
+        match: {
+            validate: function(node, str) {
+                return new RegExp(node.attr.match).test(str);
+            }
+        },
+        unmatch: {
+            validate: function(node, str) {
+                return !new RegExp(node.attr.unmatch).test(str);
+            }
+        },
+        minLength: {
+            validate: function(node, str) {
+                return str.length >= parseInt(node.attr.minLength, 10);
+            }
+        },
+        maxLength: {
+            validate: function(node, str) {
+                console.log("max", parseInt(node.attr.maxLength, 10), str.length);
+                return str.length <= parseInt(node.attr.maxLength, 10);
+            }
+        },
+        check: {
+            validate: function(node, str) {}
+        }
+    };
+    mask.registerValidator = function(type, validator) {
+        Validators[type] = validator;
+    };
+    mask.registerHandler("validate", Class({
+        render: function(model, container, cntx) {
+            this.element = container;
+            this.model = model;
+        },
+        validate: function(input, element, oncancel) {
+            if (null == element) element = this.element;
+            if (this.attr.getter) input = Object.getProperty({
+                node: this,
+                element: element
+            }, this.attr.getter);
+            if (null == this.validators) this.initValidators();
+            for (var i = 0, x, length = this.validators.length; i < length; i++) {
+                x = this.validators[i];
+                if (false === x.validate(this, input)) {
+                    DOM.notifyInvalid(element, this.message, oncancel);
+                    return false;
+                }
+            }
+            DOM.isValid(element);
+            return true;
+        },
+        initValidators: function() {
+            this.validators = [];
+            this.message = this.attr.message;
+            delete this.attr.message;
+            for (var key in this.attr) {
+                if (false == key in Validators) {
+                    console.error("Unknown Validator:", key, this);
+                    continue;
+                }
+                var validator = Validators[key];
+                if (validator instanceof Function) validator = new validator(this);
+                this.validators.push(validator);
+            }
+        }
+    }));
+    mask.registerHandler("validate:group", Class({
+        Extends: CompoUtils,
+        render: function(model, container, cntx) {
+            mask.renderDom(this.nodes, model, container, cntx);
+        },
+        validate: function() {
+            var validations = this.all("validate");
+            for (var i = 0, x, length = validations.length; i < length; i++) {
+                x = validations[i];
+                if (!x.validate()) return false;
+            }
+            return true;
+        }
+    }));
+})();
+
+include.getResource("/.reference/libjs/compos/validation/lib/validation.js", "js").readystatechanged(3);
+
+(function() {
+    var Templates = [];
+    mask.templates = Templates;
+    mask.registerHandler("template", Class({
+        Base: Compo,
+        Construct: function() {
+            mask.templates.push(this);
+        },
+        render: function() {}
+    }));
+    mask.registerHandler("html", Class({
+        render: function(values, container) {
+            var source = null;
+            if (null != this.attr.source) source = document.getElementById(this.attr.source).innerHTML;
+            if (this.nodes && null != this.nodes.content) source = this.nodes.content;
+            var $div = document.createElement("div");
+            $div.innerHTML = source;
+            for (var key in this.attr) $div.setAttribute(key, this.attr[key]);
+            container.appendChild($div);
+        }
+    }));
+})();
+
+(function(c) {
+    var r = {
+        calId: 0,
+        cssName: "default",
+        startDate: -1,
+        endDate: -1,
+        selectedDate: -1,
+        showPrevNext: !0,
+        allowOld: !0,
+        showAlways: !1,
+        position: "absolute"
+    }, j = {
+        init: function(a) {
+            return this.each(function() {
+                var b = c(this), e = c.extend({}, r);
+                e.calId = b[0].id + "-gldp";
+                a && (e = c.extend(e, a));
+                b.data("settings", e);
+                b.click(j.show).focus(j.show);
+                e.showAlways && setTimeout(function() {
+                    b.trigger("focus");
+                }, 50);
+                c(document).bind("click", function() {
+                    j.hide.apply(b);
+                });
+            });
+        },
+        show: function(a) {
+            a.stopPropagation();
+            j.hide.apply(c("._gldp").not(c(this)));
+            j.update.apply(c(this));
+        },
+        hide: function() {
+            if (c(this).length) {
+                var a = c(this).data("settings");
+                a.showAlways || (c("#" + a.calId).slideUp(200), c(this).removeClass("_gldp"));
+            }
+        },
+        setStartDate: function(a) {
+            c(this).data("settings").startDate = a;
+        },
+        setEndDate: function(a) {
+            c(this).data("settings").endDate = a;
+        },
+        setSelectedDate: function(a) {
+            c(this).data("settings").selectedDate = a;
+        },
+        update: function() {
+            var a = c(this), b = a.data("settings"), e = b.calId, d = b.startDate;
+            -1 == b.startDate && (d = new Date(), d.setDate(1));
+            d.setHours(0, 0, 0, 0);
+            var k = d.getTime(), f = new Date(0);
+            -1 != b.endDate && (f = new Date(b.endDate), /^\d+$/.test(b.endDate) && (f = new Date(d), 
+            f.setDate(f.getDate() + b.endDate)));
+            f.setHours(0, 0, 0, 0);
+            var f = f.getTime(), h = new Date(0);
+            -1 != b.selectedDate && (h = new Date(b.selectedDate), /^\d+$/.test(b.selectedDate) && (h = new Date(d), 
+            h.setDate(h.getDate() + b.selectedDate)));
+            h.setHours(0, 0, 0, 0);
+            var h = h.getTime(), i = a.data("theDate"), i = -1 == i || "undefined" == typeof i ? d : i, m = new Date(i);
+            m.setDate(1);
+            var r = m.getTime(), d = new Date(m);
+            d.setMonth(d.getMonth() + 1);
+            d.setDate(0);
+            var w = d.getTime(), t = d.getDate(), n = new Date(m);
+            n.setDate(0);
+            n = n.getDate();
+            a.data("theDate", i);
+            for (var d = "", u = 0, v = 0; 6 > u; u++) {
+                for (var s = "", q = 0; 7 > q; q++, v++) {
+                    var o = n - m.getDay() + v + 1, p = o - n, g = 0 == q ? "sun" : 6 == q ? "sat" : "day";
+                    if (1 <= p && p <= t) {
+                        o = new Date();
+                        o.setHours(0, 0, 0, 0);
+                        var l = new Date(i);
+                        l.setHours(0, 0, 0, 0);
+                        l.setDate(p);
+                        l = l.getTime();
+                        g = o.getTime() == l ? "today" : g;
+                        b.allowOld || (g = l < k ? "noday" : g);
+                        -1 != b.endDate && (g = l > f ? "noday" : g);
+                        -1 != b.selectedDate && (g = l == h ? "selected" : g);
+                    } else g = "noday", p = 0 >= p ? o : o - t - n;
+                    s += "<td class='gldp-days " + g + " **-" + g + "'><div class='" + g + "'>" + p + "</div></td>";
+                }
+                d += "<tr class='days'>" + s + "</tr>";
+            }
+            h = k < r || b.allowOld;
+            k = w < f || f < k;
+            b.showPrevNext || (h = k = !1);
+            f = "January,February,March,April,May,June,July,August,September,October,November,December".split(",")[i.getMonth()] + " " + i.getFullYear();
+            k = ("<div class='**'><table><tr>" + ("<td class='**-prevnext prev'>" + (h ? "◄" : "") + "</td>") + "<td class='**-monyear' colspan='5'>{MY}</td>" + ("<td class='**-prevnext next'>" + (k ? "►" : "") + "</td>") + "</tr><tr class='**-dow'><td>Sun</td><td>Mon</td><td>Tue</td><td>Wed</td><td>Thu</td><td>Fri</td><td>Sat</td></tr>" + d + "</table></div>").replace(/\*{2}/gi, "gldp-" + b.cssName).replace(/\{MY\}/gi, f);
+            0 == c("#" + e).length && a.after(c("<div id='" + e + "'></div>").css({
+                position: b.position,
+                "z-index": b.zIndex,
+                left: a.offset().left,
+                top: a.offset().top + a.outerHeight(!0)
+            }));
+            e = c("#" + e);
+            e.html(k).slideDown(200);
+            a.addClass("_gldp");
+            c("[class*=-prevnext]", e).click(function(b) {
+                b.stopPropagation();
+                if ("" != c(this).html()) {
+                    var b = c(this).hasClass("prev") ? -1 : 1, d = new Date(m);
+                    d.setMonth(i.getMonth() + b);
+                    a.data("theDate", d);
+                    j.update.apply(a);
+                }
+            });
+            c("tr.days td:not(.noday, .selected)", e).mouseenter(function() {
+                var a = "gldp-" + b.cssName + "-" + c(this).children("div").attr("class");
+                c(this).removeClass(a).addClass(a + "-hover");
+            }).mouseleave(function() {
+                if (!c(this).hasClass("selected")) {
+                    var a = "gldp-" + b.cssName + "-" + c(this).children("div").attr("class");
+                    c(this).removeClass(a + "-hover").addClass(a);
+                }
+            }).click(function(b) {
+                b.stopPropagation();
+                var b = c(this).children("div").html(), d = a.data("settings"), e = new Date(i);
+                e.setDate(b);
+                a.data("theDate", e);
+                a.val(e.getMonth() + 1 + "/" + e.getDate() + "/" + e.getFullYear());
+                if (null != d.onChange && "undefined" != typeof d.onChange) d.onChange(a, e);
+                d.selectedDate = e;
+                j.hide.apply(a);
+            });
+        }
+    };
+    c.fn.glDatePicker = function(a) {
+        if (j[a]) return j[a].apply(this, Array.prototype.slice.call(arguments, 1));
+        if ("object" === typeof a || !a) return j.init.apply(this, arguments);
+        c.error("Method " + a + " does not exist on jQuery.glDatePicker");
+    };
+})(jQuery);
+
+(function() {
+    mask.registerHandler("datePicker", Class({
+        Base: Compo,
+        render: function(values, container, cntx) {
+            this.tagName = "div";
+            Compo.render(this, values, container, cntx);
+            this.$.glDatePicker({
+                cssName: "android",
+                allowOld: false,
+                showAlways: true,
+                position: "static",
+                selectedDate: this.date,
+                onChange: function(sender, date) {
+                    this.setDate(date);
+                    this.$.trigger("change", date);
+                }.bind(this)
+            });
+        },
+        setDate: function(date) {
+            this.date = date;
+            if (null != this.$) {
+                this.$.glDatePicker("setSelectedDate", date);
+                this.$.glDatePicker("update");
+            }
+        },
+        getDate: function(date) {
+            return this.date;
+        }
+    }));
+})();
 
 (function(e) {
     function a(e, t) {
@@ -6497,6 +6962,7 @@ include.getResource("/script/presets.js", "js").readystatechanged(3);
             arr = split(arr, "-mask-");
             arr = split(arr, "-javascript-");
             arr = split(arr, "-style-");
+            arr = split(arr, "-model-");
             arr = clean(arr);
             var source = {};
             ruqq.arr.each(arr, function(x) {
@@ -6506,11 +6972,9 @@ include.getResource("/script/presets.js", "js").readystatechanged(3);
             console.log(source);
             return source;
         },
-        set: function(javascript, style, mask) {
+        set: function(source) {
             var line = "code:";
-            if (mask) line += "-mask-" + mask;
-            if (javascript) line += "-javascript-" + javascript;
-            if (style) line += "-style-" + style;
+            for (var type in source) line += "-" + type + "-" + source[key];
             window.location.hash = encodeURIComponent(line);
         },
         getShortend: function(url, callback) {
@@ -6538,6 +7002,7 @@ include.routes({
     script: "/script/{0}.js"
 }).instance().js({
     component: [ "preview", "shortend-dialog" ],
+    compo: [ "validation" ],
     script: [ "presets" ]
 }).ready(function(resp) {
     window.app = new (Class({
@@ -6562,12 +7027,18 @@ include.routes({
         editors[type].getSession().setMode("ace/mode/" + (highlight || type));
     }
     createEditor("mask", "coffee");
+    createEditor("model", "json");
     createEditor("javascript");
     createEditor("style", "css");
     (function() {
         var editors = window.editors, preview = app.compos.preview, deferredTimer, types;
         function getSource(type) {
             return editors[type].getValue();
+        }
+        function collectSource() {
+            var source = {};
+            for (var type in editors) source[type] = editors[type].getValue();
+            return source;
         }
         function deferUpdate(type) {
             if (types && !types.push) debugger;
@@ -6583,11 +7054,11 @@ include.routes({
                 source[x] = getSource(x);
             }
             types = null;
-            preview.update(source.javascript, source.style, source.mask);
+            preview.update(source);
         }
-        function setValues(source) {
+        function setValues(source, keepOnEmpty) {
             for (var key in editors) {
-                if (!source[key]) continue;
+                if (!source[key] && keepOnEmpty) continue;
                 editors[key].setValue(source[key], 1);
             }
             editors[app.compos.tabs.current()].focus();
@@ -6615,12 +7086,12 @@ include.routes({
             setValues(ruqq.arr.first(resp.presets, "id", "==", id));
         });
         var code = UrlCode.parse();
-        if (code) setValues(code); else setValues(resp.presets[1]);
+        if (code) setValues(code); else setValues(resp.presets[2]);
         app.compos.btnSetLink.on("click", function() {
-            UrlCode.set(getSource("javascript"), getSource("style"), getSource("mask"));
+            UrlCode.set(collectSource());
         });
         app.compos.btnShortend.on("click", function() {
-            UrlCode.set(getSource("javascript"), getSource("style"), getSource("mask"));
+            UrlCode.set(collectSource());
             window.compo.shortendDialog.show().process(window.location.toString());
         });
     })();

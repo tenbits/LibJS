@@ -36,6 +36,7 @@
 			arr = split(arr, '-mask-');
 			arr = split(arr, '-javascript-');
 			arr = split(arr, '-style-');
+			arr = split(arr, '-model-');
 
 			arr = clean(arr);
 
@@ -53,17 +54,13 @@
 			return source;
 		},
 
-		set: function(javascript, style, mask) {
-			var line = 'code:'
-			if (mask) {
-				line += '-mask-' + mask;
+		set: function(source) {
+			var line = 'code:';
+
+			for(var type in source){
+				line += '-' + type + '-' + source[key];
 			}
-			if (javascript) {
-				line += '-javascript-' + javascript;
-			}
-			if (style) {
-				line += '-style-' + style;
-			}
+			
 
 			window.location.hash = encodeURIComponent(line);
 		},

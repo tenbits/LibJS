@@ -22,7 +22,7 @@
 <body>
 
     <script type="mask/template" id='layout'>
-        .container {
+		.container {
             tabs{
                 .header.radioButtons {
 					.toolbar {
@@ -37,6 +37,7 @@
 					}
 
                     button.active name='mask' > 'MASK'
+					button name='model' > 'Model'
                     button name='javascript' > 'JS'
                     button name='style' > 'CSS'
 
@@ -48,9 +49,10 @@
                 }
                 .panels.editors {
                     div#editor-mask.editor.active name='mask';
+					div#editor-model.editor name='model';
                     div#editor-javascript.editor name='javascript';
                     div#editor-style.editor name='style';
-                    
+
                 }
             }
 

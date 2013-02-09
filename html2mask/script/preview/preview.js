@@ -158,11 +158,11 @@ include //
 		},
 		update: function(html) {
 				var error;
-				try {
+				//try {
 					this.element.innerText = mask.HTMLtoMask(html);
-				} catch (err) {
-					error = err;
-				}
+				//} catch (err) {
+				//	error = err;
+				//}
 				this.notify(error);
 		},
 

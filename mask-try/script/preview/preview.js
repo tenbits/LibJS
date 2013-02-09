@@ -8,7 +8,7 @@ include //
 	var Window = (function() {
 
 		return {
-			init: function(iframe) {
+			init: function(iframe, preview) {
 				if (({}).__proto__ != null && 0) {
 					_window = iframe.contentWindow;
 					_window.Function.prototype.apply.prototype = Function.prototype.apply.bind(Function);
@@ -27,11 +27,21 @@ include //
 
 				}
 
-				_document = iframe.contentDocument || iframe.contentWindow.contentDocument;
-				_document.open();
-				_document.write('<html><head><style></style><style>body{font-family:sans-serif;}</style></head><body></body></html>');
-				_document.close();
-				_style = _document.getElementsByTagName('style')[0];
+				if (iframe){
+					_document = iframe.contentDocument || iframe.contentWindow.contentDocument;
+					_document.open();
+					_document.write('<html><head><style></style><style>body{font-family:sans-serif;}</style></head><body></body></html>');
+					_document.close();
+					_style = _document.getElementsByTagName('style')[0];
+				}else{
+					_document = {
+						body: preview.$.find('#preview-container')[0]
+					};
+					_style = preview.$.find('style')[0]
+				}
+
+				window.D = _document;
+
 			},
 
 			eval: function(code) {
@@ -79,6 +89,7 @@ include //
 
 			setHTML: function(preview, template) {
 
+
 				var div = document.createElement('div');
 				div.appendChild(mask.render(template, _window.model));
 
@@ -90,6 +101,9 @@ include //
 
 				$code.textContent = html;
 
+			},
+			setModel: function(preview, model) {
+				_window.model = _window.eval('(' + model + ')');
 			}
 		};
 
@@ -108,30 +122,36 @@ include //
 		events: {
 			'click: #btnHTML': function() {
 				this.asHTML = this.compos.$btnHTML.toggleClass('active').hasClass('active');
-				this.update(this._code, this._style, this._template);
+
+				this.update({
+					javascript : this._code,
+					style : this._style,
+					mask : this._template,
+					model : this._model
+				});
 			}
 		},
 		render: function(model, container, cntx) {
 
 			this.tagName = 'div';
-			this.nodes = mask.compile('.notification; iframe src="about:blank"; button#btnHTML > "HTML"');
+			this.nodes = mask.compile('.notification; style type="text/css";div#preview-container; button#btnHTML > "HTML"');
 
 			Compo.render(this, model, container, cntx);
 
 			Compo.shots.on(this, 'DOMInsert', this.DOMInsert);
 		},
 		DOMInsert: function() {
-			Window.init(_iframe = this.$.find('iframe')[0]);
+			Window.init(_iframe = this.$.find('iframe')[0], this);
 		},
 		prepair: function(code, style, template, callback) {
 
-			if (_document){
+			if (_document) {
 
-				if (code || template){
+				if (code || template) {
 					_document.body.innerHTML = '';
 				}
 
-				if (_window == window){
+				if (_window == window) {
 					callback && callback();
 					return;
 
@@ -154,7 +174,12 @@ include //
 		resolveHTML: function() {
 
 		},
-		update: function(code, style, template) {
+		update: function(source) {
+
+			var code = source.javascript,
+				style = source.style,
+				template = source.mask,
+				model = source.model;
 
 			this.prepair(code, style, template, function() {
 
@@ -162,8 +187,9 @@ include //
 
 				try {
 
+					model && Window.setModel(this, model);
 
-					if (template && this.asHTML){
+					if (template && this.asHTML) {
 						code && Window.setCode(this, code);
 
 						Window.setHTML(this, template);
@@ -174,7 +200,7 @@ include //
 					}
 
 
-					if (code || template){
+					if (code || template) {
 						code && Window.setCode(this, code);
 
 						Window.setTemplate(this, template || this._template);

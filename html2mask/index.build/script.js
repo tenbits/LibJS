@@ -6006,7 +6006,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             if (outer) return output.join("\n");
         }
         function stringify(node, currentIndent, output) {
-            if (node.content) {
+            if ("string" === typeof node.content) {
                 output.push(wrapString(node.content));
                 return;
             }
@@ -6015,11 +6015,12 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                 return;
             }
             if (isSingle(node)) {
-                var content = run(getSingle(node));
-                output.push(stringifyNodeHead(node) + " > " + content);
+                output.push(stringifyNodeHead(node) + " > ");
+                run(getSingle(node), 4, output);
                 return;
             }
-            output.push(stringifyNodeHead(node) + "{"), run(node.nodes, currentIndent + 4, output);
+            output.push(stringifyNodeHead(node) + "{");
+            run(node.nodes, 4, output);
             output.push("}");
             return;
         }
@@ -6070,7 +6071,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             };
             while (html) {
                 chars = true;
-                if (!stack.last() || !special[stack.last()]) {
+                if (!special[stack.last()]) {
                     if (0 == html.indexOf("<!--")) {
                         index = html.indexOf("-->");
                         if (index >= 0) {
@@ -6100,12 +6101,16 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                         if (handler.chars) handler.chars(text);
                     }
                 } else {
-                    html = html.replace(new RegExp("(.*)</" + stack.last() + "[^>]*>"), function(all, text) {
-                        text = text.replace(/<!--(.*?)-->/g, "$1").replace(/<!\[CDATA\[(.*?)]]>/g, "$1");
-                        if (handler.chars) handler.chars(text);
-                        return "";
-                    });
-                    parseEndTag("", stack.last());
+                    var match = new RegExp("</[s]*" + stack.last() + "[^>]*>").exec(html);
+                    if (!match) {
+                        handler.chars(html);
+                        html = "";
+                        break;
+                    }
+                    var text = html.substring(0, match.index);
+                    if (text) handler.chars(text);
+                    html = html.substring(match.index + match[0].length);
+                    handler.end(stack.pop());
                 }
                 if (html == last) throw "Parse Error: " + html;
                 last = html;
@@ -6271,11 +6276,7 @@ include.setCurrent({
         resolveHTML: function() {},
         update: function(html) {
             var error;
-            try {
-                this.element.innerText = mask.HTMLtoMask(html);
-            } catch (err) {
-                error = err;
-            }
+            this.element.innerText = mask.HTMLtoMask(html);
             this.notify(error);
         },
         notify: function(error) {
