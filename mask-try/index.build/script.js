@@ -794,9 +794,6 @@ include.register({
         id: "/.reference/libjs/compos/datePicker/lib/css/android.css",
         url: "/.reference/libjs/compos/datePicker/lib/css/android.css"
     }, {
-        id: "/.reference/libjs/compos/validation/lib/styles.css",
-        url: "/.reference/libjs/compos/validation/lib/styles.css"
-    }, {
         id: "/script/shortend-dialog/shortend-dialog.css",
         url: "/script/shortend-dialog/shortend-dialog.css"
     }, {
@@ -865,6 +862,10 @@ include.register({
         url: "/.reference/libjs/ranimate/lib/ranimate.js",
         namespace: "lib.ranimate"
     }, {
+        id: "/.reference/libjs/mask-binding/lib/mask.binding.js",
+        url: "/.reference/libjs/mask-binding/lib/mask.binding.js",
+        namespace: "lib.mask-binding/mask.binding"
+    }, {
         id: "/script/preview/preview.js",
         url: "/script/preview/preview.js",
         namespace: "component.preview"
@@ -880,14 +881,6 @@ include.register({
         id: "/script/shortend-dialog/shortend-dialog.js",
         url: "/script/shortend-dialog/shortend-dialog.js",
         namespace: "component.shortend-dialog"
-    }, {
-        id: "/.reference/libjs/compos/binding/lib/binding.js",
-        url: "/.reference/libjs/compos/binding/lib/binding.js",
-        namespace: "compo.binding"
-    }, {
-        id: "/.reference/libjs/compos/validation/lib/validation.js",
-        url: "/.reference/libjs/compos/validation/lib/validation.js",
-        namespace: "compo.validation"
     }, {
         id: "/.reference/libjs/compos/utils/lib/utils.js",
         url: "/.reference/libjs/compos/utils/lib/utils.js",
@@ -4873,6 +4866,25 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             }
             return value;
         },
+        interpolate: function(arr, model, type, cntx, element, name) {
+            var length = arr.length, output = new Array(length), even = true, utility, value, index, key, i;
+            for (i = 0, length = arr.length; i < length; i++) {
+                if (even) output[i] = arr[i]; else {
+                    key = arr[i];
+                    value = null;
+                    index = key.indexOf(":");
+                    if (~index) {
+                        utility = index > 0 ? key.substring(0, index).replace(regexpWhitespace, "") : "";
+                        if ("" === utility) utility = "condition";
+                        key = key.substring(index + 1);
+                        value = "function" === typeof ValueUtilities[utility] ? ValueUtilities[utility](key, model, type, cntx, element, name) : null;
+                    } else value = Helper.getProperty(model, key);
+                    output[i] = null == value ? "" : value;
+                }
+                even = !even;
+            }
+            return output;
+        },
         templateFunction: function(arr, o) {
             var output = "", even = true, utility, value, index, key, i, length;
             for (i = 0, length = arr.length; i < length; i++) {
@@ -5047,6 +5059,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             }
         };
     }();
+    var CustomAttributes = {};
     var ValueUtilities = function() {
         function getAssertionValue(value, model) {
             var c = value.charCodeAt(0);
@@ -5151,17 +5164,29 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
     }();
     var Parser = {
         toFunction: function(template) {
-            var arr = template.split("#{"), length = arr.length, i;
-            for (i = 1; i < length; i++) {
-                var key = arr[i], index = key.indexOf("}");
-                arr.splice(i, 0, key.substring(0, index));
+            var START = "#{", END = "}", FIND_LENGHT = 2, arr = [], index = 0, lastIndex = 0, i = 0, end = 0;
+            while ((index = template.indexOf(START, index)) > -1) {
+                end = template.indexOf(END, index + FIND_LENGHT);
+                if (end == -1) {
+                    index += FIND_LENGHT;
+                    continue;
+                }
+                if (lastIndex < index) {
+                    arr[i] = template.substring(lastIndex, index);
+                    i++;
+                }
+                if (index == lastIndex) {
+                    arr[i] = "";
+                    i++;
+                }
+                arr[i] = template.substring(index + FIND_LENGHT, end);
                 i++;
-                length++;
-                arr[i] = key.substring(index + 1);
+                lastIndex = index = end + 1;
             }
+            if (lastIndex < template.length) arr[i] = template.substring(lastIndex);
             template = null;
-            return function(o) {
-                return Helper.templateFunction(arr, o);
+            return function(model, type, cntx, element, name) {
+                return Helper.interpolate(arr, model, type, cntx, element, name);
             };
         },
         parseAttributes: function(T, node) {
@@ -5304,7 +5329,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             if (null == nodes) return container;
             if (null == container) container = document.createDocumentFragment();
             if (null == cntx) cntx = {};
-            var isarray = nodes instanceof Array, length = true === isarray ? nodes.length : 1, i, node, j;
+            var isarray = nodes instanceof Array, length = true === isarray ? nodes.length : 1, i, node, j, jmax;
             for (i = 0; i < length; i++) {
                 node = true === isarray ? nodes[i] : nodes;
                 if (null != CustomTags.all[node.tagName]) {
@@ -5316,19 +5341,37 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     custom.parent = cntx;
                     if (null != listeners) {
                         var fns = listeners["customCreated"];
-                        if (null != fns) for (j = 0; j < fns.length; j++) fns[j](custom, values, container);
+                        if (null != fns) for (j = 0, jmax = fns.length; j < jmax; j++) fns[j](custom, values, container);
                     }
                     custom.render(values, container, custom);
                     continue;
                 }
                 if (null != node.content) {
-                    container.appendChild(document.createTextNode("function" === typeof node.content ? node.content(values) : node.content));
+                    if ("function" === typeof node.content) {
+                        var arr = node.content(values, "node", cntx, container), str = "";
+                        for (j = 0, jmax = arr.length; j < jmax; j++) {
+                            if ("object" === typeof arr[j]) {
+                                if ("" !== str) {
+                                    container.appendChild(document.createTextNode(str));
+                                    str = "";
+                                }
+                                container.appendChild(arr[j]);
+                                continue;
+                            }
+                            str += arr[j];
+                        }
+                        if ("" !== str) container.appendChild(document.createTextNode(str));
+                    } else container.appendChild(document.createTextNode(node.content));
                     continue;
                 }
                 var tag = document.createElement(node.tagName), attr = node.attr;
                 for (var key in attr) if (true === hasOwnProp.call(attr, key)) {
-                    var value = "function" === typeof attr[key] ? attr[key](values) : attr[key];
-                    if (value) tag.setAttribute(key, value);
+                    var value;
+                    if ("function" === typeof attr[key]) {
+                        var arr = attr[key](values, "attr", cntx, tag, key);
+                        value = arr.join("");
+                    } else value = attr[key];
+                    if (value) if (null != CustomAttributes[key]) CustomAttributes[key](node, values, value, tag, cntx); else tag.setAttribute(key, value);
                 }
                 if (null != node.nodes) this.build(node.nodes, values, tag, cntx);
                 container.appendChild(tag);
@@ -5352,6 +5395,9 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
         },
         getHandler: function(tagName) {
             return null != tagName ? CustomTags.all[tagName] : CustomTags.all;
+        },
+        registerAttrHandler: function(attrName, Handler) {
+            CustomAttributes[attrName] = Handler;
         },
         registerUtility: function(utilityName, fn) {
             ValueUtilities[utilityName] = fn;
@@ -6012,6 +6058,338 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
     r.animate.sprite = Sprite;
 })();
 
+(function(global, mask) {
+    "use strict";
+    var $ = global.jQuery || global.Zepto || global.$;
+    function ensureObject(obj, chain) {
+        for (var i = 0, length = chain.length - 1; i < length; i++) {
+            var key = chain.shift();
+            if (null == obj[key]) obj[key] = {};
+            obj = obj[key];
+        }
+        return obj;
+    }
+    function extendObject(obj, source) {
+        if (null == source) return obj;
+        if (null == obj) obj = {};
+        for (var key in source) obj[key] = source[key];
+        return obj;
+    }
+    function getProperty(obj, property) {
+        var chain = property.split("."), length = chain.length, i = 0;
+        for (;i < length; i++) {
+            if (null == obj) return null;
+            obj = obj[chain[i]];
+        }
+        return obj;
+    }
+    function setProperty(obj, property, value) {
+        var chain = property.split("."), length = chain.length, i = 0, key = null;
+        for (;i < length - 1; i++) {
+            key = chain[i];
+            if (null == obj[key]) obj[key] = {};
+            obj = obj[key];
+        }
+        obj[chain[i]] = value;
+    }
+    function addObjectObserver(obj, property, callback) {
+        if (null == obj.__observers) Object.defineProperty(obj, "__observers", {
+            value: {},
+            enumerable: false
+        });
+        var observers = obj.__observers[property] || (obj.__observers[property] = []), chain = property.split("."), parent = chain.length > 1 ? ensureObject(obj, chain) : obj, key = chain[0], currentValue = parent[key];
+        observers.push(callback);
+        Object.defineProperty(parent, key, {
+            get: function() {
+                return currentValue;
+            },
+            set: function(x) {
+                currentValue = x;
+                for (var i = 0, length = observers.length; i < length; i++) observers[i](x);
+            }
+        });
+    }
+    function removeObjectObserver(obj, property, callback) {
+        if (null == obj.__observers || null == obj.__observers[property]) return;
+        var currentValue = getProperty(obj, property);
+        if (2 == arguments.length) {
+            setProperty(obj, property, currentValue);
+            delete obj.__observers[property];
+            return;
+        }
+        var arr = obj.__observers[property], length = arr.length, i = 0;
+        for (;i < length; i++) if (callback == arr[i]) {
+            arr.split(i, 1);
+            i--;
+            length--;
+        }
+    }
+    function observeArray(arr, callback) {
+        Object.defineProperty(arr, "hasObserver", {
+            value: true,
+            enumerable: false,
+            writable: false
+        });
+        function wrap(method) {
+            arr[method] = function() {
+                Array.prototype[method].apply(this, arguments);
+                callback(this, method, arguments);
+            };
+        }
+        var i = 0, fns = [ "push", "unshift", "splice", "pop", "shift", "reverse", "sort" ], length = fns.length;
+        for (;i < length; i++) wrap(fns[i]);
+    }
+    function addEventListener(element, event, listener) {
+        if ("function" === typeof $) {
+            $(element).on(event, listener);
+            return;
+        }
+        if (null != element.addEventListener) {
+            element.addEventListener(event, listener, false);
+            return;
+        }
+        if (element.attachEvent) element.attachEvent("on" + event, listener);
+    }
+    mask.registerHandler(":visible", Class({
+        Extends: mask.ValueUtils.out,
+        refresh: function(model, container) {
+            container.style.display = this.isCondition(this.attr.check, model) ? "" : "none";
+        },
+        render: function(model, container, cntx) {
+            this.refresh(model, container);
+            if (this.attr.bind) addObjectObserver(model, this.attr.bind, this.refresh.bind(this, model, container));
+            if (this.nodes) mask.render(this.nodes, model, container, cntx);
+        }
+    }));
+    mask.registerHandler(":bind", Bind);
+    function Bind() {}
+    Bind.prototype = {
+        refresh: function(model, container, x) {
+            if (null != this.attr.attr) container.setAttribute(this.attr.attr, x); else if (null != this.attr.prop) container[this.attr.prop] = x; else container.innerHTML = x;
+        },
+        render: function(model, container, cntx) {
+            this.refresh(model, container, Object.getProperty(model, this.attr.value));
+            addObjectObserver(model, this.attr.value, this.refresh.bind(this, model, container));
+            if (this.nodes) mask.render(this.nodes, model, container, cntx);
+        }
+    };
+    mask.registerUtility("bind", function(property, model, type, cntx, element, attrName) {
+        var current = getProperty(model, property);
+        switch (type) {
+          case "node":
+            var node = document.createTextNode(current);
+            addObjectObserver(model, property, function(value) {
+                node.textContent = value;
+            });
+            return node;
+
+          case "attr":
+            addObjectObserver(model, property, function(value) {
+                var attrValue = element.getAttribute(attrName);
+                element.setAttribute(attrName, attrValue.replace(current, value));
+                current = value;
+            });
+            return current;
+        }
+        console.error("Unknown binding type", arguments);
+        return "Unknown";
+    });
+    var Providers = {};
+    mask.registerBinding = function(type, binding) {
+        Providers[type] = binding;
+    };
+    mask.BindingProvider = BindingProvider;
+    function BindingProvider(model, element, node) {
+        if (this.constructor == BindingProvider) {
+            var type = node.attr.bindingProvider || element.tagName.toLowerCase();
+            if (Providers[type] instanceof Function) return new Providers[type](model, element, node); else extendObject(this, Providers[type]);
+        }
+        this.node = node;
+        this.model = model;
+        this.element = element;
+        this.property = node.attr.property || "element.value";
+        this.setter = node.attr.setter;
+        this.getter = node.attr.getter;
+        this.dismiss = 0;
+        var event = node.attr.changeEvent || "change";
+        addObjectObserver(model, node.attr.value, this.objectChanged.bind(this));
+        addEventListener(element, event, this.domChanged.bind(this));
+        this.objectChanged();
+        return this;
+    }
+    BindingProvider.prototype = {
+        constructor: BindingProvider,
+        objectChanged: function(x) {
+            if (this.dismiss-- > 0) return;
+            if (null == x) x = this.objectWay.get(this.model, this.node.attr.value);
+            this.domWay.set(this, x);
+            if (x instanceof Array && true !== x.hasObserver) observeArray(x, this.objectChanged.bind(this));
+        },
+        domChanged: function() {
+            var x = this.domWay.get(this);
+            if (this.node.validations) for (var i = 0, validation, length = this.node.validations.length; i < length; i++) {
+                validation = this.node.validations[i];
+                if (false === validation.validate(x, this.element, this.objectChanged.bind(this))) return;
+            }
+            this.dismiss = 1;
+            this.objectWay.set(this.model, this.node.attr.value, x);
+            this.dismiss = 0;
+        },
+        objectWay: {
+            get: function(obj, property) {
+                return getProperty(obj, property);
+            },
+            set: function(obj, property, value) {
+                setProperty(obj, property, value);
+            }
+        },
+        domWay: {
+            get: function(provider) {
+                if (provider.getter) return provider.node.parent[provider.getter]();
+                return getProperty(provider, provider.property);
+            },
+            set: function(provider, value) {
+                if (provider.setter) provider.node.parent[provider.setter](value); else setProperty(provider, provider.property, value);
+            }
+        }
+    };
+    mask.registerHandler(":dualbind", DualbindHandler);
+    function DualbindHandler() {}
+    DualbindHandler.prototype.render = function(model, container, cntx) {
+        if (this.nodes) mask.render(this.nodes, model, container, cntx);
+        if (cntx.components) for (var i = 0, x, length = cntx.components.length; i < length; i++) {
+            x = cntx.components[i];
+            if (":validate" == x.compoName) (this.validations || (this.validations = [])).push(x);
+        }
+        new BindingProvider(model, container, this);
+    };
+    (function() {
+        mask.registerValidator = function(type, validator) {
+            Validators[type] = validator;
+        };
+        mask.registerHandler(":validate", Validate);
+        function Validate() {}
+        Validate.prototype = {
+            constructor: Validate,
+            render: function(model, container, cntx) {
+                this.element = container;
+                this.model = model;
+            },
+            validate: function(input, element, oncancel) {
+                if (null == element) element = this.element;
+                if (this.attr.getter) input = getProperty({
+                    node: this,
+                    element: element
+                }, this.attr.getter);
+                if (null == this.validators) this.initValidators();
+                for (var i = 0, x, length = this.validators.length; i < length; i++) {
+                    x = this.validators[i];
+                    if (false === x.validate(this, input)) {
+                        notifyInvalid(element, this.message, oncancel);
+                        return false;
+                    }
+                }
+                isValid(element);
+                return true;
+            },
+            initValidators: function() {
+                this.validators = [];
+                this.message = this.attr.message;
+                delete this.attr.message;
+                for (var key in this.attr) {
+                    if (false === key in Validators) {
+                        console.error("Unknown Validator:", key, this);
+                        continue;
+                    }
+                    var validator = Validators[key];
+                    if ("function" === typeof validator) validator = new validator(this);
+                    this.validators.push(validator);
+                }
+            }
+        };
+        function notifyInvalid(element, message, oncancel) {
+            console.warn("Validate Notification:", element, message);
+            var next = $(element).next(".-validate-invalid");
+            if (0 === next.length) next = $("<div>").addClass("-validate-invalid").html("<span></span><button>cancel</button>").insertAfter(element);
+            next.children("button").off().on("click", function() {
+                next.hide();
+                oncancel && oncancel();
+            }).end().children("span").text(message).end().show();
+        }
+        function isValid(element) {
+            $(element).next(".-validate-invalid").hide();
+        }
+        var Validators = {
+            match: {
+                validate: function(node, str) {
+                    return new RegExp(node.attr.match).test(str);
+                }
+            },
+            unmatch: {
+                validate: function(node, str) {
+                    return !new RegExp(node.attr.unmatch).test(str);
+                }
+            },
+            minLength: {
+                validate: function(node, str) {
+                    return str.length >= parseInt(node.attr.minLength, 10);
+                }
+            },
+            maxLength: {
+                validate: function(node, str) {
+                    return str.length <= parseInt(node.attr.maxLength, 10);
+                }
+            },
+            check: {
+                validate: function(node, str) {}
+            }
+        };
+    })();
+    mask.registerHandler(":validate:group", ValidateGroup);
+    function ValidateGroup() {}
+    ValidateGroup.prototype = {
+        constructor: ValidateGroup,
+        render: function(model, container, cntx) {
+            mask.render(this.nodes, model, container, cntx);
+        },
+        validate: function() {
+            var validations = getValidations(this);
+            for (var i = 0, x, length = validations.length; i < length; i++) {
+                x = validations[i];
+                if (!x.validate()) return false;
+            }
+            return true;
+        }
+    };
+    function getValidations(component, out) {
+        if (null == out) out = [];
+        if (null == component.components) return out;
+        var compos = component.components;
+        for (var i = 0, x, length = compos.length; i < length; i++) {
+            x = compos[i];
+            if ("validate" === x.compoName) {
+                out.push(x);
+                continue;
+            }
+            getValidations(x);
+        }
+        return out;
+    }
+    mask.registerAttrHandler("x-on", function(node, model, value, element, cntx) {
+        var arr = value.split(";");
+        for (var i = 0, x, length = arr.length; i < length; i++) {
+            x = arr[i];
+            var event = x.substring(0, x.indexOf(":")), handler = x.substring(x.indexOf(":") + 1).trim(), Handler = getHandler(cntx, handler);
+            if (Handler) addEventListener(element, event, Handler);
+        }
+    });
+    function getHandler(controller, name) {
+        if (null == controller) return null;
+        if ("function" === typeof controller[name]) return controller[name].bind(controller);
+        return getHandler(controller.parent, name);
+    }
+})("undefined" === typeof window ? global : window, "undefined" === typeof mask ? null : mask);
+
 include.setCurrent({
     id: "/script/preview/preview.js",
     namespace: "component.preview",
@@ -6340,226 +6718,6 @@ include.load("shortend-dialog.mask::Template").done(function(resp) {
 });
 
 include.getResource("/script/shortend-dialog/shortend-dialog.js", "js").readystatechanged(3);
-
-(function() {
-    mask.registerHandler("visible", Class({
-        Extends: mask.ValueUtils.out,
-        refresh: function(values, container) {
-            container.style.display = this.isCondition(this.attr.check, values) ? "" : "none";
-        },
-        render: function(values, container, cntx) {
-            this.refresh(values, container);
-            if (this.attr.bind) Object.observe(values, this.attr.bind, this.refresh.bind(this, values, container));
-            if (this.nodes) mask.renderDom(this.nodes, values, container, cntx);
-        }
-    }));
-    mask.registerHandler("bind", Class({
-        refresh: function(values, container, x) {
-            if (null != this.attr.attr) {
-                container.setAttribute(this.attr.attr, x);
-                return;
-            }
-            if (null != this.attr.prop) {
-                container[this.attr.prop] = x;
-                return;
-            }
-            container.innerHTML = x;
-        },
-        render: function(values, container, cntx) {
-            this.refresh(values, container, Object.getProperty(values, this.attr.value));
-            Object.observe(values, this.attr.value, this.refresh.bind(this, values, container));
-            if (this.nodes) mask.render(this.nodes, values, container, cntx);
-        }
-    }));
-    var Providers = {}, BindingProvider = null;
-    mask.registerBinding = function(type, binding) {
-        Providers[type] = binding;
-    };
-    mask.BindingProvider = BindingProvider = Class({
-        Construct: function(model, element, node) {
-            if (this.constructor == BindingProvider) {
-                var type = node.attr.bindingProvider || element.tagName.toLowerCase();
-                if (Providers[type] instanceof Function) return new Providers[type](model, element, node); else Object.extend(this, Providers[type]);
-            }
-            this.node = node;
-            this.model = model;
-            this.element = element;
-            this.property = node.attr.property || "element.value";
-            this.setter = node.attr.setter;
-            this.getter = node.attr.getter;
-            var event = node.attr.changeEvent || "change";
-            Object.observe(model, node.attr.value, this.objectChanged.bind(this));
-            $(element).on(event, this.domChanged.bind(this));
-            this.objectChanged();
-            return this;
-        },
-        objectChanged: function(x) {
-            if (this.dismiss-- > 0) return;
-            if (null == x) x = this.objectWay.get(this.model, this.node.attr.value);
-            this.domWay.set(this, x);
-            if (x instanceof Array && true !== x.hasObserver) observeArray(x, this.objectChanged.bind(this));
-        },
-        domChanged: function() {
-            var x = this.domWay.get(this);
-            if (this.node.validations) for (var i = 0, validation, length = this.node.validations.length; i < length; i++) {
-                validation = this.node.validations[i];
-                if (false === validation.validate(x, this.element, this.objectChanged.bind(this))) return;
-            }
-            this.dismiss = 1;
-            this.objectWay.set(this.model, this.node.attr.value, x);
-            this.dismiss = 0;
-        },
-        objectWay: {
-            get: function(obj, property) {
-                return Object.getProperty(obj, property);
-            },
-            set: function(obj, property, value) {
-                Object.setProperty(obj, property, value);
-            }
-        },
-        domWay: {
-            get: function(provider) {
-                if (provider.getter) return provider.node.parent[provider.getter]();
-                return Object.getProperty(provider, provider.property);
-            },
-            set: function(provider, value) {
-                if (provider.setter) provider.node.parent[provider.setter](value); else Object.setProperty(provider, provider.property, value);
-            }
-        }
-    });
-    function observeArray(arr, callback) {
-        Object.defineProperty(arr, "hasObserver", {
-            value: true,
-            enumerable: false,
-            writable: false
-        });
-        function wrap(method) {
-            arr[method] = function() {
-                Array.prototype[method].apply(this, arguments);
-                callback(this, method, arguments);
-            };
-        }
-        var i = 0, fns = [ "push", "unshift", "splice", "pop", "shift", "reverse", "sort" ], length = fns.length;
-        for (;i < length; i++) wrap(fns[i]);
-    }
-    mask.registerHandler("dualbind", Class({
-        render: function(model, container, cntx) {
-            if (this.nodes) mask.renderDom(this.nodes, model, container, cntx);
-            if (cntx.components) for (var i = 0, x, length = cntx.components.length; i < length; i++) {
-                x = cntx.components[i];
-                if ("validate" == x.compoName) (this.validations || (this.validations = [])).push(x);
-            }
-            new BindingProvider(model, container, this);
-        }
-    }));
-})();
-
-include.setCurrent({
-    id: "/.reference/libjs/compos/validation/lib/validation.js",
-    namespace: "compo.validation",
-    url: "/.reference/libjs/compos/validation/lib/validation.js"
-});
-
-window.include && include.css();
-
-(function() {
-    var DOM = {
-        notifyInvalid: function(element, message, oncancel) {
-            console.warn("Validation Notification:", element, message);
-            var next = $(element).next(".invalid");
-            if (0 == next.length) next = $("<div>").addClass("invalid").html("<span></span><button>cancel</button>").insertAfter(element);
-            next.children("button").off().on("click", function() {
-                next.hide();
-                oncancel && oncancel();
-            }).end().children("span").text(message).end().show();
-        },
-        isValid: function(element) {
-            $(element).next(".invalid").hide();
-        }
-    };
-    var Validators = {
-        match: {
-            validate: function(node, str) {
-                return new RegExp(node.attr.match).test(str);
-            }
-        },
-        unmatch: {
-            validate: function(node, str) {
-                return !new RegExp(node.attr.unmatch).test(str);
-            }
-        },
-        minLength: {
-            validate: function(node, str) {
-                return str.length >= parseInt(node.attr.minLength, 10);
-            }
-        },
-        maxLength: {
-            validate: function(node, str) {
-                console.log("max", parseInt(node.attr.maxLength, 10), str.length);
-                return str.length <= parseInt(node.attr.maxLength, 10);
-            }
-        },
-        check: {
-            validate: function(node, str) {}
-        }
-    };
-    mask.registerValidator = function(type, validator) {
-        Validators[type] = validator;
-    };
-    mask.registerHandler("validate", Class({
-        render: function(model, container, cntx) {
-            this.element = container;
-            this.model = model;
-        },
-        validate: function(input, element, oncancel) {
-            if (null == element) element = this.element;
-            if (this.attr.getter) input = Object.getProperty({
-                node: this,
-                element: element
-            }, this.attr.getter);
-            if (null == this.validators) this.initValidators();
-            for (var i = 0, x, length = this.validators.length; i < length; i++) {
-                x = this.validators[i];
-                if (false === x.validate(this, input)) {
-                    DOM.notifyInvalid(element, this.message, oncancel);
-                    return false;
-                }
-            }
-            DOM.isValid(element);
-            return true;
-        },
-        initValidators: function() {
-            this.validators = [];
-            this.message = this.attr.message;
-            delete this.attr.message;
-            for (var key in this.attr) {
-                if (false == key in Validators) {
-                    console.error("Unknown Validator:", key, this);
-                    continue;
-                }
-                var validator = Validators[key];
-                if (validator instanceof Function) validator = new validator(this);
-                this.validators.push(validator);
-            }
-        }
-    }));
-    mask.registerHandler("validate:group", Class({
-        Extends: CompoUtils,
-        render: function(model, container, cntx) {
-            mask.renderDom(this.nodes, model, container, cntx);
-        },
-        validate: function() {
-            var validations = this.all("validate");
-            for (var i = 0, x, length = validations.length; i < length; i++) {
-                x = validations[i];
-                if (!x.validate()) return false;
-            }
-            return true;
-        }
-    }));
-})();
-
-include.getResource("/.reference/libjs/compos/validation/lib/validation.js", "js").readystatechanged(3);
 
 (function() {
     var Templates = [];
@@ -7002,7 +7160,6 @@ include.routes({
     script: "/script/{0}.js"
 }).instance().js({
     component: [ "preview", "shortend-dialog" ],
-    compo: [ "validation" ],
     script: [ "presets" ]
 }).ready(function(resp) {
     window.app = new (Class({

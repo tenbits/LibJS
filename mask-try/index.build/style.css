@@ -281,43 +281,6 @@ input[type=text]{
 	font-weight:normal;
 	cursor:wait;
 }
-.invalid {
-	
-	background: -moz-linear-gradient(top, rgba(169,3,41,1) 0%, rgba(143,2,34,1) 44%, rgba(109,0,25,1) 100%); 
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(169,3,41,1)), color-stop(44%,rgba(143,2,34,1)), color-stop(100%,rgba(109,0,25,1))); 
-	background: -webkit-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); 
-	background: -o-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%); 
-	background: -ms-linear-gradient(top, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%);
-	background: linear-gradient(to bottom, rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%);
-	border:1px solid #000;
-	box-shadow: 0px 0px 4px #000;
-	
-	display: inline-block;
-	position: relative;
-	
-	padding: 10px 15px;
-	
-	color:rgb(255,240,240);	
-	font-weight: bold;	
-}
-
-.invalid:before {
-	content: ' ';
-	position: absolute;
-	top:30%;
-	left: -10px;	
-	width: 0;
-    height: 0;
-    
-	border-top: 7px solid transparent;
-    border-right: 10px solid rgba(0,0,0,.7);
-    border-bottom: 7px solid transparent;	
-}
-
-.invalid > button {
-	font-size: .9em;
-	font-family: monospace;
-}
 .modalOverlay {
     position: fixed;
     top: 0px;

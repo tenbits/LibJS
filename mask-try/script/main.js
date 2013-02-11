@@ -5,9 +5,9 @@ include.routes({
 }) //
 .instance().js({
 	ruqq: ['dom/jquery', 'utils', 'arr', 'es5shim'],
-	lib: ['compo','ranimate'],
+	lib: ['compo','ranimate', 'mask-binding/mask.binding'],
 	component: ['preview', 'tabs', 'dropdownMenu', 'shortend-dialog'],
-	compo: ['binding', 'validation', 'utils', 'datePicker'],
+	compo: ['utils', 'datePicker'],
 	vendor: 'keymaster',
 	script: ['presets', 'urlcode']
 }) //

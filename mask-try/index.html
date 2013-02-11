@@ -146,40 +146,43 @@ mask:
 table {
     tr {
         td > input type='text' {
-                dualbind value='name' changeEvent='keyup'{
-                    validate maxLength='10' message='MaxLength - 10';
-                    validate minLength='2' message='MinLength - 2';
-                    validate match='^([\w]+)$' message='Only characters';
+                :dualbind value='name' changeEvent='keyup'{
+                    :validate maxLength='10' message='MaxLength - 10';
+                    :validate minLength='2' message='MinLength - 2';
+                    :validate match='^([\w]+)$' message='Only characters';
                 }
             }
-        td > div > bind value='name';
+        td > div > :bind value='name';
     }
     tr {
         td > textarea {
-            dualbind value='paths' bindingProvider='pathsProvider';
+            :dualbind value='paths' bindingProvider='pathsProvider';
         }
         td {
-            '[' span > bind value='paths'; ']'
+            '[' span > :bind value='paths'; ']'
         }
     }
 
     tr {
         td > datePicker {
-                dualbind value='date' getter='getDate' setter='setDate';                
+                :dualbind value='date' getter='getDate' setter='setDate';                
             }
-        td > div > bind value='date';
+        td > div > :bind value='date';
     }
 
     tr {
         td > input type='text' {
-                dualbind value='height' {
-                    validate match='^([\d]+)$' message='Only digits';
-                    validate check='<10' message='Min Height is 10px';
-                    validate check='>500' message='Max Height is 500px';
+                :dualbind value='height' {
+                    :validate match='^([\d]+)$' message='Only digits';
+                    :validate check='<10' message='Min Height is 10px';
+                    :validate check='>500' message='Max Height is 500px';
                 }
             }
-        td > div style='background:red;'> dualbind value='height' bindingProvider='heightBinder';
+        td > div style='background:red;'> :dualbind value='height' bindingProvider='heightBinder';
     }
+
+    h5 > 'Hello #{bind:name}!'
+    customTag > button x-on='click: onclick' > 'Click';
 }
 ----
 javascript:
@@ -213,6 +216,14 @@ mask.registerBinding("datePickerProvider", {
         }
     }
 });
+
+mask.registerHandler('customTag',Class({
+    Base: Compo,
+    onclick: function(){
+        alert('Button Clicked');
+    }
+}));
+
 ----
 model:
 {
