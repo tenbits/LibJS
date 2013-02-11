@@ -72,7 +72,7 @@ table {
                     :validate match='^([\w]+)$' message='Only characters';
                 }
             }
-        td > div > :bind value='name';
+        td > div > '#{bind:name}';
     }
     tr {
         td > textarea {
