@@ -1,16 +1,13 @@
-mask.registerHandler('radioButtons', Class({
-    Base: Compo,
-    Construct: function() {            
-        this.on('button:not(.active)', function(e) {
-            var $this = $(e.target);
-            $this.parent().children('.active').removeClass('active');
-            $this.addClass('active');
+mask.registerHandler(':radioButtons', Compo({
+    events: {
+        'click: button:not(.active)': function(event){
+            this.$.children('.active').removeClass('active');
             this.$.trigger('changed', e.target);
-        }.bind(this));              
+
+            $(e.currentTarget).addClass('active');
+        }
     },
-    render: function() {
-        this.tagName = 'div';
-        this.attr.class = 'radioButtons ' + (this.attr.class || '');
-        Compo.prototype.render.apply(this, arguments);
+    onRenderStart: function() {
+        jmask(this).tag('div').addClass('radioButtons');
     }
 }));

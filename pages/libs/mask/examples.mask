@@ -1,0 +1,16 @@
+.example {
+	h4 {
+		span.collapsable.~[:index==0?'':'closed'] {
+			span > '∨' span > '∨' span > '∨' span > '∨'
+		}
+		'~[title]'
+	}
+	div.data style='~[:index > 0 ? "display:none"]; padding-left:20px;' {
+		h6 > 'Template'
+		prism > '~[template]'
+		h6 > 'Javascript'
+		prism > '~[javascript]'
+		h6 > 'Result'
+		div.result;
+	}
+}

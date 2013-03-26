@@ -11,7 +11,7 @@ include.routes({
 	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
 	lib: ['mask', 'compo', 'ranimate'],
 
-	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
+	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list'],
 	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer'],
 	controller: ['viewsManager', 'view', 'default'],
 	uicontrol: ['radioButtons', 'pageActivity'],
@@ -136,19 +136,16 @@ include.routes({
 		},
 	});
 
-	w.app = Compo.initialize(App, model, null, document.body);
-
-
-
 	w.routes.add('/:view/?:category/?:anchor', function(current) {
 		w.viewsManager.show(current);
 	});
 
-
+	w.app = Compo.initialize(App, model, null, document.body);
 
 	w.viewsManager.show(w.routes.current() || {
 		view: 'about'
 	});
+
 
 
 	if (ruqq.info.browser.name == 'msie'){

@@ -18,37 +18,41 @@ layout:view master='view' {
                 'Dependencies:'
                 ul {
                     li > code > 'MaskJS'
-                    li > code > 'ClassJS'
                     li {
                         code > 'Any Dom Manipulation Library'
                         div.hint > code > 'We Recommend Zepto.js for Mobile Applications'
                     }
                 }
 
-                'If IncludeJS is used than it completely solves Javascript Problem of Libraries and Components'
             }
             div.api {
                 h4 > 'Ṗroperties'
                 ul.anchors {
+                    li > a href='#/compo/api/slots' > '.slots'
                     li > a href='#/compo/api/events' > '.events'
                     li > a href='#/compo/api/compos' > '.compos'
                     li > a href='#/compo/api/$' > '.$'
                 }
                 h4 > 'Ċonstructor'
                 ul.anchors {
-                    li > a href='#/compo/api/Construct' > 'Construct(?arg, ?cntx)'
+                    li > a href='#/compo/api/Construct' > 'constructor()'
                 }
                 h4 > 'Ḟunctions'
                 ul.anchors {
-                    li > a href='#/compo/api/render' > '.render(values, ?container, ?cntx)'
-                    li > a href='#/compo/api/insert' > '.insert(parent)'
-                    li > a href='#/compo/api/append' > '.append(template, values)'
+                    li > a href='#/compo/api/onRenderStart' > '.onRenderStart(model, cntx, container)'
+                    li > a href='#/compo/api/render' > '.render(model, cntx, container)'
+                    li > a href='#/compo/api/onRenderEnd' > '.onRenderEnd(elements, model, cntx, container)'
+                    li > a href='#/compo/api/append' > '.append(template, model)'
                     li > a href='#/compo/api/on' > '.on(?type, selector, callback)'
                     li > a href='#/compo/api/remove' > '.remove()'
+                    li > a href='#/compo/api/this.find' > '.find(selector)'
+                    li > a href='#/compo/api/this.closest' > '.closest(selector)'
+
                 }
                 h4 > 'Ṡtatic'
                 ul.anchors {
-                    li > a href='#/compo/api/find' > '.find(component, selector, direction)'
+                    li > a href='#/compo/api/find' > '.find(component, selector)'
+                    li > a href='#/compo/api/closest' > '.closest(component, selector)'
                     li > a href='#/compo/api/dispose' > '.dispose(component)'
                     li > a href='#/compo/api/config.setDOMLibrary' > '.config.setDOMLibrary(lib)'
                 }
@@ -69,7 +73,7 @@ layout:view master='view' {
 
                 'As the result, we can just write in our mask markup:'
 
-                prism > "radioButtons { button.active > 'Info' button > 'API' button > 'Example' }"
+                prism > ":radioButtons { button.active > 'Info' button > 'API' button > 'Example' }"
 
                 'We dont need no more Javascript to apply mouse events, everything is done under the hood:'
 
@@ -80,7 +84,7 @@ layout:view master='view' {
                 prism > "this.on('changed: .radioButtons', function(event){ /** do smth. */ })"
 
                 'So developed once radioButton Handler, we need than only 2 lines of code '
-                font color='#bbb' > '(I dont count new lines) '
+
                 '(1) and (3) for rest of the future'
 
 
@@ -89,7 +93,7 @@ layout:view master='view' {
                 a href='http://prismjs.com/' > 'PrismJS'
 
                 prism > "var a = 10;" 'is'
-                prism > 'prism > "var a = 10;"'
+                prism > ':prism > "var a = 10;"'
 
                 'As you can see its quite simple: define "prism" tag in mask markup and thats all. '
                 'The source code of a Prism Control Handler is'

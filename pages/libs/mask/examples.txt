@@ -1,0 +1,105 @@
+====
+title:
+Simple
+----
+template:
+div.simple style="background:#6BA43C; color:#1E5043;" > "~[text]"
+----
+javascript:
+var x = {text: "Hello, World!"};
+mask.render(template, x);
+----
+====
+title:
+Lists
+----
+template:
+h4 > 'Flowers:'
+% each='flowers' > div style='display:inline-block;' {
+    img src='~[url]';
+    div style='text-align:center;' > '~[name]'
+}
+----
+javascript:
+var x = {
+    flowers: [{
+        url: 'images/flowers/Lilie.png', name: 'Lily'
+    }, {
+        url: 'images/flowers/Nelke.png', name: 'Clove'
+    }, {
+        url: 'images/flowers/Rose.png', name: 'Rose'
+    }]
+};
+mask.render(template, x);
+----
+====
+title:
+Custom Control - jmask Dom Builder
+----
+template:
+h4 > 'Should we repeat?' flowers;
+----
+javascript:
+/** create custom Control: */
+mask.registerHandler('flowers', Compo({
+    constructor: function(){
+        this.flowers = [{
+            url: 'images/flowers/Lilie.png', name: 'Lily'
+        }, {
+            url: 'images/flowers/Nelke.png', name: 'Clove'
+        }, {
+            url: 'images/flowers/Rose.png', name: 'Rose'
+        }];
+    },
+    renderStart: function(model, cntx, container){
+        this.model = this.flowers;
+        this.nodes = jmask("div > % each='.'");
+
+        this.nodes
+        .find('%')
+        .append('div')
+        .children()
+        .css('display', 'inline-block')
+        .append('img src="~[url]"')
+        .append('div > "~[name]"')
+        .children('div')
+        .css('text-align','center');
+
+    }
+}));
+
+mask.render(template);
+----
+====
+title:
+Bindings
+----
+template:
+h4 > bind value='counter';
+----
+javascript:
+var json = { counter: 0 };
+window.interval = setInterval(function(){ json.counter++; },2000);
+mask.render("h3 > bind value='counter';", json);
+----
+====
+title:
+Custom Value Handler
+----
+template:
+p > '~[L:greeting] (lang: ~[current])'
+----
+javascript:
+var dictionary = {
+    en : { greeting: "Hello" },
+    de : { greeting: "Hallo" },
+    ru : { greeting: "Привет" }
+}
+var lang = navigator.language || "ru-ru";
+    lang = lang.substring(0, lang.indexOf('-')).toLowerCase();
+if (lang in dictionary === false) lang = "ru";
+mask.registerUtility("L", function(key, values){
+    return dictionary[lang][key];
+});
+mask.render(template,{current: lang});
+----

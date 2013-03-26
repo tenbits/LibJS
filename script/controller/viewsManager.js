@@ -53,9 +53,9 @@ include.js({
 					return;
 				}
 
-				this.performShow(compo, info, function(){
-					window.routes.hashchanged();
-				});
+
+				this.performShow(compo, info);
+				window.routes.hashchanged();
 			}.bind(this));
 
 		},
@@ -88,7 +88,8 @@ include.js({
 			currentCompo = compo;
 
 			if (this.$) {
-				Helper.doSwitch(this.$.children('.active'), compo.$, callback);
+				callback && callback();
+				Helper.doSwitch(this.$.children('.active'), compo.$);
 			}
 
 			compo.activate && compo.activate();
@@ -99,9 +100,6 @@ include.js({
 				document.title = info.title;
 			}
 
-			if (!this.$){
-				callback();
-			}
 		}
 	});
 

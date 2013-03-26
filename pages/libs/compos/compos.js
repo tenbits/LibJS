@@ -7,9 +7,9 @@
 			this.container = container;
 
 			template = "div data-tag='" + tag + "' { " + template + " }";
-			container.appendChild(mask.renderDom(template, null, null, this));
+			container.appendChild(mask.renderDom(template, null, null, null, this));
 
-			var prism = Compo.findCompo(this, 'prism');
+			var prism = Compo.find(this, 'prism');
 			if (prism) {
 				prism.done(this.update.bind(this));
 			} else {

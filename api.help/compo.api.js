@@ -1,8 +1,7 @@
 /**
- *  Component Class.
- *  Inherit from it to Implement Custom Component (Abstract Class)
+ *  Component
  */
-Class({
+Compo({
 
 /**
  *  [events](name=events)  (optional)
@@ -14,6 +13,18 @@ events: {
     'touchStart: a': callbackFunction,
     // ..
 },
+
+/**
+ * [slots](name=slots)
+ *
+ * Slots for View signals,
+ * 'this' of each function is current controller instance
+ */
+slots: {
+	addUser: function(event) { /* .. */ }
+}
+
+
 /**
  *  [compos](name=compos)    (optional)
  *  Components/HTMLElements that will be searched for after DOMInsert,
@@ -38,27 +49,35 @@ compos: {
 },
 
 /**
- *  [$](name=$) 
+ *  [$](name=$)
  *  After Compo is rendered, dollar sign contains the HTMLElement(s)
  *      selected with default DOM Manipulation Library
  */
 $: null,
-    
+
 /**
  *  [Construct](name=Construct)
- *   @param  arg -
- *      1. {Object} - template model object, receive from mask.renderDom
- *      Custom Class Initialization:
- *      2. {String} - mask template
- *   @param cntx
- *      1. maskDOM context
+ *
  */
-Construct: function(arg, cntx){},
+constructor: function(){},
+
+/**
+ * [.onRenderStart](name=onRenderStart)
+ *
+ * This method will be called before renderStarts.
+ * To override used model, or child nodes or container:
+ *   this.nodes = jmask('.container > "Overriden Template"');
+ *   this.model = otherModel
+ *   this.container = otherContainer;
+ *
+ */
+onRenderStart: function(model, cntx, container){},
 
 /**
  *  [.render](name=render)
- *  Implements .render {Function} needed for MaskJS, @see MaskJS.registerHandler
- *  This Function renders Template into container.
+ *  (optinal)
+ *
+ *	Override custom render flow. (renderEnd/renderStart is not called)
  *
  *  (override example):
  *      render: function(){
@@ -69,13 +88,16 @@ Construct: function(arg, cntx){},
 render: function(values, container, cntx){},
 
 /**
- *  [.insert](name=insert)
- *  Insert Component into @parent
- *  'DOMInsert' Event will be emitted to all children-Components
+ * [.onRenderEnd](name=onRenderEnd)
  *
- *  @argument parent - HTMLElement container
- */  
-insert: function(parent){},
+ * This method is called after render is finished.
+ * this.$ - is here defined
+ *
+ * -elements(Array) are child nodes that were created during render
+ */
+onRenderEnd: function(elements, model, cntx, container){}
+
+
 
 /**
  *  [.append](name=append)
@@ -94,12 +116,28 @@ append: function(template, values){},
  *  [.on](name=on)
  *  @see @properties.events
  *  Adds Event Handler to this.events object
- */  
+ */
 on: function(?type, selector, callback){},
+
+/** [.find](name=this.find)
+ *
+ * Look in deep and find child controller
+ * (selector is only tagName/compoName, id(#someid) or class(.someclass))
+ *
+ */
+find: function(selector){},
+
+/**
+ * [.closest](name=this.closest)
+ *
+ * Look up the tree and find parent controller
+ */
+closest: function(selector){},
 
 /**
  *  [.remove](name=remove)
  *  Removes Component from DOM, and calls Compo.dispose
+ *
  */
 remove: function(){},
 
@@ -118,16 +156,14 @@ Static: {
      *
      *  @return found {Compo} or null
      */
-    find: function(compo, selector, direction){},
-    
-    /**
-     *  [.dispose](name=dispose)
-     *  Go through all children and if some implements dispose function
-     *      calls this.
-     *  @argument compo - {Compo};
-     */
-    dispose: function(compo){},
-    
+    find: function(compo, selector){},
+
+	/**
+	 *[.closest](name=closest)
+	 */
+	closest: function(compo, selector){}
+
+
     config:{
         /**
          *  [.config.setDOMLibrary](name=config.setDOMLibrary)
@@ -144,8 +180,14 @@ Static: {
          *  So any Library can be used that implements that functions
          */
         setDOMLibrary: function(lib){ $ = lib;}
-    }
+    },
+
+	/**
+	 * Initialize Component Instance,
+	 * - mix (String|Function) - mix is a component constructor or component name,
+	 * it will look in mask.getHandler() for constructor
+	 */
+	initialize: function(mix, model, cntx, container){}
 }
 
 });
-	

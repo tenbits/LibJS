@@ -24,26 +24,32 @@ layout:view master='view' {
 					}
 					li {
 						'Complex animation models'
-						div > prism > formatter:pre > "{\n\t model:{String|Object|Array},\n\t next: {String|Object|Array} \n }"
-						small > div > prism > formatter:pre > "
-							new ruqq.animate.Model({\n
-							\t	model: [{\n
-							\t\t\t	model: 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s',\n
-							\t\t\t	next: {\n
-							\t\t\t\t		model: 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms',\n
-							\t\t\t\t			next: [ \n
-							\t\t\t\t\t			'transform | scale(.5) > scale(1.5) | 2s', \n
-							\t\t\t\t\t			'opacity | 1 > 0 | 4s', \n
-							\t\t\t\t\t			'background-color | > violet | 1s']\n
-							\t\t\t\t		}\n
-							\t\t	}, {\n
-							\t\t\t		model: 'background-color | > blue | 1s',\n
-							\t\t\t		next: 'background-color | > yellow | 1s',\n
-							\t\t	}],\n
-							\t	next: {\n
-							\t\t		model: 'opacity | 0 > 1 | 3s'\n
-							\t	}\n
-							})
+						div > prism > "
+{
+	model:{String|Object|Array},
+	next: {String|Object|Array}
+}
+"
+						small > div > prism > "
+
+new ruqq.animate.Model({
+	model: [{
+	model: 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s',
+	next: {
+		model: 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms',
+			next: [
+			'transform | scale(.5) > scale(1.5) | 2s',
+			'opacity | 1 > 0 | 4s',
+			'background-color | > violet | 1s']
+		}
+	}, {
+		model: 'background-color | > blue | 1s',
+		next: 'background-color | > yellow | 1s',
+	}],
+	next: {
+		model: 'opacity | 0 > 1 | 3s'
+	}
+})
 
 						"
 						div.hint {
@@ -60,10 +66,10 @@ layout:view master='view' {
 					li {
 						'Sprite animations'
 						div.hint > 'dynamic keyframes'
-						div > prism > formatter:pre >
+						div > prism >
 							"
-							ruqq.animate.sprite.create({id:ID,frameWidth:X, frames:N});\n
-							ruqq.animate.sprite.start($element, ID, msperframe);\n
+ruqq.animate.sprite.create({id:ID,frameWidth:X, frames:N});
+ruqq.animate.sprite.start($element, ID, msperframe);
 							"
 					}
 				}
@@ -84,28 +90,28 @@ layout:view master='view' {
 						font-family: monospace;' {
 
 					pre > formatter:pre > "
-						{\n
-						\t	model: [{\n
-						\t\t		model: 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s',\n
-						\t\t		next: {\n
-						\t\t\t			model: 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms',\n
-						\t\t\t			next: [ \n
-						\t\t\t\t				'transform | scale(.5) > scale(1.5) | 900ms', 'opacity | 1 > 0 | 1s', \n
-						\t\t\t\t				'background-color | > violet | 1s'\n
-						\t\t\t			]\n
-						\t\t		}\n
-						\t	}, {\n
-						\t\t		model: 'background-color | > blue | 1s',\n
-						\t\t		next: 'background-color | > yellow | 1s',\n
-						\t	}],\n
-						\t	next: {\n
-						\t\t		model: 'opacity | 0 > 1 | 1.5s',\n
-						\t\t		next: [\n
-						\t\t\t			'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s',\n
-						\t\t\t			'background-color | > rgb(240,10,10) | 2s ease-in'\n
-						\t\t		]\n
-						\t	}\n
-						}
+{
+    model: [{
+        model: 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s',
+        next: {
+            model: 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms',
+            next: [
+                'transform | scale(.5) > scale(1.5) | 900ms', 'opacity | 1 > 0 | 1s',
+                'background-color | > violet | 1s'
+            ]
+        }
+    }, {
+        model: 'background-color | > blue | 1s',
+        next: 'background-color | > yellow | 1s',
+    }],
+    next: {
+        model: 'opacity | 0 > 1 | 1.5s',
+        next: [
+            'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s',
+            'background-color | > rgb(240,10,10) | 2s ease-in'
+        ]
+    }
+}
 
 					"
 				}
