@@ -9,12 +9,13 @@ include.routes({
 	script: '/script/{0}.js'
 }).js({
 	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
-	lib: ['compo','ranimate'],
+	lib: ['mask', 'compo', 'ranimate'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list', 'utils'],
+	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer'],
 	controller: ['viewsManager', 'view', 'default'],
 	uicontrol: ['radioButtons', 'pageActivity'],
-	script: ['utils/maskUtils', 'pages']
+
 }).ready(function() {
 
 	var w = window;
@@ -106,8 +107,7 @@ include.routes({
 			}]
 		};
 
-	w.app = new new Class({
-		Base: Compo,
+	var App = Compo({
 		attr: {
 			template: '#layout'
 		},
@@ -136,13 +136,14 @@ include.routes({
 		},
 	});
 
+	w.app = Compo.initialize(App, model, null, document.body);
 
-	w.app.render(model).insert(document.body);
 
 
 	w.routes.add('/:view/?:category/?:anchor', function(current) {
 		w.viewsManager.show(current);
 	});
+
 
 
 	w.viewsManager.show(w.routes.current() || {

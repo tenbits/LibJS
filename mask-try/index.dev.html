@@ -22,7 +22,7 @@
 <body>
 
     <script type="mask/template" id='layout'>
-		.container {
+		.-try-container {
             tabs{
                 .header.radioButtons {
 					.toolbar {
@@ -31,7 +31,7 @@
 						dropdownMenu.dropdownMenu {
 							button.caption > 'Presets'
 							.-ddmenu.items {
-								list value='presets' > .-ddmenu.item data-id='#{id}' > '#{title}'
+								% each='presets' > .-ddmenu.item data-id='~[id]' > '~[title]'
 							}
 						}
 					}
@@ -48,10 +48,10 @@
 
                 }
                 .panels.editors {
-                    div#editor-mask.editor.active name='mask';
-					div#editor-model.editor name='model';
-                    div#editor-javascript.editor name='javascript';
-                    div#editor-style.editor name='style';
+                    div#editor-mask.-try-editor.active name='mask';
+					div#editor-model.-try-editor name='model';
+                    div#editor-javascript.-try-editor name='javascript';
+                    div#editor-style.-try-editor name='style';
 
                 }
             }

@@ -58,9 +58,9 @@
 			var line = 'code:';
 
 			for(var type in source){
-				line += '-' + type + '-' + source[key];
+				line += '-' + type + '-' + source[type];
 			}
-			
+
 
 			window.location.hash = encodeURIComponent(line);
 		},

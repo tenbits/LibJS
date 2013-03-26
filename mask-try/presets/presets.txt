@@ -3,7 +3,7 @@ title:
 Simple
 ----
 mask:
-div.simple style="background:#6BA43C; color:#1E5043;" > "#{text}"
+.simple style="background:#6BA43C; color:#1E5043;" > "~[text]"
 ----
 model:
 {
@@ -15,20 +15,18 @@ title:
 Collapsible
 ----
 mask:
-collapsible.classA {
+:collapsible.classA {
     button.header > 'Toggle'
     .content {
-        'Some Content, #{name}!'
+        'Some Content, ~[name]!'
     }
 }
 ----
 javascript:
 /** create custom Control: */
-mask.registerHandler('collapsible', Class({
-    Base: Compo,
-    Construct: function() {
+mask.registerHandler(':collapsible', Compo({
+    constructor: function() {
         this.tagName = 'div';
-
         this.compos = {
             container: '$: .content'
         }
@@ -72,7 +70,7 @@ table {
                     :validate match='^([\w]+)$' message='Only characters';
                 }
             }
-        td > div > '#{bind:name}';
+        td > div > '~[bind:name]';
     }
     tr {
         td > textarea {
@@ -84,8 +82,8 @@ table {
     }
 
     tr {
-        td > datePicker {
-                :dualbind value='date' getter='getDate' setter='setDate';                
+        td > :datePicker {
+                :dualbind value='date' getter='getDate' setter='setDate';
             }
         td > div > :bind value='date';
     }
@@ -101,13 +99,13 @@ table {
         td > div style='background:red;'> :dualbind value='height' bindingProvider='heightBinder';
     }
 
-    h5 > 'Hello #{bind:name}!'
-    customTag > button x-on='click: onclick' > 'Click';
+    h5 > 'Hello ~[bind:name]!'
+    :customTag > button x-signal='click: clicked' > 'Click';
 }
 ----
 javascript:
 
-mask.registerBinding('pathsProvider', {     
+mask.registerBinding('pathsProvider', {
     domWay: {
         get: function(provider){
             return provider.element.value.split('\n');
@@ -126,7 +124,7 @@ mask.registerBinding("heightBinder", {
     }
 });
 
-mask.registerBinding("datePickerProvider", {        
+mask.registerBinding("datePickerProvider", {
     domWay: {
         get: function(provider){
             return provider.node.parent.getDate();
@@ -137,10 +135,11 @@ mask.registerBinding("datePickerProvider", {
     }
 });
 
-mask.registerHandler('customTag',Class({
-    Base: Compo,
-    onclick: function(){
-        alert('Button Clicked');
+mask.registerHandler(':customTag',Compo({
+    slots: {
+        clicked: function(){
+            alert('Button Clicked');
+        }
     }
 }));
 

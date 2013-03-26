@@ -27,13 +27,13 @@ include //
 
 				}
 
-				if (iframe){
+				if (iframe) {
 					_document = iframe.contentDocument || iframe.contentWindow.contentDocument;
 					_document.open();
 					_document.write('<html><head><style></style><style>body{font-family:sans-serif;}</style></head><body></body></html>');
 					_document.close();
 					_style = _document.getElementsByTagName('style')[0];
-				}else{
+				} else {
 					_document = {
 						body: preview.$.find('#preview-container')[0]
 					};
@@ -84,7 +84,11 @@ include //
 
 				preview._template = template;
 
-				preview._compo = (new Compo(template)).render(_window.model || {}).insert(_document.body);
+				preview._compo = Compo.initialize(Compo({
+					attr: {
+						template: template
+					}
+				}), _window.model || {}, null, _document.body);
 			},
 
 			setHTML: function(preview, template) {
@@ -111,9 +115,8 @@ include //
 
 
 
-	mask.registerHandler('preview', Class({
-		Base: Compo,
-		Construct: function() {
+	mask.registerHandler('preview', Compo({
+		constructor: function() {
 			this.compos = {
 				$notification: '$: .notification',
 				$btnHTML: '$: #btnHTML'
@@ -124,19 +127,17 @@ include //
 				this.asHTML = this.compos.$btnHTML.toggleClass('active').hasClass('active');
 
 				this.update({
-					javascript : this._code,
-					style : this._style,
-					mask : this._template,
-					model : this._model
+					javascript: this._code,
+					style: this._style,
+					mask: this._template,
+					model: this._model
 				});
 			}
 		},
-		render: function(model, container, cntx) {
+		onRenderStart: function(model, cntx, container) {
 
 			this.tagName = 'div';
 			this.nodes = mask.compile('.notification; style type="text/css";div#preview-container; button#btnHTML > "HTML"');
-
-			Compo.render(this, model, container, cntx);
 
 			Compo.shots.on(this, 'DOMInsert', this.DOMInsert);
 		},

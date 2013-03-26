@@ -3,7 +3,7 @@ include.js({
 }).done(function() {
 
 	var Helper = {
-		doSwitch: function($current, $next) {
+		doSwitch: function($current, $next, callback) {
 			$current.removeClass('active');
 			$next.addClass('active');
 
@@ -14,26 +14,24 @@ include.js({
 				valueFrom: '0',
 				valueTo: '.9',
 				duration: 500,
-				timing: 'cubic-bezier(.58,1.54,.59,.75)'
+				timing: 'cubic-bezier(.58,1.54,.59,.75)',
+				callback: callback
 			});
 		}
 	},
 	currentCompo;
 
 
-	var ViewsManager = Class({
-		Base: Compo,
-		Construct: function() {
+	var ViewsManager = Compo({
+		constructor: function() {
 			window.viewsManager = this;
 		},
-		render: function(values, container, cntx) {
-			this.nodes = mask.compile('list value="views" > view;');
-			this.tagName = 'div';
-			Compo.render(this, values, container, cntx);
+		renderStart: function() {
+			this.nodes = mask.compile('#views > % each="views" > view;');
 		},
 		load: function(info) {
 
-			var activity = Compo.findCompo(window.app, 'pageActivity').show(),
+			var activity = Compo.find(window.app, 'pageActivity').show(),
 				name = info.view.replace('View', '');
 
 			window.Page.resolve(name, function(controller, template){
@@ -46,18 +44,18 @@ include.js({
 				mask.registerHandler(name + 'View', controller);
 
 				this.append(name + 'View', {});
-
 				activity.hide();
 
 
-				var compo = Compo.findCompo(this,  name + 'View');//'#' + name);
+				var compo = Compo.find(this,  name + 'View');//'#' + name);
 				if (compo == null) {
 					console.error('Cannt be loaded', name);
 					return;
 				}
 
-				this.performShow(compo, info);
-
+				this.performShow(compo, info, function(){
+					window.routes.hashchanged();
+				});
 			}.bind(this));
 
 		},
@@ -68,9 +66,9 @@ include.js({
 			$menu.find('.selected').removeClass('selected');
 			$menu.find('[data-view="'+info.view+'"]').addClass('selected');
 
-			
 
-			var compo = Compo.findCompo(this, info.view + 'View');
+
+			var compo = Compo.find(this, info.view + 'View');
 			if (compo == null) {
 				this.$.children('.active').removeClass('active');
 				this.load(info);
@@ -79,7 +77,7 @@ include.js({
 
 			this.performShow(compo, info);
 		},
-		performShow: function(compo, info) {
+		performShow: function(compo, info, callback) {
 
 			compo.section(info);
 
@@ -90,14 +88,19 @@ include.js({
 			currentCompo = compo;
 
 			if (this.$) {
-				Helper.doSwitch(this.$.children('.active'), compo.$);
+				Helper.doSwitch(this.$.children('.active'), compo.$, callback);
 			}
+
 			compo.activate && compo.activate();
 
 			info = Page.getInfo(info.view);
 
 			if (info && info.title){
 				document.title = info.title;
+			}
+
+			if (!this.$){
+				callback();
 			}
 		}
 	});

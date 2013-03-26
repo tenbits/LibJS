@@ -5,7 +5,7 @@ include.routes({
 }) //
 .instance().js({
 	ruqq: ['dom/jquery', 'utils', 'arr', 'es5shim'],
-	lib: ['compo','ranimate', 'mask-binding/mask.binding'],
+	lib: ['mask', 'compo','ranimate'],
 	component: ['preview', 'tabs', 'dropdownMenu', 'shortend-dialog'],
 	compo: ['utils', 'datePicker'],
 	vendor: 'keymaster',
@@ -14,8 +14,7 @@ include.routes({
 .ready(function(resp) {
 
 
-	window.app = (new(Class({
-		Base: Compo,
+	var App = Compo({
 		attr: {
 			template: document.getElementById('layout').innerHTML
 		},
@@ -26,9 +25,11 @@ include.routes({
 			btnSetLink: '$: #setLink',
 			btnShortend: '$: #getShortend'
 		}
-	}))).render({
+	});
+
+	window.app = Compo.initialize(App, {
 		presets: resp.presets
-	}).insert(document.body);
+	}, null, document.body);
 
 
 	window.editors = {};

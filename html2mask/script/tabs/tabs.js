@@ -22,9 +22,8 @@ include //
 		editor.focus();
 	}
 
-	mask.registerHandler('tabs', Class({
-		Base: Compo,
-		Construct: function() {
+	mask.registerHandler('tabs', Compo({
+		constructor: function() {
 			this.attr = {
 				'class': 'tabs'
 			};
@@ -35,15 +34,13 @@ include //
 			};
 
 			Class.bind(this, 'next');
+
+			this.tagName = 'div';
 		},
 		events: {
 			'click: .header > button:not(.active)': function(event) {
 				activate(this, $(event.currentTarget).attr('name'));
 			}
-		},
-		render: function(model, container, cntx) {
-			this.tagName = 'div';
-			Compo.render(this, model, container, cntx);
 		},
 
 		next: function() {

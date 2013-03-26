@@ -5,7 +5,7 @@ include.routes({
 }) //
 .instance().js({
 	ruqq: ['dom/jquery', 'utils', 'arr', 'es5shim'],
-	lib: ['compo','ranimate', 'mask/formatter'],
+	lib: ['mask', 'compo','ranimate', 'mask/formatter'],
 	component: ['preview', 'tabs', 'dropdownMenu', 'shortend-dialog'],
 	vendor: 'keymaster',
 	script: ['urlcode']
@@ -13,21 +13,22 @@ include.routes({
 .ready(function(resp) {
 
 
-	window.app = (new(Class({
-		Base: Compo,
+	var App = Compo({
 		attr: {
 			template: document.getElementById('layout').innerHTML
 		},
 		compos: {
 			preview: 'compo: preview',
 			tabs: 'compo: tabs',
-			ddMenu: 'compo: dropdownMenu',
+			/////ddMenu: 'compo: dropdownMenu',
 			btnSetLink: '$: #setLink',
 			btnShortend: '$: #getShortend'
 		}
-	}))).render({
+	});
+
+	window.app = Compo.initialize(App,{
 		presets: resp.presets
-	}).insert(document.body);
+	}, null, document.body);
 
 
 	window.editors = {};

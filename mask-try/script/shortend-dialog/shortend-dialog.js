@@ -31,12 +31,11 @@ include //
 	});
 
 	Object.lazyProperty(include.promise('compo'), 'shortendDialog', function() {
-		return new Dialog().render().insert(document.body);
+		return Compo.initialize(Dialog, null, null, document.body);
 	});
 
 	var cache = {};
-	var Dialog = Class({
-		Base: Compo,
+	var Dialog = Compo({
 		compos: {
 			'panel': ['$: .modalOverlay',
 			{

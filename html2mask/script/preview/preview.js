@@ -97,26 +97,22 @@ include //
 
 
 
-	mask.registerHandler('preview', Class({
-		Base: Compo,
-		Construct: function() {
+	mask.registerHandler('preview', Compo({
+		constructor: function() {
 			this.compos = {
 				$notification: '$: .notification',
-				$btnHTML: '$: #btnHTML'
+				////$btnHTML: '$: #btnHTML'
 			};
 		},
-		events: {
-			'click: #btnHTML': function() {
-				this.asHTML = this.compos.$btnHTML.toggleClass('active').hasClass('active');
-				this.update(this._code, this._style, this._template);
-			}
-		},
-		render: function(model, container, cntx) {
-
+		//////events: {
+		//////	'click: #btnHTML': function() {
+		//////		this.asHTML = this.compos.$btnHTML.toggleClass('active').hasClass('active');
+		//////		this.update(this._code, this._style, this._template);
+		//////	}
+		//////},
+		onRenderStart: function(model, cntx, container) {
 			this.tagName = 'div';
-			this.nodes = mask.compile('.notification; iframe src="about:blank";');
-
-			Compo.render(this, model, container, cntx);
+			this.nodes = mask.compile('.notification; iframe src="about:blank";');;
 
 			Compo.shots.on(this, 'DOMInsert', this.DOMInsert);
 		},
@@ -159,7 +155,7 @@ include //
 		update: function(html) {
 				var error;
 				//try {
-					this.element.innerText = mask.HTMLtoMask(html);
+					this.element.innerText = mask.HtmlToMask(html);
 				//} catch (err) {
 				//	error = err;
 				//}

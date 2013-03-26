@@ -4,6 +4,8 @@ layout:view master='view' {
         a.github-ribbon href='https://github.com/tenbits/MaskJS';
     }
 
+
+
     tabs {
         radioButtons {
             button.active name='info' > 'Info'
@@ -18,7 +20,7 @@ layout:view master='view' {
         .container.tabPanel {
             .info.active {
                 ul {
-                    li { 'Zen Coding Templates' div.hint > tt > 'Write Less, Do More' }
+                    li { 'Zen Coding / MVC Templates' div.hint > tt > 'Write Less, Do More' }
                     li { 'Dry & Highly Customizable' div.hint > tt > 'Custom Tags, Custom Value Preprocessors' }
                     li {
                         'For NodeJS and Browsers'
@@ -37,10 +39,10 @@ layout:view master='view' {
                     }
                     li {
                         'Performance '
-                        div > a href='http://jsperf.com/javascript-template-engine-compare/27' > 'jsperf.com /1'
-                        div > a href='http://jsperf.com/dom-vs-innerhtml-based-templating/604' > 'jsperf.com /2'
+                        div > a href='http://jsperf.com/javascript-template-engine-compare/65' > 'jsperf.com /1'
+                        div > a href='http://jsperf.com/dom-vs-innerhtml-based-templating/670' > 'jsperf.com /2'
 
-                        div.hint > tt { 'Building JSON tree:' a href='http://jsperf.com/maskjs-vs-json/4'> 'jsperf' }
+                        div.hint > tt { 'Building JSON tree:' a href='http://jsperf.com/maskjs-vs-json/9'> 'jsperf' }
                     }
                     li > 'No Dependencies'
                 }
@@ -53,7 +55,7 @@ layout:view master='view' {
                 p {
                     h5 > 'Tag Declaration'
                     code.api > 'tag#id.class{0,} key=[\'"]value[\'"]{0,}'
-                    div.hint > 'Similar to CSS, but tag name is required, and attributes are not in square brackets «[ ]»'
+                    div.hint > 'Syntax Similar to SASS'
                     div.hint > 'Starting from version .5.1 Tag Name can be omitted if class or id declaration is used. Tag Name will be then "div"'
                     h5 > 'Tags Items'
                     table style='margin-left:30px;'  {
@@ -72,16 +74,20 @@ layout:view master='view' {
                 h4 > 'Template Values'
                 p {
                     code.api {
-                        '#' '{propertyName.andChainingAlsoPossible}'
+                        '~' '[propertyName.andChainingAlsoPossible]'
+                    }
+                    div > small {
+                        '! Mask Default interpolation quotes were changed from #{ } to ~''[ ]. For fallback use:'
+                        code > 'mask.setInterpolationQuotes("#{","}")'
                     }
                     h5 > 'Template Value Conditions'
                     code.api {
-                        '#' '{:index > 10 ? property : "Some other string"}'
+                        '~' '[:index > 10 ? property : "Some other string"]'
                     }
                     h5 > 'Template Value Utilities'
                     'Template Values Can be Transformed before inserting'
                     code.api {
-                        '#' '{utilityName:data}'
+                        '~' '[utilityName:data]'
                     }
                     div.hint {
                         a href='#/mask/api/registerUtility' > '@see mask.registerUtility'
@@ -90,32 +96,7 @@ layout:view master='view' {
                 }
             }
             div.api {
-                p {
-                    h4 > '℉unctions'
-                    ul.anchors {
-                        li > a href='#/mask/api/renderDom' > '.renderDom(template, ?values, ?container, ?cntx)'
-                        li > a href='#/mask/api/renderHtml' > '.renderHtml(template, ?values, ?container, ?cntx)'
-                        li > a href='#/mask/api/registerHandler' > '.registerHandler(tagName, handlerFunction)'
-                        li > a href='#/mask/api/getHandler' > '.getHandler(tagName)'
-                        li > a href='#/mask/api/registerUtility' > '.registerUtility(name, fn)'
-                        li > a href='#/mask/api/compile' > '.compile(template)'
-                        li > a href='#/mask/api/serialize' > '.serialize(template)'
-                        li > a href='#/mask/api/deserialize' > '.deserialize(template)'
-                    }
-                }
-                p {
-                    h4 > 'Ḃild-in Tags'
-                    ul.anchors {
-                        li > a href='#/mask/api/list' > 'list'
-                        li > a href='#/mask/api/visible' > 'visible'
-                        li > a href='#/mask/api/bind' > 'bind'
-                    }
-                }
-
-                prism src='/api.help/mask.api.js';
-
-
-                prism src='/api.help/mask.tags.js';
+                apiViewer src='/api/mask.html' base='/mask/api';
             }
 
 
@@ -127,6 +108,10 @@ layout:view master='view' {
                     }
                     li {
                         prism > 'div.class#id.other;'
+                        prism language='markup' > '<div id="id" class="class other"></div>'
+                    }
+                    li {
+                        prism > '.class#id.other;'
                         prism language='markup' > '<div id="id" class="class other"></div>'
                     }
                     li {
@@ -142,20 +127,28 @@ layout:view master='view' {
                         prism language='markup' > '<p><button>Press</button><button>Cancel</button></p>'
                     }
                     li {
-                        prism { 'p.#''{klass} data-id="#''{id}" > "#''{info.name}"' }
+                        prism { 'p.~''[klass] data-id="~''[id]" > "~''[info.name]"' }
                         prism > '{ id: "post234", klass: "red", info: {name: "RD"} }'
                         prism language='markup' > '<p class="red" data-id="post234">RD</p>'
                     }
                     li {
-                        prism { 'span { #''{: current > 10 ? "More Than 10":"" }' }
+                        prism { 'span { ~''[: current > 10 ? "More Than 10" ] }' }
                         prism > '{ current: 11 }'
                         prism language='markup' > '<span>More Than 10</span>'
                     }
                     li {
-                        prism { 'list values="arr" > ul > li > "#''{.}"' }
+                        prism { 'ul > % each="arr" > li > "~''[.]"' }
                         prism > '{ arr: [1,2,3] }'
                         prism language='markup' > '<ul><li>1</li><li>2</li><li>3</li></ul>'
                     }
+                    li {
+                        prism { '
+% if="number>10" > h4 > "Under"
+% else > h3 > "Below"' }
+                        prism > '{ number: 9 }'
+                        prism language='markup' > '<h3>Below</h3>'
+                    }
+
                 }
             }
         }

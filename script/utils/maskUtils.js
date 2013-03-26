@@ -1,8 +1,8 @@
 
 (function() {
     var replaces = null;
-    mask.registerHandler('formatter:pre', Class({
-        Construct: function() {
+    mask.registerHandler('formatter:pre', Compo({
+        constructor: function() {
             if (replaces == null) {
                 replaces = {
                     regexps: [/\\n/g, /\\t/g],
@@ -24,32 +24,25 @@
                 }
             }
         },
-        render: function(values, container, cntx) {
+        renderStart: function(values, container, cntx) {
             this.makePre(this.nodes);
-            mask.render(this.nodes, values, container, cntx);
         }
     }));
-	
-	
-	
-	if (ruqq.info.engine.name !== 'webkit' || 1){
-		mask.registerHandler('scroller',Class({
-			render: function(model, container,cntx){
-				this.tagName = 'div';
-				this.attr['class'] = (this.attr['class'] ? this.attr['class'] + ' ' : '') + 'scroller';
-				this.nodes = {
-					tagName: 'div',
-					attr: {
-						'class': 'scroller-container'
-					},
-					nodes: this.nodes
-				};
-				Compo.render(this, model, container, cntx);
-				
-				
-				this.attr = null;
-				this.tagName = null;
-				
+
+
+
+	if (ruqq.info.engine.name !== 'webkit' || true){
+		mask.registerHandler('scroller', Compo({
+			renderStart: function(model, container,cntx){
+
+
+				jmask(this)
+				.tag('div') //
+				.addClass('scroller') //
+				.children() //
+				.wrapAll('.scroller-container');
+
+
 				this.scroller = {
 					refresh: function(){},
 					scrollToElement: function(element){
@@ -64,10 +57,10 @@
 						this.$.scrollLeft(x);
 					}.bind(this)
 				}
-				
+
 				return this;
 			}
 		}))
 	}
-	
+
 }());

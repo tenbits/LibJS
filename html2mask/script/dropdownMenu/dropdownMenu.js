@@ -3,11 +3,10 @@ include //
 .css('dropdownMenu.css') //
 .done(function(resp){
 
-	var itemTemplate = 'list > .-ddmenu.item data-item="#{id}" > "#{title}"'
+	var itemTemplate = '% each="." > .-ddmenu.item data-item="~[id]" > "~[title]"'
 
-	mask.registerHandler('dropdownMenu', Class({
-		Base: Compo,
-		Construct: function(){
+	mask.registerHandler('dropdownMenu', Compo({
+		constructor: function(){
 			this.attr = {
 				//template: resp.load.Template,
 				'class': 'dropdownMenu'
@@ -41,15 +40,11 @@ include //
 			this.compos.button.removeClass('active');
 			$(document).off('mousedown');
 		},
-		render: function(model, container, cntx){
+		onRenderStart: function(model, cntx, container){
 			this.tagName = 'div';
-			if (this.nodes instanceof Array === false){
-				this.nodes = [this.nodes];
-			}
-			Compo.render(this, model, container, cntx);
 		},
 		add: function(items){
-			var dom = mask.render(itemTemplate, items, null, this);
+			var dom = mask.render(itemTemplate, items, null, null, this);
 
 			this.$.find('.items').append(dom);
 		}

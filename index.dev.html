@@ -21,36 +21,38 @@
 <noscript>Please enable Javascript in your browser</noscript>
 
 <script type="mask/template" id="layout">
-	html.tao source='tao-svg';
-	div.webkit;
+	.tao > :html template='#tao-svg';
+	.webkit;
 
 
-    template > div.footer;
+  
     menu {
+
 		scroller {
-			list value='menuModel' template='#menuTemplate';
+			% each='menuModel' template='#menuTemplate';
 
 			div style='height:20px;';
 		}
 
 
-		div.menu-help {
+		.menu-help {
 			p.processors {
 				p > 'Tag Processors are like decorators - they change in some how underlined or parents stack'
 				p > code > 'comment > "any comment"'
 				p > 'From this simple example "comment" preprocessor doesnt render itself and any of the child nodes.'
 				hr;
 				div > b > tt style='letter-spacing:1px;' > 'Important!'
-				p { 'Tag Processor is just a name, its ' u > 'still the custom handler'' of the MaskJS.
-					I just call them so, while they do specific job - change or extend any render behavior.
-					'
+				p { 'Tag Processor is just a name, its '
+					u > 'still the custom handler'' of the MaskJS.
+						I just call them so, while they do specific job - change or extend any render behavior.
+						'
 				}
 			}
 		}
     }
 
 
-	div.page > viewsManager#views;
+	.page > viewsManager#views;
 
 	pageActivity;
 
@@ -59,17 +61,17 @@
 <script type="mask/template" id="menuTemplate">
 
 	section {
-		h3.#{class} > '#{title}'
-		ul > list value='items' template='#menuItemTemplate';
-		div style='text-align:right; opacity:.3' > '#{hint}'
+		h3.~[class] > '~[title]'
+		ul > % each='items' template='#menuItemTemplate';
+		div style='text-align:right; opacity:.3' > '~[hint]'
 	}
 
 </script>
 
 <script type="mask/template" id="menuItemTemplate">
 	li {
-		.viewTitle data-view='#{view}' data-navigate='#{navigate}' > '#{title}'
-		ul > list value='items' template='#menuItemTemplate';
+		.viewTitle data-view='~[view]' data-navigate='~[navigate]' > '~[title]'
+		ul > % each='items' template='#menuItemTemplate';
 	}
 </script>
 

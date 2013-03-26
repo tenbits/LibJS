@@ -1,16 +1,13 @@
 include.load('default.mask').done(function(resp) {
+
 	mask.render(resp.load['default']);
 
-	window.DefaultController = Class({
-		Base: Compo,
-		Construct: function() {
+	window.DefaultController = Compo({
+		constructor: function() {
 			(this.attr || (this.attr = {}))['class'] = 'view';
 		},
-		render: function(model, container, cntx) {
+		onRenderStart: function(model, cntx, container) {
 			this.tagName = 'div';
-
-			Compo.render(this, model, container, cntx);
-
 		},
 		events: {
 			'changed: .radioButtons': function(e, target) {
@@ -36,19 +33,13 @@ include.load('default.mask').done(function(resp) {
 				info.category = this.defaultCategory || 'info';
 			}
 
-			var buttons = Compo.findCompo(this, '.radioButtons');
+			var buttons = Compo.find(this, '.radioButtons');
 
 			if (buttons) {
 				buttons.setActive(info.category);
 				this.tab(info.category);
 			}
 
-
-			var prisms = Compo.findAll(this, 'prism', 'compo');
-			//if (prisms && prisms.length) {
-			//	when(Compo.findAll(this, 'prism', 'compo'), this.update.bind(this, info));
-			//	return;
-			//}
 
 			this.update(info);
 
@@ -60,7 +51,7 @@ include.load('default.mask').done(function(resp) {
 			if (info.anchor) {
 				var element = this.$.find('a[name="' + info.anchor + '"]').get(0);
 
-				if (scroller && scroller.scroller) {
+				if (element && scroller && scroller.scroller) {
 					scroller.scroller.scrollToElement(element, 100);
 				}
 			}

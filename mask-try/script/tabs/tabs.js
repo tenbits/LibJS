@@ -22,11 +22,10 @@ include //
 		editor.focus();
 	}
 
-	mask.registerHandler('tabs', Class({
-		Base: Compo,
-		Construct: function() {
+	mask.registerHandler('tabs', Compo({
+		constructor: function() {
 			this.attr = {
-				'class': 'tabs'
+				'class': '-try-tabs'
 			};
 
 			this.compos = {
@@ -41,9 +40,8 @@ include //
 				activate(this, $(event.currentTarget).attr('name'));
 			}
 		},
-		render: function(model, container, cntx) {
+		onRenderStart: function() {
 			this.tagName = 'div';
-			Compo.render(this, model, container, cntx);
 		},
 
 		next: function() {

@@ -10,6 +10,8 @@ html, body {
 
 	min-height: 500px;
 	height: 100%;
+
+	cursor: default;
 }
 
 ul {
@@ -21,8 +23,11 @@ body {
 	color: #333;
 	background-color:#222;
 }
-div {cursor: default;}
+div {
+	cursor: inherit;
+}
 td{ vertical-align: top; }
+
 td > ul {
 	margin-top: 0px;
 }
@@ -48,7 +53,8 @@ div.footer {
     height: 161px;
     width:100%;
     z-index: 0;
-    background: url(../images/grass.png) bottom left repeat-x;
+    /*background: url(../images/grass.png) bottom left repeat-x;*/
+	background: red;
 	background-size: 100%;
 }
 
