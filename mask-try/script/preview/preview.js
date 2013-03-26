@@ -188,7 +188,6 @@ include //
 
 				try {
 
-					model && Window.setModel(this, model);
 
 					if (template && this.asHTML) {
 						code && Window.setCode(this, code);
@@ -201,10 +200,13 @@ include //
 					}
 
 
-					if (code || template) {
+					if (model || code || template) {
+						
+						model && Window.setModel(this, model)
 						code && Window.setCode(this, code);
 
 						Window.setTemplate(this, template || this._template);
+
 					}
 
 					style && Window.setStyle(this, style);

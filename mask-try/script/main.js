@@ -41,7 +41,7 @@ include.routes({
 	}
 
 	createEditor('mask', 'coffee');
-	createEditor('model', 'json');
+	createEditor('model', 'javascript');
 	createEditor('javascript');
 	createEditor('style', 'css');
 

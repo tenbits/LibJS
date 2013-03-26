@@ -5638,8 +5638,8 @@ include.setCurrent({
                 var tagName = node.tagName, _id = node.attr.id || "", _class = node.attr["class"] || "";
                 if ("function" === typeof _id) _id = _id();
                 if ("function" === typeof _class) _class = _class();
-                if ("string" === typeof _id) if (_id.indexOf(" ") !== -1) _id = ""; else _id = "#" + _id;
-                if ("string" === typeof _class) _class = "." + _class.split(" ").join(".");
+                if (_id) if (_id.indexOf(" ") !== -1) _id = ""; else _id = "#" + _id;
+                if (_class) _class = "." + _class.split(" ").join(".");
                 var attr = "";
                 for (var key in node.attr) {
                     if ("id" === key || "class" === key) continue;
@@ -5667,7 +5667,7 @@ include.setCurrent({
                 return '"' + str.replace(/"/g, '\\"').trim() + '"';
             }
             return function(input, settings) {
-                if ("string" === typeof input) input = mask.compile(input);
+                if ("string" === typeof input) input = mask.parse(input);
                 if ("number" === typeof settings) {
                     _indent = settings;
                     _minimizeAttributes = 0 === _indent;
@@ -7377,7 +7377,6 @@ include.setCurrent({
             this.prepair(code, style, template, function() {
                 var error;
                 try {
-                    model && Window.setModel(this, model);
                     if (template && this.asHTML) {
                         code && Window.setCode(this, code);
                         Window.setHTML(this, template);
@@ -7385,7 +7384,8 @@ include.setCurrent({
                         this._template = template;
                         return;
                     }
-                    if (code || template) {
+                    if (model || code || template) {
+                        model && Window.setModel(this, model);
                         code && Window.setCode(this, code);
                         Window.setTemplate(this, template || this._template);
                     }
@@ -8018,7 +8018,7 @@ include.routes({
         editors[type].getSession().setMode("ace/mode/" + (highlight || type));
     }
     createEditor("mask", "coffee");
-    createEditor("model", "json");
+    createEditor("model", "javascript");
     createEditor("javascript");
     createEditor("style", "css");
     (function() {
