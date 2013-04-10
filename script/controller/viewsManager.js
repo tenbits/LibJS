@@ -55,7 +55,6 @@ include.js({
 
 
 				this.performShow(compo, info);
-				window.routes.hashchanged();
 			}.bind(this));
 
 		},

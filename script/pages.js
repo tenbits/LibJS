@@ -21,9 +21,20 @@
 		'includeBuilder': {
 			view: 'includeBuilder'
 		},
-		'compo': {
-			title: 'CompoJS'
+		'mask-compo': {
+			title: 'mask.Compo'
 		},
+		'mask-j': {
+			title: 'mask.J'
+		},
+		'mask-binding': {
+			title: 'mask.Binding'
+		},
+		'sys': {
+			title: 'Handler: Percent'
+		},
+
+
 		'ruqq': {
 			title: 'RuqqJS'
 		},

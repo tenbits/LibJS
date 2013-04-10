@@ -1,0 +1,85 @@
+layout:view master='view' {
+
+
+    title {
+        a.github-ribbon href='https://github.com/tenbits/mask';
+    }
+
+    content {
+        .container.tabPanel {
+            div.info.active {
+                h4 > 'Default MaskJS Handlers'
+
+                p {
+                    h4 > code > 'Percent'
+                    '"%" handler can have this attributes:'
+                    ul {
+                        li {
+                            div > code > 'if="conditon"'
+                            'Render underlined template only if condition is truthy'
+                        }
+                        li {
+                            div > code > 'else'
+                            'Should be after if tag, and is rendered if that condition was falsy'
+                        }
+                        li {
+                            div > code > 'each="property"'
+                            'Render a List using underlined template as a template for each item.'
+                            'Value resolved under "property" path, shoud be an Array'
+                        }
+                        li {
+                            div > code > 'use="expression"'
+                            'Extract some value from model, and use it as a model for all underlined nodes'
+                        }
+                        li {
+                            div > code > 'log="property"'
+                            'Used for debugging - logs current model value'
+                        }
+                        li {
+                            div > code > 'debugger'
+                            'Used for debugging - breakpoints template rendering'
+                        }
+                    }
+
+                    p > 'Template Sample'
+                    prism {
+
+"
+ % if='number >= 9' > span > 'greater then 8'
+ % else > small > 'less then 9'
+ % each='letters' > '~""[.]'
+
+ // Here you could write also '~""[user.name]'
+ // But sometimes this approach usefull, especially in complex templates,
+ % use='user' > '~[""name]'
+ % log='number';
+ % debugger;"
+
+                    }
+                    p > 'Model'
+                    prism {
+"{
+    number: 8,
+    letters: ['A', 'B', 'C'],
+    user: {
+        name: 'A'
+    }
+}"
+                    }
+                }
+
+               h4 > code > ':template'
+               p {
+                    'Underlined nodes wont be rendered and can be accessed for some other use'
+               }
+
+            }
+        }
+    }
+
+    tabs {
+        radioButtons{
+            button.active name='info' > 'Handlers'
+        }
+    }
+}

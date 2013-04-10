@@ -9,7 +9,7 @@ include.routes({
 	script: '/script/{0}.js'
 }).js({
 	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
-	lib: ['mask', 'compo', 'ranimate'],
+	lib: ['mask', 'ranimate'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list'],
 	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer'],
@@ -41,6 +41,21 @@ include.routes({
 					view: 'mask',
 					title: 'MaskJS',
 					items: [{
+						view: 'sys',
+						title: 'Sys'
+					},{
+						view: 'mask-binding',
+						title: 'Binding'
+					},{
+						view: 'mask-j',
+						title: 'jMask'
+					},{
+						view: 'mask-compo',
+						title: 'Compo'
+					},{
+						title: '',
+						'class': 'hr'
+					},{
 						title: 'Live Test',
 						navigate: '/mask-try/'
 					},{
@@ -59,16 +74,16 @@ include.routes({
 				}, {
 					view: 'ruqq',
 					title: 'RuqqJS',
-					items: [{
-						view: 'ruqq/routing',
-						title: 'Routing'
-					}, {
-						view: 'ruqq/array',
-						title: 'Array Helper'
-					}, {
-						view: 'ruqq/object',
-						title: 'Object Helper'
-					}, ]
+					////items: [{
+					////	view: 'ruqq/routing',
+					////	title: 'Routing'
+					////}, {
+					////	view: 'ruqq/array',
+					////	title: 'Array Helper'
+					////}, {
+					////	view: 'ruqq/object',
+					////	title: 'Object Helper'
+					////}, ]
 				},{
 					view: 'ranimate',
 					title: 'RAnimateJS',
@@ -97,12 +112,6 @@ include.routes({
 				items: [{
 					view: 'compos/layout',
 					title: 'layout;'
-				}, {
-					view: 'compos/dualbind',
-					title: 'dualbind;'
-				}, {
-					view: 'compos/validate',
-					title: 'validate;'
 				}]
 			}]
 		};
@@ -140,7 +149,7 @@ include.routes({
 		w.viewsManager.show(current);
 	});
 
-	w.app = Compo.initialize(App, model, null, document.body);
+	w.app = Compo.initialize(App, model, document.body);
 
 	w.viewsManager.show(w.routes.current() || {
 		view: 'about'

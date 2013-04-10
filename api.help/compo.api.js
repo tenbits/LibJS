@@ -6,11 +6,10 @@ Compo({
 /**
  *  [events](name=events)  (optional)
  *  Events that should be delegated after DOMInsert,
- *  @event key - 'EventType: Selector', 'click' is @default,
- *                  if only 'Selector' specified
+ *  @event key - 'EventType: Selector'
  */
 events: {
-    'touchStart: a': callbackFunction,
+    'touchstart: a': callbackFunction,
     // ..
 },
 
@@ -21,7 +20,16 @@ events: {
  * 'this' of each function is current controller instance
  */
 slots: {
-	addUser: function(event) { /* .. */ }
+	addUser: function(event) { /* .. */ },
+
+	/** PREDEFINED SIGNALS */
+
+	/**
+	 * domInsert signal will be send after rendered template is inserted into live DOM
+	 */
+	domInsert: function(){
+		// Define this slot, and make here some dom dependent calculations
+	}
 }
 
 
@@ -58,12 +66,13 @@ $: null,
 /**
  *  [Construct](name=Construct)
  *
+ *	(optional) Define Controller Instance Contructor
  */
-constructor: function(){},
+constructor: function(){ /* .. */ },
 
 /**
  * [.onRenderStart](name=onRenderStart)
- *
+ *	(optional)
  * This method will be called before renderStarts.
  * To override used model, or child nodes or container:
  *   this.nodes = jmask('.container > "Overriden Template"');
@@ -89,7 +98,7 @@ render: function(values, container, cntx){},
 
 /**
  * [.onRenderEnd](name=onRenderEnd)
- *
+ *(optional)
  * This method is called after render is finished.
  * this.$ - is here defined
  *
@@ -110,14 +119,14 @@ onRenderEnd: function(elements, model, cntx, container){}
  *              {Object|Array} - Compiled Mask Template
  *  @argument values - {Object} - Mask Template JSON Model
  */
-append: function(template, values){},
+append: function(template, values),
 
 /**
  *  [.on](name=on)
  *  @see @properties.events
  *  Adds Event Handler to this.events object
  */
-on: function(?type, selector, callback){},
+on: function(?type, selector, callback),
 
 /** [.find](name=this.find)
  *
@@ -125,21 +134,46 @@ on: function(?type, selector, callback){},
  * (selector is only tagName/compoName, id(#someid) or class(.someclass))
  *
  */
-find: function(selector){},
+find: function(selector),
 
 /**
  * [.closest](name=this.closest)
  *
  * Look up the tree and find parent controller
  */
-closest: function(selector){},
+closest: function(selector),
 
 /**
  *  [.remove](name=remove)
  *  Removes Component from DOM, and calls Compo.dispose
  *
  */
-remove: function(){},
+remove: function(),
+
+/**
+ * [.slotState](name=slotState)
+ * Disable/Enable Slot - if is disabled, it will be not fired on dom events, and if no active slots are available for a signal, then
+ * HTMLElement will be also :disabled
+*/
+slotState: function(slotName, isActive){},
+
+/**
+ * [.signalState](name=signalState)
+ * Disables/Enables the signal completely - all slots in all controllers up in the tree will be enabled/disabled as all HTMLElements with that signal
+*/
+signalState: function(signalName, isActive){},
+
+/**
+ * [.emitIn](name=emitIn)
+ * Sends signal to itself and then DOWN in the controllers tree
+*/
+emitIn: function(signalName, event, args /* Array */) {},
+
+/**
+ * [.emitOut](name=emitOut)
+ * Sends signal to itself and then UP in the controllers tree
+*/
+emitOut: function(signalName, event, args /* Array */) {},
 
 Static: {
     /**

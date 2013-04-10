@@ -32,6 +32,10 @@ td > ul {
 	margin-top: 0px;
 }
 
+.scroller {
+	overflow: auto;
+}
+
 div.tao {
     position: absolute; top:0px; right:0px;
     z-index: 0px;
@@ -198,8 +202,6 @@ div.radioButtons > button.active {
 .view .scroller  {
     /*background: #EEEEEE url(../images/dust.png) 0 0 repeat;*/
 	background: #F3F0ED url(../images/dust2.png) 0 0 repeat;
-	overflow: auto;
-
 }
 
 .container {
@@ -324,6 +326,14 @@ ul.anchors > li > a:hover { background: rgb(240,240,240); text-decoration: under
 
 hr {
 	opacity: .4;
+}
+li.hr {
+	list-style: none;
+	border-bottom: 1px solid #999;
+	padding:0px;
+	position: relative;
+	margin: 7px 0px;
+	left: -20px;
 }
 
 .ie9Alert{

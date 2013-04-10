@@ -1,0 +1,114 @@
+layout:view master='view' {
+
+
+    title {
+        a.github-ribbon href='https://github.com/tenbits/mask-j';
+    }
+
+    content {
+        .container.tabPanel {
+            div.info.active {
+                h4 > 'Library for MaskDOM Manipulation with jQuery syntax'
+                ul {
+                    li {
+                        'Fast jQuery-like DOM Builder: '
+                        a href='http://jsperf.com/dom-builder-mask-vs-jquery/3' > 'mask vs jquery'
+                    }
+                }
+                .hint {
+                    div > 'Is part of a default MaskJS Build.'
+                    div > 'In AMD and Node Environments jmask is in mask namespace.'
+                    code > 'mask.jmask'
+                    div > '@TODO replace "mask" with "jmask" function'
+                }
+            }
+            div.api {
+
+                h4 > 'Function List (each function is from jQuery counterpart): mix - Mask Markup, or Mask Dom)'
+p;
+
+prism {
+    "jmask(mix)
+ .add(mix)
+ .toArray()
+ .end()
+
+ .append(mix)
+ .prepend(mix)
+ .clone()
+ .wrap(mix)
+ .wrapAll(mix)
+ .empty()
+ .remove()
+
+ .mask(?mix) // jQuery ~ .html(?html)
+
+ .eq(index)
+ .get(index)
+ .slice(from,to)
+
+ .addClass(string)
+ .removeClass(?string)
+ .toggelClass(string)
+ .hasClass()
+
+ .attr
+ .removeAttr
+ .prop
+ .removeProp
+ .css
+
+// selector only per tagName, or id, or class: 'div', '#perid', '.perclass'
+ .find(selector)
+ .closest(selector)
+ .parent(?selector)
+
+
+ .filter(selector)
+ .children(?selector)
+ .first(?selector)
+ .last(?selector)
+
+// mask render
+ .render(?model, ?cntx, ?container) //-> HTMLNode | DocumentFragment
+ .appendTo(HTMLNode, ?model, ?cntx)"
+}
+
+
+            }
+
+            div.sample {
+
+prism {
+"jmask(\"\
+    h1 > 'Header' \
+    div > ul { li > '1' li > '2' }\")
+
+  .eq(1)
+  .attr('name', 'divname')
+  .find('ul')
+  .addClass('list-container')
+  .end()
+  .end()
+  .children('div')
+  .append(\"span > 'additional info'\")
+  .end()
+  .appendTo(document.body);"
+}
+
+p > button > a href='http://bit.ly/Xr57sG' > 'Test'
+
+            }
+
+
+        }
+    }
+
+    tabs {
+        radioButtons{
+            button.active name='info' > 'Info'
+            button name='api' > 'API'
+            button name='sample' > 'Sample'
+        }
+    }
+}

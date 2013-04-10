@@ -34,7 +34,7 @@ menu:hover {
     z-index: 999;
 }
 
-menu:after, .menu-help:after{
+.menu-help:after{
     content:' ';
     position:absolute;
     right: -3px;

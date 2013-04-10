@@ -1,0 +1,250 @@
+layout:view master='view' {
+
+
+    title {
+        a.github-ribbon href='https://github.com/tenbits/mask-binding';
+    }
+
+    content {
+        .container.tabPanel {
+            div.info.active {
+                ul {
+                    li { 'One Way Binding'}
+                    li { 'Dual (Two Way) Binding' }
+                    li > 'Validation for Dual Binding'
+                    li > 'Binded Percent Handler'
+                }
+            }
+
+            .utils {
+                code {
+                    '~''[bind:EXPRESSION]'
+                }
+
+                p {
+                    'Util can be used in literals and attributes'
+                }
+
+                prism {
+                    'div.~[''bind:type] > "Type is ~''[bind:type.toUpperCase()]"'
+                }
+                prism { "var model = {type: 'x1'}; mask.render(template, model)"}
+
+                p {
+                    .hint > 'Expression is parsed and is much faster then raw eval call.'
+                    .hint {
+                        'Expression looks for var/function references in :'
+                        ol {
+                            li > 'model'
+                            li > 'cntx'
+                            li > 'controller'
+                            li > 'up in controllers tree'
+                        }
+                    }
+
+                    'From that example each time type property of the model is changed,
+                    then class attribute will be changed and textContent also'
+                }
+            }
+
+            .handlers {
+                code {
+                    ':bind'
+                }
+                p {
+                    div > 'Usually it is enough to use binding util,
+                    but if you want to specify some binding provider for the binder,
+                    then this tag can be used. Binding is applied to a parent.'
+
+                    p > 'Attributes'
+                    table {
+                        tr{
+                            td > 'value'
+                            td > 'path to the value in a model'
+                        }
+                        tr{
+                            td > 'bindingProvider'
+                            td > '{optional} - property name of a custom Binding Provider'
+                        }
+                        tr{
+                            td > 'attr'
+                            td > '{optional} - bind to an attribute of an element'
+                        }
+                        tr{
+                            td > 'prop'
+                            td > '{optional} - bind to a property of an element'
+                        }
+                        tr{
+                            td > '-'
+                            td > 'nor attr, either prop is specified, then it binds to .innerHTML'
+                        }
+                    }
+                }
+
+                code {
+                    ':dualbind'
+                }
+                p {
+                    h5 > 'Two Way Bindings'
+                    p > 'Additionally to one way binding, this tag handler can listen to some dom events, and change the model'
+
+                    p > 'Attributes'
+                    table {
+                        tr{
+                            td > 'value'
+                            td > 'path to the value in a model'
+                        }
+                        tr{
+                            td > 'property'
+                            td > '{default: "element.value"} - path to get/set from/to a HTMLElement'
+                        }
+                        tr{
+                            td > 'changeEvent'
+                            td > '{default: "change"} - event to listen for DOM Changes'
+                        }
+                        tr{
+                            td > 'getter'
+                            td > '{optional} - objectWay - resolve model value with this controller getter function'
+                        }
+                        tr{
+                            td > 'setter'
+                            td > '{optional} - objectWay - set value with this controller setter function'
+                        }
+                        tr{
+                            td > 'bindingProvider'
+                            td > '{optional} - you can register custom binding provider with: mask.registerBinding(name, handler)'
+                        }
+                    }
+                }
+
+                code {
+                    '%%'
+                }
+                p {
+                    'This is like simple Percent Handler, but it binds to model and refreshes state, when model changes'
+                    h4.hint {
+                        'Used with each="property" it listens also to all mutable function calls and adds/removes/sorts items'
+                        ul {
+                            li > '.splice'
+                            li > '.push'
+                            li > '.pop'
+                            li > '.unshift'
+                            li > '.shift'
+                            li > '.sort'
+                            li > '.reverse'
+                        }
+                    }
+                }
+
+                p;
+                h4 > 'Validations'
+
+                code {
+                    ':validate'
+                }
+                p {
+                    div > 'If user enters some data, usually you want to check if that is valid,
+                        before Dual Binder sets that new
+                        values into model'
+                    div > 'Nest N tags into :dualbind tag, and Dualbinder will check that data for you.'
+
+                    p {
+                        'Validators you define in attributes'
+                        prism > ':validate validatorName="validation settings" message="On Fail Message";'
+
+                        div > 'Already defined validators'
+                        ul {
+                            li > "match='some regexp'"
+                            li > "unmatch='some regexp'"
+                            li > "minLength='min str length'"
+                            li > "maxLength='maxLength'"
+                        }
+
+                        prism > "
+div > input type=text > :dualbind value='currentUser.name' {
+    :validate match='^[A-Za-z]+$' message='Characters only';
+    :validate maxLength=20 message='Max Length is 20 Characters'
+}
+"
+                        p > 'Custom Validator'
+                        prism > "
+mask.registerValidator('someName', function(validateController, valueToValidate){
+    // validate valueToValidate
+    // and return true or false
+});
+
+                        "
+                    }
+
+                }
+            }
+
+            .provider {
+
+                h4 > 'Provider Instance Properties'
+                prism > "
+this.node // mask DOM Node
+this.model // model object
+this.value // property PATH in MODEL to BIND
+
+this.element // HTMLElement
+this.property //property PATH in PROVIDER to BIND :
+              //@default 'element.value' for dualbinder,
+              //OR 'element.innerHTML' for singlebinder
+this.setter = node.attr.setter; // @default null, use controller function as setter
+this.getter = node.attr.getter; // @default null, use controller function as getter
+
+                "
+
+                prism > "
+mask.registerBinding('bindingName', {
+    /**
+     * (Optional) override default Setter/Getter to/from a DOM
+     */
+    domWay: {
+        get: function(provider){
+            // retrieve value from dom, sample
+            return provider.element.getAttribute('x');
+        },
+        /**
+         * - provider(BindingProvider)
+         * - value (Object): new value, that should be set to the DOM
+         */
+        set: function(provider, value){
+            // set value to dom, sample
+            provider.element.setAttribute('x', value);
+        }
+    },
+    /**
+     * (Optional) override default Setter/Getter to/from an Object.
+     * You can override only setter or getter
+     */
+    objectWay: {
+        /**
+         * - property (String): Dot chained, example: 'user.name'
+         **/
+        get: function(obj, property){
+            // get and return value, sample
+            return obj[property].split('\n');
+        },
+        set: function(obj, property, value){
+            // set property to model
+            obj[property] = value.join('\n');
+        }
+    }
+})
+
+                "
+            }
+        }
+    }
+
+    tabs {
+        radioButtons{
+            button.active name='info' > 'Info'
+            button name='utils' > 'Util'
+            button name='handlers' > 'Handlers'
+            button name='provider' > 'BindingProvider'
+        }
+    }
+}

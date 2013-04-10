@@ -75,12 +75,12 @@ title:
 Bindings
 ----
 template:
-h4 > bind value='counter';
+h4 > "~[bind:counter]";
 ----
 javascript:
 var json = { counter: 0 };
 window.interval = setInterval(function(){ json.counter++; },2000);
-mask.render("h3 > bind value='counter';", json);
+mask.render("h3 > '~[bind:counter]'", json);
 ----
 ====
 title:
