@@ -92,11 +92,11 @@ layout:view master='view' {
                     table {
                         tr{
                             td > 'value'
-                            td > 'path to the value in a model'
+                            td > 'property PATH in a MODEL to BIND'
                         }
                         tr{
                             td > 'property'
-                            td > '{default: "element.value"} - path to get/set from/to a HTMLElement'
+                            td > '{default: "element.value"} - property PATH in a PROVIDER to BIND'
                         }
                         tr{
                             td > 'changeEvent'
