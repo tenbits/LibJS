@@ -78,69 +78,47 @@
 	}
 }
  </script>
-<script type="include/load" id="includejs-presetspresetstxt" data-appuri="/presets/presets.txt"> ====
-title:
+<script type="include/load" id="includejs-presetssimpletxt" data-appuri="preset.simple"> title:
 Simple
+
 ----
 mask:
+
 .simple style="background:#6BA43C; color:#1E5043;" > "~[text]"
-----
-model:
-{
-    text: "Hello, World!"
-}
-----
-====
-title:
-Collapsible
-----
-mask:
-:collapsible.classA {
-    button.header > 'Toggle'
-    .content {
-        'Some Content, ~[name]!'
-    }
-}
-----
-javascript:
-/** create custom Control: */
-mask.registerHandler(':collapsible', Compo({
-    constructor: function() {
-        this.tagName = 'div';
-        this.compos = {
-            container: '$: .content'
-        }
-    },
-    events: {
-       'click: .header': function(e){
-            this.compos.container.toggle();
-       }
-    }
-}));
 
 ----
 model:
+
 {
-    name: 'World'
+    text: "Hello, World!"
 }
+ </script>
+<script type="include/load" id="includejs-presetsanimatetxt" data-appuri="preset.animate"> title:
+:animation
+----
+mask:
+
+.panel x-pipe-signal='click: ani.rotate' {
+    'Click Me'
+    :animation x-pipes='ani.rotate' {
+        @model > 'transform | translate(0px,0px) > translate(200px,200px) | 500ms linear'
+        @next > 'transform | rotate(0deg) > rotate(570deg) | 2s ease-in 200ms'
+    }
+}
+
 ----
 style:
-.classA {
-    display:inline-block;
-    background-color: rgb(150,240,150);
+
+.panel {
+    display: inline-block;
+    background: lime;
 }
-.header{
-    cursor: pointer;
-    padding: 10px;
-    margin: 5px;
-    font-weight: bold;
-}
-----
-====
-title:
+ </script>
+<script type="include/load" id="includejs-presetsbindingstxt" data-appuri="preset.bindings"> title:
 Binding
 ----
 mask:
+
 table {
     tr {
         td > input type='text' {
@@ -232,5 +210,63 @@ model:
     height:10
 }
 -----
+ </script>
+<script type="include/load" id="includejs-presetscollapsetxt" data-appuri="preset.collapse"> title:
+Collapsible
+
+----
+mask:
+
+:collapsible.classA {
+    button.header > 'Toggle'
+    .content {
+        'Some Content, ~[name]!'
+    }
+}
+
+hr;
+
+:collapsible {
+	span.header style='background: gray' > 'Click'
+	span.content > '~[:name.toUpperCase()]'
+}
+
+----
+javascript:
+
+/** create custom Control: */
+mask.registerHandler(':collapsible', Compo({
+    constructor: function() {
+        this.tagName = 'div';
+    },
+	compos: {
+        container: '$: .content'
+    },
+    events: {
+       'click: .header': function(e){
+            this.compos.container.toggle();
+       }
+    }
+}));
+
+----
+model:
+
+{
+    name: 'World'
+}
+----
+style:
+
+.classA {
+    display:inline-block;
+    background-color: rgb(150,240,150);
+}
+.header{
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+}
  </script></div><script type="text/javascript" src="index.build/script.js"></script></body>
 </html>
