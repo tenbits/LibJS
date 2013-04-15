@@ -1,0 +1,20 @@
+title:
+:animation
+----
+mask:
+
+.panel x-pipe-signal='click: ani.rotate' {
+    'Click Me'
+    :animation x-pipes='ani.rotate' {
+        @model > 'transform | translate(0px,0px) > translate(200px,200px) | 500ms linear'
+        @next > 'transform | rotate(0deg) > rotate(570deg) | 2s ease-in 200ms'
+    }
+}
+
+----
+style:
+
+.panel {
+    display: inline-block;
+    background: lime;
+}

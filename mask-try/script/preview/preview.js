@@ -134,15 +134,18 @@ include //
 				});
 			}
 		},
+		slots: {
+			domInsert: function(){
+				Window.init(_iframe = this.$.find('iframe')[0], this);
+			}
+		},
 		onRenderStart: function(model, cntx, container) {
 
 			this.tagName = 'div';
 			this.nodes = mask.compile('.notification; style type="text/css";div#preview-container; button#btnHTML > "HTML"');
-
-			Compo.shots.on(this, 'DOMInsert', this.DOMInsert);
 		},
-		DOMInsert: function() {
-			Window.init(_iframe = this.$.find('iframe')[0], this);
+		onRenderEnd: function(){
+			//Window.init(_iframe = this.$.find('iframe')[0], this);
 		},
 		prepair: function(code, style, template, callback) {
 
@@ -201,7 +204,7 @@ include //
 
 
 					if (model || code || template) {
-						
+
 						model && Window.setModel(this, model)
 						code && Window.setCode(this, code);
 

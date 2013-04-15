@@ -5,9 +5,9 @@ include.routes({
 }) //
 .instance().js({
 	ruqq: ['dom/jquery', 'utils', 'arr', 'es5shim'],
-	lib: ['mask', 'compo','ranimate'],
+	lib: ['mask', 'ranimate', 'mask.animation'],
 	component: ['preview', 'tabs', 'dropdownMenu', 'shortend-dialog'],
-	compo: ['utils', 'datePicker'],
+	compo: ['datePicker'],
 	vendor: 'keymaster',
 	script: ['presets', 'urlcode']
 }) //
@@ -29,7 +29,7 @@ include.routes({
 
 	window.app = Compo.initialize(App, {
 		presets: resp.presets
-	}, null, document.body);
+	}, document.body);
 
 
 	window.editors = {};
@@ -40,7 +40,7 @@ include.routes({
 		editors[type].getSession().setMode("ace/mode/" + (highlight || type));
 	}
 
-	createEditor('mask', 'coffee');
+	createEditor('mask', 'javascript');
 	createEditor('model', 'javascript');
 	createEditor('javascript');
 	createEditor('style', 'css');
@@ -109,6 +109,12 @@ include.routes({
 			editors[app.compos.tabs.current()].focus();
 		}
 
+		function getPreset(name) {
+			return ruqq.arr.first(resp.presets, function(x){
+				return x.title.toLowerCase() === name.toLowerCase();
+			});
+		}
+
 		var command = {
 			name: "nextTab",
 			bindKey: {
@@ -116,7 +122,7 @@ include.routes({
 				win: "Shift-Tab"
 			},
 			exec: app.compos.tabs.next
-		}
+		};
 
 		for (var x in editors) {
 			editors[x].on('change', deferUpdate.bind(this, x));
@@ -136,6 +142,11 @@ include.routes({
 		});
 
 		var code = UrlCode.parse();
+
+		if (code && code.preset) {
+			code = getPreset(code.preset);
+		}
+
 		if (code){
 			setValues(code);
 		}else{

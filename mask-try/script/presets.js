@@ -1,25 +1,26 @@
-include.load('/presets/presets.txt').done(function(resp) {
+include //
+
+.routes({
+	preset: '/presets/{0}.txt'
+}) //
+
+.load({
+	preset: ['simple', 'animate', 'bindings', 'collapse']
+}) //
+
+.done(function(resp) {
 
 	var id = 0,
 		Preset = Class({
 			Construct: function(str) {
 				this.id = ++id;
 
-
-				var items = str.split('----');
-				if (items.length < 4) {
-					console.warn(this);
-					this.valid = false;
-					return;
-				}
-
-
-				ruqq.arr.aggr(items, this, function(x, aggr) {
+				ruqq.arr.aggr(str.split('----'), this, function(x, aggr) {
+					x = x.trim();
 					if (!x) {
 						return;
 					}
-					x = x.replace(/^[\s]+/, '');
-
+					
 					var index = x.indexOf(':'),
 						key = x.substring(0, index),
 						value = x.substring(++index).replace(/^[\s]+/, '');
@@ -29,11 +30,10 @@ include.load('/presets/presets.txt').done(function(resp) {
 			}
 		});
 
-	var arr = resp.load.presets.split(/[\s]*====[\s]*/g);
-	window.XX = include.exports = ruqq.arr(arr).where(function(x) {
-		return !!x;
-	}).map(function(x) {
-		return new Preset(x);
-	}).items;
+	include.exports = [];
+
+	for (var key in resp.load) {
+		include.exports.push(new Preset(resp.load[key]));
+	}
 
 });

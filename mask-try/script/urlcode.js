@@ -7,6 +7,13 @@
 			hash = decodeURIComponent(hash);
 
 			if (hash.indexOf('code:') !== 0) {
+
+				if (hash.indexOf('preset:') === 0) {
+					return {
+						preset: hash.replace('preset:', '').trim()
+					};
+				}
+
 				return '';
 			}
 

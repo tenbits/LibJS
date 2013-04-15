@@ -1,0 +1,57 @@
+title:
+Collapsible
+
+----
+mask:
+
+:collapsible.classA {
+    button.header > 'Toggle'
+    .content {
+        'Some Content, ~[name]!'
+    }
+}
+
+hr;
+
+:collapsible {
+	span.header style='background: gray' > 'Click'
+	span.content > '~[:name.toUpperCase()]'
+}
+
+----
+javascript:
+
+/** create custom Control: */
+mask.registerHandler(':collapsible', Compo({
+    constructor: function() {
+        this.tagName = 'div';
+    },
+	compos: {
+        container: '$: .content'
+    },
+    events: {
+       'click: .header': function(e){
+            this.compos.container.toggle();
+       }
+    }
+}));
+
+----
+model:
+
+{
+    name: 'World'
+}
+----
+style:
+
+.classA {
+    display:inline-block;
+    background-color: rgb(150,240,150);
+}
+.header{
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    font-weight: bold;
+}

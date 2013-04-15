@@ -1,0 +1,14 @@
+title:
+Simple
+
+----
+mask:
+
+.simple style="background:#6BA43C; color:#1E5043;" > "~[text]"
+
+----
+model:
+
+{
+    text: "Hello, World!"
+}
