@@ -1,7 +1,7 @@
 layout:view master='view' {
 
 	title {
-		a href='https://github.com/tenbits/IncludeJS' target=_blank > github@IncludeJS;
+		a href='https://github.com/tenbits/IncludeJS' target=_blank > 'github@IncludeJS';
 	}
 
 	tabs {
