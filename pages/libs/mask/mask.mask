@@ -1,7 +1,7 @@
 layout:view master='view' {
 
     title {
-        a.github-ribbon href='https://github.com/tenbits/MaskJS';
+        a href='https://github.com/tenbits/MaskJS' target=_blank > 'github@MaskJS';
     }
 
 
@@ -51,7 +51,7 @@ layout:view master='view' {
                 maskExamples;
             }
             div.syntax {
-                h4 > 'Tags'
+                h3 > 'Tags'
                 p {
                     h5 > 'Tag Declaration'
                     prism > 'tag#id.class{0,} key=[\'"]value[\'"]{0,}'
@@ -66,12 +66,12 @@ layout:view master='view' {
                     p > 'And the content itself are other tags or literals'
                 }
 
-                h4 > 'Literal'
+                h3 > 'Literals'
                 p {
                     prism > '[\'"]Text Node Content[\'"]'
                 }
 
-                h4 > 'Template Values'
+                h3 > 'Template Values'
                 p {
                     prism {
                         '~' '[propertyName.andChainingAlsoPossible]'
@@ -98,7 +98,7 @@ layout:view master='view' {
                     }
 
                 }
-                h4 > 'Comments'
+                h3 > 'Comments'
                 p{
                     'Single Line Comments'
                     prism > '// this is comment'

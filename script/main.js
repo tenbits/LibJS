@@ -136,10 +136,10 @@ include.routes({
 					}
 				},
 				'click: h3.badge': function() {
-					this.compos.menuHelp.css('opacity', 1);
+					this.compos.menuHelp.show();
 				},
 				'mouseleave': function() {
-					this.compos.menuHelp.css('opacity', 0);
+					this.compos.menuHelp.hide();
 				}
 			}]
 		},

@@ -6,7 +6,8 @@ include.load(['examples.txt::Source','examples.mask::Template']).done(function(r
 	mask.registerHandler('maskExamples', Compo({
 		render: function(model, cntx, container) {
 			var examples = resp.load.Source.split('===='),
-				arr = [];
+				arr = [],
+				self = this;
 
 			for (var i = 0; i < examples.length; i++) {
 				var item = new Example(examples[i]);
@@ -33,7 +34,7 @@ include.load(['examples.txt::Source','examples.mask::Template']).done(function(r
 				$this.closest('.example').children('.data').toggle(closed);
 				$this.toggleClass('closed', !closed);
 
-				this.closest('scroller').scroller.refresh();
+				self.closest('scroller').scroller.refresh();
 			});
 
 		}

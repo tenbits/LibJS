@@ -2,7 +2,7 @@ layout:view master='view' {
 
 
     title {
-        a.github-ribbon href='https://github.com/tenbits/mask';
+        a href='https://github.com/tenbits/mask' target=_blank > 'github@MaskJS';
     }
 
     content {

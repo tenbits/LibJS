@@ -32,6 +32,7 @@ td > ul {
 	margin-top: 0px;
 }
 
+
 .scroller {
 	overflow: auto;
 }
@@ -114,20 +115,43 @@ div.footer {
 
 }
 
-
-.page {
+.pageWrapper {
 	height:100%;
 	min-height:100%;
 	min-width: 800px;
 
+	padding-top: 50px;
+	border-left: 250px solid transparent;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:border-box;
+
+	background:#2D2C2B url(../images/dark_tire.png) 0 0 repeat;
+}
+.pageWrapper:before{
+	position: absolute;
+	content: ' ';
+	width:10px;
+	height: 50px;
+
+	top:0px;
+	left: 250px;
+	border-left: 1px dashed #444;
+	box-shadow: inset 2px 0px 10px #222;
+}
+
+
+.page {
+
+	height: 100%;
 
 	background-color: #E8D1AE;
 
 	background: url(../images/wood.jpg) 0 0 repeat;
 	background: url(../images/grass.png) bottom left no-repeat, url(../images/wood.jpg) 0 0 repeat;
 
-	border-left: 250px solid transparent;
 }
+
 
 button{
 	outline: none;

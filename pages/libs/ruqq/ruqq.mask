@@ -1,7 +1,7 @@
 layout:view master='view' {
 
     header {
-        a.github-ribbon href='https://github.com/tenbits/RuqqJS';
+        a href='https://github.com/tenbits/RuqqJS' target=_blank > 'github@RuqqJS';
     }
 
     tabs {

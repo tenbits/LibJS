@@ -62,7 +62,8 @@ menu > .menu-help {
 	height: 100%;
 	z-index: -1;
 	background: inherit;
-	opacity: 0;
+	opacity: 1;
+	display: none;
 	-webkit-transition: all 100ms linear;
 	font-size: small;
 }
@@ -78,8 +79,6 @@ menu > .menu-help {
     height:100%;
     background:rgba(0,0,0,.4);
 }
-menu > .menu-help { display: none; }
-menu:hover > .menu-help { display: block; }
 
 menu h3 {
 	font-size: 1em;

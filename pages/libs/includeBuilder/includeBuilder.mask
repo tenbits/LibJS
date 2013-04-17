@@ -1,7 +1,7 @@
 layout:view master='view' {
 
 	title {
-		a.github-ribbon href='https://github.com/tenbits/IncludeJS';
+		a href='https://github.com/tenbits/IncludeJS' target=_blank > 'github@IncludeJS.Builder;
 	}
 
 	tabs {
@@ -306,7 +306,7 @@ layout:view master='view' {
 			}
 			div.resources {
 				h6 > 'Small note about external resources'
-				p > 'Every application has some outer dependencies. Lets say you created empty project and want to use some classes, styles and images 
+				p > 'Every application has some outer dependencies. Lets say you created empty project and want to use some classes, styles and images
 				from you own library "MyCoolStuff". There are several ways you can do it.'
 				ul {
 					li {
@@ -323,14 +323,14 @@ layout:view master='view' {
 
 					li {
 						i > 'Best — ''Use symbolic links'
-						div { 
+						div {
 							'You may think, this is bad, but i will explain why i like them.'
 							ul {
-								li { 
+								li {
 									'keep all symlinks in "%project_dir%/.reference/" directory, to have little file system "entropy"'
 								}
 								li {
-									'all outer libraries are referenced - and this is much better for development. 
+									'all outer libraries are referenced - and this is much better for development.
 									You can live edit them adding new features. And the changes will stay there for your future projects.'
 								}
 								li {
@@ -350,7 +350,7 @@ layout:view master='view' {
 								'Create template project'
 								div > code > '> mkdir testProject && cd testProject && includejs template starter'
 								div {
-									'And now, under "testProject/.reference/libjs" you find a symbolic link to libjs project 
+									'And now, under "testProject/.reference/libjs" you find a symbolic link to libjs project
 									and all requests to libjs libraries, such as '
 									tt > 'include.js({ lib: "mask" })' 'will path through that symbolic link'
 								}

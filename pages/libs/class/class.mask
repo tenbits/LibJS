@@ -1,7 +1,7 @@
 layout:view master='view' {
 
     title {
-        a.github-ribbon href='https://github.com/tenbits/ClassJS';
+        a href='https://github.com/tenbits/ClassJS' target=_blank> 'github@ClassJS';
     }
 
 
@@ -17,12 +17,16 @@ layout:view master='view' {
 
     content > .container.tabPanel {
         div.info.active {
+            h5 >  'Fastest Class implementation for modern browsers'
+            p {
+                'Check out speed comparison: '
+                a href='http://jsperf.com/class-libjs-vs-others' target='_blank' > 'jsperf.com'
+            }
             ul {
-                li {
-                    'Fastest Class implementation for modern browsers. Check out speed comparison: '
-                    a href='http://jsperf.com/class-libjs-vs-others' target='_blank' > 'jsperf.com'
-                    div.hint > 'Note that even compile example is up to 2 times faster'
-                }
+                li > 'Lightweight'
+                li > 'Proper inheritance initialization with all constructors call'
+                li { tt > 'instanceof works' }
+                li > 'Static properties'
                 li {
                     'Size'
                     div.hint > 'Compiled: 1.3KB'

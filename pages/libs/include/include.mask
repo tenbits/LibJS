@@ -1,7 +1,7 @@
 layout:view master='view' {
 
 	title {
-		a.github-ribbon href='https://github.com/tenbits/IncludeJS';
+		a href='https://github.com/tenbits/IncludeJS' target=_blank > github@IncludeJS;
 	}
 
 	tabs {
@@ -38,7 +38,7 @@ layout:view master='view' {
 						li {
 							'Module Exports. Example: myScript.js'
 							prism > 'include.exports = { someFunction: function(){ console.log("hey"); } }'
-							div.hint { 
+							div.hint {
 								'It is also possible to use nodejs module exports patterns (but it should be enabled globally before in include.js config).'
 								div > code > 'exports.someFunction = function(){ ... }'
 							}
