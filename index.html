@@ -98,30 +98,28 @@
 	</svg>
 </script>
 <div id="build.release.xhr" style="display: none;" hidden="hidden"><script type="include/load" id="includejs-scriptcontrollerdefaultmask" data-appuri="/script/controller/default.mask"> 
-layout:master#viewFull {
+layout:master #viewFull {
 
 
-		scroller.maximized > placeholder#content;
+		scroller.maximized > @placeholder #content;
 
 
 }
 
-layout:master#view {
+layout:master #view {
 
 		header {
 
 		    .title style='float:right; text-align:right;' {
-				placeholder#title;
+				@placeholder #title;
 			}
 
-			placeholder#tabs;
+			@placeholder #tabs;
 		}
 		scroller {
-			placeholder#content;
+			@placeholder #content;
 		}
 
 }
-
-
  </script></div><script type="text/javascript" src="index.build/script.js?v=1.1"></script></body>
 </html>
