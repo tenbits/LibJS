@@ -1,11 +1,11 @@
 
 layout:view master='view' {
 
-    title {
+    @content #title {
         'LibJS Project  道 '
     }
 
-    tabs {
+    @content #tabs {
         radioButtons{
             button.active name='info' > 'Info'
             button name='com' > 'COM'
@@ -13,7 +13,7 @@ layout:view master='view' {
         }
     }
 
-    content > .container.tabPanel{
+    @content #content > .container.tabPanel{
         div.info.active {
             h4 > 'Component Composition in HTML5 Application without Javascript'
 

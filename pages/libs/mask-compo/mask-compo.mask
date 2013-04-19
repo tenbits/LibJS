@@ -1,11 +1,11 @@
 layout:view master='view' {
 
 
-    title {
+    @content #title {
         a href='https://github.com/tenbits/mask-compo' target=_blank > 'github@Mask.Compo'
     }
 
-    content {
+    @content #content {
         .container.tabPanel {
             div.info.active {
                 h4 > 'Helps to create Custom Component Controllers'
@@ -130,7 +130,7 @@ layout:view master='view' {
         }
     }
 
-    tabs {
+    @content #tabs {
         radioButtons{
             button.active name='info' > 'Info'
             button name='api' > 'API'

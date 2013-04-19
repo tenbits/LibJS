@@ -1,21 +1,21 @@
 layout:view master='tagApiItem' {
-    title > 'datePicker;'
-    description {
+    @content #title > ':datePicker;'
+    @content #description {
         div {
             'Based on '
-            a href='https://github.com/glad/glDatePicker/' > 'glDatePicker'
+            a href='https://github.com/glad/glDatePicker/' target='_blank' > 'glDatePicker'
         }
-        
+
     }
 
-    include > '{libjs}/compos/datePicker/lib/datePicker.js'
-    source {
-        a href='https://github.com/tenbits/Compos/blob/master/datePicker/lib/datePicker.js' target='_blank' > 'github/compos/datePicker.js'   
+    @content #include > '{libjs}/compos/datePicker/lib/datePicker.js'
+    @content #source {
+        a href='https://github.com/tenbits/Compos/blob/master/datePicker/lib/datePicker.js' target='_blank' > 'github/compos/datePicker.js'
     }
-    attributes {
+    @content #attributes {
         '...'
-    } 
-    component {
+    }
+    @content #component {
         tr {
             td > '.setDate(date:Date)'
             td > 'Set and show date value'
@@ -24,16 +24,16 @@ layout:view master='tagApiItem' {
             td > '.getDate():Date'
             td > 'Returns current date value'
         }
-           
+
     }
-    depends {
+    @content #depends {
         li > 'MaskJS'
-        li > 'IncludeJS - (for loading Prism lib)'        
+        li > 'IncludeJS'
     }
-    
-    example {
-        prism > "datePicker;"
-        datePicker;
+
+    @content #example {
+        prism > ":datePicker;"
+        :datePicker;
     }
-    
+
 }

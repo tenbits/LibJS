@@ -1,45 +1,47 @@
 
-layout:master#tagApiItem {
+layout:master #tagApiItem {
     div {
         hr;
-        h4 > code > placeholder#title;
+        h4 > code > @placeholder #title;
         p.description {
-            placeholder#description;
+            @placeholder #description;
         }
 
         small {
             div {
-                placeholder#include;
+                @placeholder #include;
             }
             div {
-                placeholder#source;
+                @placeholder #source;
             }
         }
-        p {
+
+        @placeholder #attributes > p {
             div > 'Attributes: '
-            table.api-list cellspacing='0' > placeholder#attributes;
+            table.api-list cellspacing='0' > @placeholder;
         }
 
-        p {
+        @placeholder #component >  p {
             div > 'Component: '
-            table.api-list cellspacing='0' > placeholder#component;
+            table.api-list cellspacing='0' > @placeholder;
         }
 
 
-        p {
+        @placeholder #depends > p {
             div > 'Depends: '
-            ul > placeholder#depends;
+            ul > @placeholder;
         }
-        p {
+
+        @placeholder #example > p {
             div > 'Example: '
-            div > placeholder#example;
+            div > @placeholder;
         }
     }
 }
 
 layout:view master='viewFull' {
 
-    content > .content.maximized.tagAPI > p.container.tabPanel{
+    @content #content > .content.maximized.tagAPI > p.container.tabPanel{
 
     }
 }

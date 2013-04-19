@@ -1,12 +1,12 @@
 layout:view master='view' {
 
-    title {
+    @content #title {
         a href='https://github.com/tenbits/MaskJS' target=_blank > 'github@MaskJS';
     }
 
 
 
-    tabs {
+    @content #tabs {
         radioButtons {
             button.active name='info' > 'Info'
             button name='examples' > 'Examples'
@@ -16,7 +16,7 @@ layout:view master='view' {
         }
     }
 
-    content {
+    @content #content {
         .container.tabPanel {
             .info.active {
                 ul {

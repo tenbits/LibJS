@@ -106,11 +106,11 @@
 }
 
 .view div.scroller {
+	opacity: 0.9;
     position: absolute; top:-4px; left:0px; right:0px; bottom: 0px;
 }
 
 .view div.scroller.maximized {
-    top:0px; left:0px; right:0px; bottom: 0px;
-
-
+    top:-50px; left:0px; right:0px; bottom: 0px;
+	opacity: 1;
 }

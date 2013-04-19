@@ -1,56 +1,76 @@
 h6 > 'Do you familier with Master-Pages in ASP.NET?'
 layout:view master='tagApiItem' {
-    title > 'layout:master;'
-    description {
-         'Contains master layout template.'    
+    @content #title > 'layout:master;'
+    @content #description {
+        'Master layout template.'
 
-         div {
-            code > 'placeholder;'
-            ' - tag is used withing layout:master to define placeholder for template item (ID attribute required)'            
+        div {
+            code > '@placeholder #id;'
+            ' - is used within "layout:master" to define a placeholder'
         }
     }
 
-    include > '{libjs}/compos/layout/lib/layout.js'
-    source {
-        a href='https://github.com/tenbits/Compos/blob/master/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'   
+    @content #include > '{libjs}/compos/layout/lib/layout.js'
+    @content #source {
+        a href='https://github.com/tenbits/Compos/blob/master/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'
     }
-    attributes {
-        tr {            
+    @content #attributes {
+        tr {
             td > 'id'
             td > '(required) ID'
-        }                
-    } 
-    depends {
-        li > 'MaskJS'
-        li > 'IncludeJS - (for loading Prism lib)'        
+        }
     }
-    
-    example {
-        prism > 'layout:master#mainView { div.header > placeholder#header; }'
-    }    
+
+    @content #example {
+        prism language='css' > formatter:pre > '
+            layout:master #mainView {
+                div.header > @placeholder #head;
+            }'
+        p {
+            'What if '
+            code > 'layout:view'
+            ' has no #head content, and we dont want that '
+            code > "div.header"
+            'to be rendered - wrapp it'
+
+            prism language='css' > formatter:pre > '
+                layout:master #mainView {
+                    @placeholder #head {
+                        div.header > @placeholder; /* if #head content exists it goes still here */
+                        h6 > @placeholder #title; /* other placeholders could be also nested inside */
+                    }
+                }'
+        }
+    }
 }
 layout:view master='tagApiItem' {
-    title > 'layout:view;'
-    description {
-         "Child tagNames are placeholder ids of a master view template"
+    @content #title > 'layout:view;'
+    @content #description {
+        'View template for a master template'
+        div {
+            code > '@content #id;'
+            ' - template of a "@content" tag is placed inside a placeholder with same id in master template'
+        }
     }
-    
-    include > '{libjs}/compos/layout/lib/layout.js'
-    source {
-        a href='http://github.com/tenbits/Compos/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'   
+
+    @content #include > '{libjs}/compos/layout/lib/layout.js'
+    @content #source {
+        a href='http://github.com/tenbits/Compos/layout/lib/layout.js' target='_blank' > 'github/compos/layout.js'
     }
-    attributes {
-        tr {            
+    @content #attributes {
+        tr {
             td > 'master'
             td > '(required) ID of master template'
-        }                
-    } 
-    depends {
-        li > 'MaskJS'
-        li > 'IncludeJS - (for loading Prism lib)'        
+        }
     }
-    
-    example {
-        prism > 'layout:view master="mainView" { header > "This will be placed into placeholder#header" }'
-    }    
+
+    @content #example {
+        prism language='css' > formatter:pre > '
+            layout:view master="mainView" {
+                @content #head {
+                    "This will be placed into master template instead @placeholder #head"
+                }
+            }
+            '
+    }
 }

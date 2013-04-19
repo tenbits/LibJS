@@ -1,10 +1,10 @@
 layout:view master='view' {
 
-	title {
+	@content #title {
 		a href='https://github.com/tenbits/IncludeJS' target=_blank > 'github@IncludeJS.Builder';
 	}
 
-	tabs {
+	@content #tabs {
 		radioButtons{
 			button.active name='info' > 'Info'
 			button name='commands' > 'Commands'
@@ -13,7 +13,7 @@ layout:view master='view' {
 		}
 	}
 
-	content {
+	@content #content {
 		p.container.tabPanel {
 			div.info.active {
 				div {

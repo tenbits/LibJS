@@ -9,7 +9,7 @@ include.routes({
 	script: '/script/{0}.js'
 }).js({
 	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
-	lib: ['mask', 'ranimate'],
+	lib: ['mask', 'mask.animation'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list'],
 	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer'],
@@ -50,9 +50,6 @@ include.routes({
 						view: 'mask-j',
 						title: 'jMask'
 					},{
-						view: 'mask-compo',
-						title: 'Compo'
-					},{
 						title: '',
 						'class': 'hr'
 					},{
@@ -63,33 +60,18 @@ include.routes({
 						navigate: '/html2mask/'
 					}]
 				}, {
+					view: 'mask-animation',
+					title: 'Mask.Animation',
+				}, {
 					view: 'include',
 					title: 'IncludeJS'
 				}, {
 					view: 'includeBuilder',
 					title: 'IncludeJS.Builder'
 				}, {
-					view: 'compo',
-					title: 'CompoJS'
-				}, {
 					view: 'ruqq',
-					title: 'RuqqJS',
-					////items: [{
-					////	view: 'ruqq/routing',
-					////	title: 'Routing'
-					////}, {
-					////	view: 'ruqq/array',
-					////	title: 'Array Helper'
-					////}, {
-					////	view: 'ruqq/object',
-					////	title: 'Object Helper'
-					////}, ]
-				},{
-					view: 'ranimate',
-					title: 'RAnimateJS',
-				},
-
-				]
+					title: 'RuqqJS'
+				}]
 			}, {
 				title: 'Component',
 				items: [{

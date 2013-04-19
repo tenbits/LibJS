@@ -1,0 +1,187 @@
+layout:view master='view' {
+
+	@content #title {
+		a target='_blank' href='https://github.com/tenbits/mask-animation' > 'github@Mask.Animation'
+	}
+
+	@content #tabs {
+		radioButtons{
+			button.active name='info' > 'Info'
+			//button name='api' > 'API'
+			button name='example' > 'Example'
+		}
+	}
+
+	@content #content {
+		div.container.tabPanel {
+			div.info.active {
+				h5 > 'CSS3 Animations with complex Animation Models'
+				hr;
+				div > a target='_blank' href='https://github.com/tenbits/mask-animation/blob/master/lib/mask.animation.js' > 'Lib'
+				hr;
+				p {
+					'Property animations are declared in a "model/next" way to allow chaining and nesting.
+					Each property animation is a string declaration:'
+					prism > 'propertyName | ?from > to | ?time ?timing ?delay'
+				}
+
+				.hint > 'Also not animatable properties could be defined in a model, such as display, visibility ...'
+
+				h4 > 'Javascript'
+				p {
+					h6 > 'Model'
+					div > prism > formatter:pre > "
+						{
+							model: /* String|Object|Array */,
+							next: /* String|Object|Array */
+						}
+						"
+					div {
+						'Where'
+						p {
+							div { code > ' String ' ' is a PROPERTY animation declaration' }
+							div { code > ' Object ' ' is a MODEL declaration' }
+							div { code > ' Array ' ' is an Array of MODEL declarations' }
+						}
+					}
+				}
+				p {
+					h6 > 'Animate Model'
+					prism > 'mask.animate(element, Model, callback)'
+				}
+
+				h4 > 'Mask'
+				div > code > ':animation #ID x-slots=".." x-pipes=".." { /* model declaration */ }'
+				p {
+					h6 > 'Model'
+					ul {
+						li > 'Each property declaration is defined in a TEXTNODE'
+					}
+
+					div > prism > formatter:pre > "
+						@model > /* TEXTNODE | @model */
+						@next > /* TEXTNODE | @model */
+					"
+				}
+
+				p {
+					h6 > 'Attributes'
+
+					table {
+						tr {
+							td > tt > 'id'
+							td {
+								'ID of the animation could be defined for starting it from a Controller'
+							}
+						}
+						tr {
+							td > tt > 'x-slots="slotName; someOtherSlotName"'
+							td > 'Defines slots and starts animation automatically on signal capture'
+						}
+						tr {
+							td > tt > 'x-pipes="pipeName.slotName"'
+							td > 'Defines slots in a pipe and starts animation automatically on signal capture'
+						}
+
+					}
+				}
+
+				p {
+					h6 > 'Javascript'
+					div > 'Start the Animation from a Controller'
+					prism > 'this.animation("ID").start(?onAnimationEnd, ?element)'
+
+					.hint {
+						tt > ':animation'
+						' is bound to a container HTMLElement, but you can define any other element in start function'
+					}
+
+				}
+
+
+			}
+			//div.api > prism src='/api.help/ranimation.api.js';
+
+			div.example {
+				div style='
+						position:absolute;
+						z-index: 0;
+						top:10px;
+						left: 110px;
+						color:#888;
+						font-weight:bold;
+						font-family: monospace;' {
+
+					pre > formatter:pre > "
+							:animation x-pipes='animation.start' {
+							  @model {
+								@model {
+								  @model > 'transform | translate(0px,0px) > translate(300px,300px) | 1s'
+								  @next {
+									@model > 'transform | scale(1) > translate(200px,200px) scale(.5) | 600ms'
+									@next {
+									  'transform | scale(.5) > scale(1.5) | 900ms'
+									  'opacity | 1 > 0 | 1s'
+									  'background-color | > violet | 1s'
+									}
+								  }
+								}
+
+								@model {
+								  @model > 'background-color | > blue | 1s'
+								  @next > 'background-color | > yellow | 1s'
+								}
+							  }
+
+							  @next {
+								@model > 'opacity | 0 > 1 | 1.5s'
+								@next {
+								  'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s'
+								  'background-color | > rgb(240,10,10) | 2s ease-in'
+								}
+							  }
+
+							}"
+				}
+
+				div style='position:relative; z-index:1' {
+					div#ranimateExample style='height:100px; width:100px; background:rgb(240,10,10);' {
+						:animation x-pipes='animation.start' {
+
+							@model {
+								@model {
+									@model > 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s'
+									@next {
+										@model > 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms'
+										@next {
+											'transform | scale(.5) > scale(1.5) | 900ms'
+											'opacity | 1 > 0 | 1s'
+											'background-color | > violet | 1s'
+										}
+									}
+								}
+
+								@model {
+									@model > 'background-color | > blue | 1s'
+									@next > 'background-color | > yellow | 1s'
+								}
+							}
+
+							@next {
+								@model > 'opacity | 0 > 1 | 1.5s'
+								@next {
+									'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s'
+									'background-color | > rgb(240,10,10) | 2s ease-in'
+								}
+							}
+
+						}
+					}
+					button x-pipe-signal='click: animation.start' > 'Start'
+				}
+
+			}
+		}
+	}
+
+}

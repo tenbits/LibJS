@@ -1,13 +1,13 @@
 layout:view master='view' {
 
-    title {
+    @content #title {
         a href='https://github.com/tenbits/ClassJS' target=_blank> 'github@ClassJS';
     }
 
 
 
 
-    tabs {
+    @content #tabs {
         radioButtons {
             button.active name='info' > 'Info'
             button name='api' > 'API'
@@ -15,7 +15,7 @@ layout:view master='view' {
     }
 
 
-    content > .container.tabPanel {
+    @content #content > .container.tabPanel {
         div.info.active {
             h5 >  'Fastest Class implementation for modern browsers'
             p {

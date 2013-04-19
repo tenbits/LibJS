@@ -1,17 +1,17 @@
 layout:view master='tagApiItem' {
-    title > 'scroller;'
-    description {
+    @content #title > 'scroller;'
+    @content #description {
         div {
             'Based on '
             a href='http://cubiq.org/iscroll-4' > 'iScroll4'
         }
-        
+
         p > code > " > {compos}/scroller/lib/scroller.js"
         p > code > " include.js({ compo : 'scroller' })"
-        
+
         div > 'Markup example:'
         prism > 'scroller#myscroller { /** Content Items*/ }'
-        
+
         p > 'As with other Components, no further javascript is needed,
             scroller tag will be changed to div and after DOMInsertion
             scroller will work as expected if overflowed.'
@@ -20,19 +20,18 @@ layout:view master='tagApiItem' {
         prism > 'Compo.find(app, "#myscroller").scroller.refresh();'
     }
 
-    include > '{libjs}/compos/scroller/lib/scroller.js'
-    source {
-        a href='https://github.com/tenbits/Compos/blob/master/scroller/lib/scroller.js' target='_blank' > 'GitHub'   
+    @content #include > '{libjs}/compos/scroller/lib/scroller.js'
+    @content #source {
+        a href='https://github.com/tenbits/Compos/blob/master/scroller/lib/scroller.js' target='_blank' > 'GitHub'
     }
-    attributes {
+    @content #attributes {
         tr {
-            td > '...'
-            td > 'doesnt require any additional attributes'
-        }        
-    } 
-    depends {
+            td > prism > '/* any HTMLElement attribute */'
+        }
+    }
+    @content #depends {
         li > 'MaskJS'
-        li > 'IncludeJS - (for loading iScroll4 lib)'        
-    }   
-    
+        li > 'IncludeJS'
+    }
+
 }

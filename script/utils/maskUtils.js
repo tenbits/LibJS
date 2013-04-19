@@ -1,33 +1,53 @@
 
 (function() {
     var replaces = null;
-    mask.registerHandler('formatter:pre', Compo({
-        constructor: function() {
-            if (replaces == null) {
-                replaces = {
-                    regexps: [/\\n/g, /\\t/g],
-                    values: ['\n', '    ']
-                };
-            }
-        },
-        makePre: function(nodes) {
-            var isarray = nodes instanceof Array,
-                length = isarray ? nodes.length : 1,
-                x = null;
-            for (var i = 0; isarray ? i < length : i < 1; i++) {
-				x = isarray ? nodes[i] : nodes;
-                if (x.content != null) {
-                    x.content = x.content.replace(replaces.regexps[0], '\n').replace(replaces.regexps[1], '    ');
-                }
-                if (x.nodes != null) {
-                    this.makePre(x.nodes);
-                }
-            }
+    mask.registerHandler('formatter:pre', Class({
+        makePre: function(string) {
+            var lines = string.trim().split('\n'), max = 0, prfx;
+
+			if (lines.length < 2) {
+				return string;
+			}
+
+			for(var i = 0, x, imax = lines.length; i < imax; i++){
+
+				var match = /^[\t ]+/.exec(lines[i]);
+
+				if (match && match[0].length > 0) {
+					if (max === 0 || match[0].length < max) {
+						max = match[0].length;
+					}
+				}
+			}
+
+			if (!max) {
+				return string;
+			}
+
+			for(var i = 0, imax = lines.length; i < imax; i++){
+				prfx = lines[i].substring(0, max);
+				if (/^\s*$/.exec(prfx)) {
+					lines[i] = lines[i].substring(max);
+				}
+			}
+
+			return lines.join('\n');
         },
         renderStart: function(values, container, cntx) {
-            this.makePre(this.nodes);
+			if (this.nodes == null) {
+				return;
+			}
+
+            for(var i = 0, x, imax = this.nodes.length; i < imax; i++){
+				x = this.nodes[i];
+
+				if (x.content) {
+					x.content = this.makePre(x.content);
+				}
+			}
         }
     }));
+
 
 
 

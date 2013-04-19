@@ -1,26 +1,24 @@
 
-layout:master#viewFull {
+layout:master #viewFull {
 
 
-		scroller.maximized > placeholder#content;
+		scroller.maximized > @placeholder #content;
 
 
 }
 
-layout:master#view {
+layout:master #view {
 
 		header {
 
 		    .title style='float:right; text-align:right;' {
-				placeholder#title;
+				@placeholder #title;
 			}
 
-			placeholder#tabs;
+			@placeholder #tabs;
 		}
 		scroller {
-			placeholder#content;
+			@placeholder #content;
 		}
 
 }
-
-

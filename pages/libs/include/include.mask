@@ -1,16 +1,16 @@
 layout:view master='view' {
 
-	title {
+	@content #title {
 		a href='https://github.com/tenbits/IncludeJS' target=_blank > 'github@IncludeJS';
 	}
 
-	tabs {
+	@content #tabs {
 		radioButtons{
 			button.active name='info' > 'Info'
 			button name='api' > 'Api'
 		}
 	}
-	content {
+	@content #content {
 		p.container.tabPanel{
 			div.info.active {
 				div {

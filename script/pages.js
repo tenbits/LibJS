@@ -21,9 +21,7 @@
 		'includeBuilder': {
 			view: 'includeBuilder'
 		},
-		'mask-compo': {
-			title: 'mask.Compo'
-		},
+
 		'mask-j': {
 			title: 'mask.J'
 		},
@@ -38,9 +36,9 @@
 		'ruqq': {
 			title: 'RuqqJS'
 		},
-		'ranimate': {
-			title: 'RAnimateJS',
-			controller: 'ranimate'
+		'mask-animation': {
+			title: 'Animations',
+			controller: 'mask-animation'
 		},
 		'compos': {
 			title: 'Component',

@@ -1,39 +1,39 @@
 layout:view master='tagApiItem' {
-    title > 'timePicker;'
-    description {
+    @content #title > ':timePicker;'
+    @content #description {
         div {
             'Based on '
             a href='http://mobiscroll.com/' target='_blank' > 'MOBISCROLL'
         }
-        
+
     }
 
-    include > '{libjs}/compos/timePicker/lib/timePicker.js'
-    source {
-        a href='https://github.com/tenbits/Compos/blob/master/timePicker/lib/timePicker.js' target='_blank' > 'github/compos/timePicker.js'   
+    @content #include > '{libjs}/compos/timePicker/lib/timePicker.js'
+    @content #source {
+        a href='https://github.com/tenbits/Compos/blob/master/timePicker/lib/timePicker.js' target='_blank' > 'github/compos/timePicker.js'
     }
-    attributes {
+    @content #attributes {
         tr {
             td > 'preset'
             td > 'optional @default=time, also possible - date'
         }
-    } 
-    component {
+    }
+    @content #component {
         tr {
             td > '.$'
             td > 'To control timePicker use dollar sign as in Compo Instance to access timePicker container, for the rest of api, please
                 go to mobiscroll.com'
-        }        
+        }
     }
-    
-    depends {
+
+    @content #depends {
         li > 'MaskJS'
-        li > 'IncludeJS - (for loading mobiscroll resources)'        
+        li > 'IncludeJS'
     }
-    
-    example {
-        prism > "timePicker;"
-        timePicker;
+
+    @content #example {
+        prism > ":timePicker;"
+        :timePicker;
     }
-    
+
 }

@@ -1,8 +1,8 @@
 layout:view master='viewFull' {
 
-	
 
-	content {
+
+	@content #content {
 		div style='padding:20px;' {
 			div style='margin-bottom:50px;'{
 				table {

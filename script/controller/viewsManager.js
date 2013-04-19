@@ -12,7 +12,7 @@ include.js({
 			ruqq.animate($next, {
 				property: 'opacity',
 				valueFrom: '0',
-				valueTo: '.9',
+				valueTo: '1',
 				duration: 500,
 				timing: 'cubic-bezier(.58,1.54,.59,.75)',
 				callback: callback

@@ -1,11 +1,11 @@
 layout:view master='view' {
 
 
-    title {
+    @content #title {
         a href='https://github.com/tenbits/mask-j' target=_blank > 'github@jMask'
     }
 
-    content {
+    @content #content {
         .container.tabPanel {
             div.info.active {
                 h4 > 'Library for MaskDOM Manipulation with jQuery syntax'
@@ -104,7 +104,7 @@ p > button > a href='http://bit.ly/Xr57sG' > 'Test'
         }
     }
 
-    tabs {
+    @content #tabs {
         radioButtons{
             button.active name='info' > 'Info'
             button name='api' > 'API'

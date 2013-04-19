@@ -1,11 +1,11 @@
 layout:view master='view' {
 
 
-    title {
+    @content #title {
         a href='https://github.com/tenbits/mask-binding' target=_blank > 'github@Mask.Binding'
     }
 
-    content {
+    @content #content {
         .container.tabPanel {
             div.info.active {
                 ul {
@@ -239,7 +239,7 @@ mask.registerBinding('bindingName', {
         }
     }
 
-    tabs {
+    @content #tabs {
         radioButtons{
             button.active name='info' > 'Info'
             button name='utils' > 'Util'
