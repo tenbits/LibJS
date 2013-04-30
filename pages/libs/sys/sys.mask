@@ -32,6 +32,13 @@ layout:view master='view' {
                             'Extract some value from model, and use it as a model for all underlined nodes'
                         }
                         li {
+                            div > code > 'repeat="0..9"'
+                            div > 'Repeat the template N times'
+
+                            'Access current index from expression '
+                            code { '~''[: _repeatIndex]' }
+                        }
+                        li {
                             div > code > 'log="property"'
                             'Used for debugging - logs current model value'
                         }
@@ -39,38 +46,47 @@ layout:view master='view' {
                             div > code > 'debugger'
                             'Used for debugging - breakpoints template rendering'
                         }
+
                     }
 
-                    p > 'Template Sample'
-                    prism {
+                    p > 'Template sample'
+                    prism > formatter:pre {
+                        "
+                         % if='number >= 9' > span > 'greater then 8'
+                         % else > small > 'less then 9'
+                         % each='letters' > '~""[.]'
 
-"
- % if='number >= 9' > span > 'greater then 8'
- % else > small > 'less then 9'
- % each='letters' > '~""[.]'
-
- // Here you could write also '~""[user.name]'
- // But sometimes this approach usefull, especially in complex templates,
- % use='user' > '~[""name]'
- % log='number';
- % debugger;"
-
+                         % repeat='1..3' > .panel style='left: ~""[:_repeatIndex*40]px';
+                         // Here you could write also '~""[user.name]'
+                         // But sometimes this approach usefull, especially in complex templates,
+                         % use='user' > '~""[name]'
+                         % log='number';
+                         % debugger;"
                     }
                     p > 'Model'
-                    prism {
-"{
-    number: 8,
-    letters: ['A', 'B', 'C'],
-    user: {
-        name: 'A'
-    }
-}"
+                    prism > formatter:pre {
+                        "{
+                            number: 8,
+                            letters: ['A', 'B', 'C'],
+                            user: {
+                                name: 'A'
+                            }
+                        }"
                     }
                 }
 
                h4 > code > ':template'
                p {
                     'Underlined nodes wont be rendered and can be accessed for some other use'
+               }
+
+               h4 > code > ':html'
+               p {
+                    'All text nodes will be appended as raw html to parent'
+                    .hint > 'You can also paste html from the model'
+
+                    prism language='css' > 'div > :html > "<span>name</span>"'
+                    prism language='css' { 'div > :html > "~''[user.signature]"' }
                }
 
             }

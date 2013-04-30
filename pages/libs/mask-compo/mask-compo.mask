@@ -11,10 +11,11 @@ layout:view master='view' {
                 h4 > 'Helps to create Custom Component Controllers'
 
                 ul {
-                    li { 'Enhance power of MaskJS' div.hint > code > 'is build on top of Custom Control Feature' }
-                    li { 'Write Once — Use Everywhere' div.hint > code > '... without additional Javascript!' }
-                    li > 'Model-View-‹Component›'
-                    li > 'Weak Code Integration'
+                    li { 'Enhance power of MaskJS' .hint > code > '... is build on top of Custom Control Feature' }
+                    li { 'Write Once — Use anytime and everywhere' .hint > code > '... without additional Javascript!' }
+                    li > 'Model-View-‹Component› (‹Controller/Presenter/ModelView/Adapter›)'
+                    li > 'Signal - Slot'
+                    li > 'Signal - Pipe'
                     li { 'Dry & Highly Customizable' }
                 }
 
@@ -85,43 +86,57 @@ layout:view master='view' {
                 }
 
 
-                h4 > a name='radioButtons' > 'Lets have a look at RadioButtons Implementation'
-
-                'As the result, we can just write in our mask markup:'
-
-                prism > ":radioButtons { button.active > 'Info' button > 'API' button > 'Example' }"
-
-                'We dont need no more Javascript to apply mouse events, everything is done under the hood:'
+                h3 > a name='radioButtons' > 'RadioButtons Implementation'
 
                 prism src='/api.help/radioButtons.source.js';
 
-                'As for example, lets listen for button state change from parent Component'
+                'As the result, we can just write in our mask markup:'
 
-                prism > "this.on('changed: .radioButtons', function(event){ /** do smth. */ })"
+                prism > formatter:pre > "
+                    :radioButtons {
+                        button.active > 'Info'
+                        button > 'API'
+                        button > 'Example'
+                    }"
 
-                'So developed once radioButton Handler, we need than only 2 lines of code '
+                'We need no more javascript to apply mouse events, everything is done under the hood.'
 
-                '(1) and (3) for rest of the future'
+                div {
+                    div > 'Listen to radiobuttons change from parent component:'
+                    prism > formatter:pre {
+                        ''|
+                        Compo({
+                            events: {
+                                'changed: .radioButtons': function(sender){
+                                    // do smth
+                                }
+                            }
+                        });
 
+                        |''
+                    }
+                }
 
-                h4 > a name='prismjs' > 'One more example: PrismJS'
-                'All Source codes are highlighted with '
-                a href='http://prismjs.com/' > 'PrismJS'
+                'So developed once radioButton Handler, we can use it everywhere in our project'
+
+                h3 > a name='prismjs' > 'PrismJS Wrapper'
+                p > 'MaskJS plays perfect with other libraries'
+
+                'As an example, all sources on this site is highlighted with ' a href='http://prismjs.com/' > 'PrismJS'
 
                 prism > "var a = 10;" 'is'
                 prism > ':prism > "var a = 10;"'
 
-                'As you can see its quite simple: define "prism" tag in mask markup and thats all. '
-                'The source code of a Prism Control Handler is'
+                div > 'No more javascript for highlighting - render mask markup anytime and insert into DOM'
+
+                div > 'The source code of a Prism Control Handler is:'
                 prism src='/api.help/prism.source.js';
 
 
 
                 h4 > a name='complex' > 'Another big example is the source code of this page, or current View'
 
-                a href='script/component/mask-compo/compo.js' target='_blank' > 'Current Component'
-                div;
-                a href='script/component/mask-compo/compo.mask' target='_blank' > 'Current Mask'
+                div > a href='pages/libs/mask-compo/mask-compo.mask' target='_blank' > 'Current Mask'
             }
 
             div.visual style='text-align: center'{

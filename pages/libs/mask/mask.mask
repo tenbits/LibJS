@@ -20,20 +20,26 @@ layout:view master='view' {
         .container.tabPanel {
             .info.active {
                 ul {
-                    li { 'Zen Coding / MVC Templates' div.hint > tt > 'Write Less, Do More' }
-                    li { 'Dry & Highly Customizable' div.hint > tt > 'Custom Tags, Custom Value Preprocessors' }
+                    li { 'Zen Coding / HMV-C/MV/A/P Templates' div.hint > tt > 'Write Less, Do More' }
+                    li {
+                        'Dry & Highly Customizable'
+                        .hint > tt > 'Custom Tags'
+                        .hint > tt > 'Custom Value Preprocessors'
+                        .hint > tt > 'Custom Attributes'
+                    }
+
                     li {
                         'For NodeJS and Browsers'
                         ul {
                             li {
                                 'Browsers: DOM Builder direct from JSON tree'
-                                div.hint > 'Is Faster as we skip html building and its parsing by browser.
+                                div.hint > 'Is much faster as we skip html building and its parsing by browser.
                                 And creation of JSON tree could be compared to native JSON.parse function.'
                             }
                             li {
                                 'NodeJS: HTML Builder for sending it to client over http.'
                                 div.hint > 'Usually you do not need this, as building UI with Mask Template on client or mobile app is very fast,
-                                and you should use it.'
+                                and you should take advantage of mask markup.'
                             }
                         }
                     }
@@ -63,31 +69,64 @@ layout:view master='view' {
                         tr { td > '«>»' td > ' — if it has only one item (tag or literal)' }
                         tr { td > '«{»' td > ' — if it has one or more items. Then close it with «}».' }
                     }
-                    p > 'And the content itself are other tags or literals'
+                    p > 'And the content itself is other tags or literals'
                 }
 
                 h3 > 'Literals'
                 p {
-                    prism > '[\'"]Text Node Content[\'"]'
+                    h5 > 'Like Javascript strings'
+                    prism > '"Text Node Content"'
+                    prism > "'Text Node Content'"
+                    prism > "'I\'am a quote in literal, and should be escaped as in javascript string'"
+                    .hint {
+                        'If a template is defined in javascript string, then to escape a quote you need to escape the slash also '
+                        'Different quote escaping examples:'
+                        div > prism > ""| var a = "div > ' I\\'am a quote '"; |""
+                        div > prism > ""| var a = "div > \" I\\\"am a quote \""; |""
+                        div > prism > ""| var a = "div > ' I\\\"am a quote '"; |""
+                    }
+
+                    h5 > 'Block Literals'
+
+                    div > code > "''| text |'' "
+                    div > code > '""| text |"" '
+
+
+                    div > 'This allows to write any number of any quotes in literals without the need to escape it.
+                        (But remember about javascript string quote escaping.)'
+                    prism > " ''| Block - can have any amount of quotes \"'\" |'' "
                 }
 
                 h3 > 'Template Values'
                 p {
-                    prism {
-                        '~' '[propertyName.andChainingAlsoPossible]'
-                    }
+                    h5 > 'Values'
+                    prism { '~' '[propertyName.andChainingAlsoPossible]' }
                     div > small {
                         '! Mask Default interpolation quotes were changed from #{ } to ~''[ ]. For fallback use:'
                         code > 'mask.setInterpolationQuotes("#{","}")'
                     }
-                    h5 > 'Template Value Conditions'
-                    prism {
-                        '~' '[:index > 10 ? property : "Some other string"]'
-                    }
+
+                    .hint > 'Property values are resolved from a model only and it is much faster then expressions'
+
                     h5 > 'Template Value Expressions'
-                    prism {
-                        '~' '[:controllerFunction(user) + "!"]'
+                    prism { '~' '[:index > 10 ? property : "Some other string"]' }
+                    prism { '~' '[:controllerFunction(user) + "!"]' }
+                    prism { '~' '[: username.toLowerCase() + "!" ]' }
+
+                    .hint {
+                        div > 'Mask uses internal and very fast expression parser / evaluater'
+                        p {
+                            'Variable/Function lookup:'
+                            ol {
+                                li > 'model'
+                                li > 'context'
+                                li > 'controller'
+                                li > 'parents controller'
+                                li > ' .. up in controllers tree'
+                            }
+                        }
                     }
+
                     h5 > 'Template Value Utilities'
                     'Template Values Can be Transformed before inserting'
                     prism {
@@ -151,9 +190,10 @@ layout:view master='view' {
                         prism language='markup' > '<ul><li>1</li><li>2</li><li>3</li></ul>'
                     }
                     li {
-                        prism { '
-% if="number>10" > h4 > "Under"
-% else > h3 > "Below"' }
+                        prism > formatter:pre { '
+                            % if="number>10" > h4 > "Under"
+                            % else > h3 > "Below"'
+                        }
                         prism > '{ number: 9 }'
                         prism language='markup' > '<h3>Below</h3>'
                     }

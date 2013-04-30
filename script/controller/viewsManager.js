@@ -31,7 +31,7 @@ include.js({
 		},
 		load: function(info) {
 
-			var activity = Compo.find(window.app, 'pageActivity').show(),
+			var activity = Compo.find(window.app, ':pageActivity').show(),
 				name = info.view.replace('View', '');
 
 			window.Page.resolve(name, function(controller, template){

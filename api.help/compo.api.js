@@ -63,6 +63,13 @@ compos: {
  */
 $: null,
 
+
+/**
+ * [parent](name=parent)
+ * Parent Controller
+ */
+parent: /* Object Instace */
+
 /**
  *  [Construct](name=Construct)
  *
@@ -152,14 +159,17 @@ remove: function(),
 
 /**
  * [.slotState](name=slotState)
- * Disable/Enable Slot - if is disabled, it will be not fired on dom events, and if no active slots are available for a signal, then
- * HTMLElement will be also :disabled
+ * Disable/Enable Slot - if is disabled, it will be not fired when signal is emitted,
+ * and if no active slots are available for a signal, then
+ * HTMLElement/-(s) responsable for signal transmitting will
+ * become :disabled pseudo class
 */
 slotState: function(slotName, isActive){},
 
 /**
  * [.signalState](name=signalState)
- * Disables/Enables the signal completely - all slots in all controllers up in the tree will be enabled/disabled as all HTMLElements with that signal
+ * Disables/Enables the signal completely - all slots in all controllers up in the tree
+ * will be enabled/disabled as all HTMLElements with that signal
 */
 signalState: function(signalName, isActive){},
 
@@ -212,16 +222,19 @@ Static: {
          *      .find(selector)
          *
          *  So any Library can be used that implements that functions
+         *
+         *	@default: This Library uses $/jQuery/Zepto objects from globals
+         *
          */
         setDOMLibrary: function(lib){ $ = lib;}
     },
 
 	/**
 	 * Initialize Component Instance,
-	 * - mix (String|Function) - mix is a component constructor or component name,
-	 * it will look in mask.getHandler() for constructor
+	 * - mix (String|Function) - mix is a component constructor
+	 * or component name (it will look in mask.getHandler() for a constructor)
 	 */
-	initialize: function(mix, model, cntx, container){}
+	initialize: function(mix, model, cntx, container, ?parentController){}
 }
 
 });

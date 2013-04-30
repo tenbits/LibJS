@@ -28,6 +28,10 @@
 		'mask-binding': {
 			title: 'mask.Binding'
 		},
+		'mask-compo': {
+			title: 'mask.Compo'
+		},
+
 		'sys': {
 			title: 'Handler: Percent'
 		},
@@ -40,6 +44,7 @@
 			title: 'Animations',
 			controller: 'mask-animation'
 		},
+
 		'compos': {
 			title: 'Component',
 			controller: 'compos'

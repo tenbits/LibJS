@@ -13,7 +13,7 @@
 		};
 
 
-	mask.registerHandler('spinner', Compo({
+	mask.registerHandler(':spinner', Compo({
 		onRenderStart: function(values, container, cntx) {
 			this.currentPos = 0;
 			this.tagName = 'div';
@@ -37,10 +37,11 @@
 			}
 
 
-			var _ = ['width:#{width}px;', //
+			var _ = [ //
+			'width:#{width}px;', //
 			'height:#{height}px;', //
 			'background:url(#{image}) 0 0 no-repeat;', //
-			'position:fixed;', //
+			'position:absolute;', //
 			'top:#{top};', //
 			'left:#{left};', //
 			'margin-left:#{marginLeft}px;', //
@@ -124,22 +125,23 @@
 	}));
 
 
-	mask.registerHandler('pageActivity', Compo({
+	mask.registerHandler(':pageActivity', Compo({
 		constructor: function() {
 			this.compos = {
-				'spinner': 'compo: spinner'
+				'spinner': 'compo: :spinner'
 			};
 		},
 		onRenderStart: function() {
 
 			jmask(this).tag('div').css({
-				position: 'fixed',
+				position: 'absolute',
 				top: '0px',
 				left: '0px',
 				right: '0px',
 				bottom: '0px',
-				display: 'none'
-			}).append('spinner').children().attr({
+				display: 'none',
+				zIndex: 999999
+			}).append(':spinner').children().attr({
 				image: 'images/128x128_spinner.png',
 				width: 128,
 				height: 128,

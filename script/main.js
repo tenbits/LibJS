@@ -44,11 +44,14 @@ include.routes({
 						view: 'sys',
 						title: 'Sys'
 					},{
-						view: 'mask-binding',
-						title: 'Binding'
-					},{
 						view: 'mask-j',
 						title: 'jMask'
+					},{
+						view: 'mask-compo',
+						title: 'Compo'
+					},{
+						view: 'mask-binding',
+						title: 'Binding'
 					},{
 						title: '',
 						'class': 'hr'
