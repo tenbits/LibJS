@@ -77,7 +77,7 @@ layout:view master='view' {
                 prism src='/api.help/compo.api.js';
             }
 
-            div.example {
+            .example {
 
                 ul.anchors {
                     li > a href='#/mask-compo/example/radioButtons' > 'Radio Buttons'
@@ -85,7 +85,7 @@ layout:view master='view' {
                     li > a href='#/mask-compo/example/complex' > 'Complex Example'
                 }
 
-
+                hr;
                 h3 > a name='radioButtons' > 'RadioButtons Implementation'
 
                 prism src='/api.help/radioButtons.source.js';
@@ -119,6 +119,7 @@ layout:view master='view' {
 
                 'So developed once radioButton Handler, we can use it everywhere in our project'
 
+                hr;
                 h3 > a name='prismjs' > 'PrismJS Wrapper'
                 p > 'MaskJS plays perfect with other libraries'
 
@@ -133,7 +134,7 @@ layout:view master='view' {
                 prism src='/api.help/prism.source.js';
 
 
-
+                hr;
                 h4 > a name='complex' > 'Another big example is the source code of this page, or current View'
 
                 div > a href='pages/libs/mask-compo/mask-compo.mask' target='_blank' > 'Current Mask'

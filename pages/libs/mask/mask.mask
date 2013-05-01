@@ -19,44 +19,79 @@ layout:view master='view' {
     @content #content {
         .container.tabPanel {
             .info.active {
-                ul {
-                    li { 'Zen Coding / HMV-C/MV/A/P Templates' div.hint > tt > 'Write Less, Do More' }
-                    li {
-                        'Dry & Highly Customizable'
-                        .hint > tt > 'Custom Tags'
-                        .hint > tt > 'Custom Value Preprocessors'
-                        .hint > tt > 'Custom Attributes'
-                    }
+                img src='/images/logos/niob_mask.png' style='float:right';
 
-                    li {
-                        'For NodeJS and Browsers'
-                        ul {
-                            li {
-                                'Browsers: DOM Builder direct from JSON tree'
-                                div.hint > 'Is much faster as we skip html building and its parsing by browser.
-                                And creation of JSON tree could be compared to native JSON.parse function.'
-                            }
-                            li {
-                                'NodeJS: HTML Builder for sending it to client over http.'
-                                div.hint > 'Usually you do not need this, as building UI with Mask Template on client or mobile app is very fast,
-                                and you should take advantage of mask markup.'
-                            }
-                        }
+                .info {
+                    h4 > 'Syntax'
+                    p {
+                        div > tt > '- simple (css/sass/less alike)'
+                        div > tt > '- structure oriented'
                     }
-                    li {
-                        'Performance '
-                        div > a href='http://jsperf.com/javascript-template-engine-compare/65' > 'jsperf.com /1'
-                        div > a href='http://jsperf.com/dom-vs-innerhtml-based-templating/670' > 'jsperf.com /2'
+                }
 
-                        div.hint > tt { 'Building JSON tree:' a href='http://jsperf.com/maskjs-vs-json/9'> 'jsperf' }
+                .info {
+                    h4 > 'Engine'
+                    p {
+                        div > tt > '- dom based'
                     }
-                    li > 'No Dependencies'
+                }
+
+                .info {
+                    h4 > 'Dynamic'
+                    p {
+                        div > tt > '- interpolations'
+                        div > tt > '- bindings'
+                        div > tt > '- expressions'
+                    }
+                }
+
+                .info {
+                    h4 > 'Customizable'
+                    p {
+                        div > tt > '- tags'
+                        div > tt > '- attributes'
+                        div > tt > '- value preprocessors'
+                    }
+                }
+
+                .info {
+                    h4 > 'OOP'
+                    p {
+                        div > tt > '- hierarchical'
+                        div > tt > '- controller driven'
+                        div > tt > '- dependency injection'
+                        div > tt > '- abstraction'
+                    }
+                }
+
+                .info {
+                    h4 > 'Performance'
+                    p {
+                        div > tt > '- html compared'
+                        div > tt > '- mobile oriented'
+                        div > tt > '- no precompilation needed'
+                    }
+                }
+
+                .info {
+                    h4 > 'cross-browser'
+                }
+
+                .info {
+                    h4 > 'nodejs'
+                    p {
+                        div > tt > '- maskdom ast to html'
+                    }
+                }
+
+                .info {
+                    h4 > 'no dependencies'
                 }
             }
-            div.examples {
+            .examples {
                 maskExamples;
             }
-            div.syntax {
+            .syntax {
                 h3 > 'Tags'
                 p {
                     h5 > 'Tag Declaration'
@@ -143,54 +178,58 @@ layout:view master='view' {
                     prism > '// this is comment'
                 }
             }
-            div.api {
+            .api {
                 apiViewer src='/api/mask.html' base='/mask/api';
             }
 
 
-            div.snippets {
+            .snippets {
                 ul.tiny {
                     li {
-                        prism > 'div;'
-                        prism language='markup' > '<div></div>'
+                        prism language=css > 'div'
+                        prism language=markup > '<div></div>'
                     }
                     li {
-                        prism > 'div.class#id.other;'
+                        prism language=css > '.class#id.other'
                         prism language='markup' > '<div id="id" class="class other"></div>'
                     }
                     li {
-                        prism > '.class#id.other;'
+                        prism language=css > '.class#id.other;'
                         prism language='markup' > '<div id="id" class="class other"></div>'
                     }
                     li {
-                        prism > 'div data-key="value" > "hi";'
+                        prism language=css > 'div data-key=value > "hi";'
                         prism language='markup' > '<div data-key="value">hi</div>'
                     }
                     li {
-                        prism > 'p.container > div.panel > button > "Press Me";'
+                        prism language=css > 'p.container > .panel > button > "Press Me";'
                         prism language='markup' > '<p class="container"><div class="panel"><button>Press Me</button></div></p>'
                     }
                     li {
-                        prism > 'p { button > "Press" button > "Cancel"}'
+                        prism language=css > formatter:pre > '
+                            p {
+                                button > "Press"
+                                button > "Cancel"
+                            }'
                         prism language='markup' > '<p><button>Press</button><button>Cancel</button></p>'
                     }
                     li {
-                        prism { 'p.~''[klass] data-id="~''[id]" > "~''[info.name]"' }
+                        prism language=css { 'p.~''[klass] data-id="~''[id]" > "~''[info.name]"' }
                         prism > '{ id: "post234", klass: "red", info: {name: "RD"} }'
                         prism language='markup' > '<p class="red" data-id="post234">RD</p>'
                     }
                     li {
-                        prism { 'span { ~''[: current > 10 ? "More Than 10" ] }' }
+                        prism language=css { 'span { \'~''[: current > 10 ? "More Than 10" ]\' }' }
                         prism > '{ current: 11 }'
                         prism language='markup' > '<span>More Than 10</span>'
                     }
                     li {
-                        prism { 'ul > % each="arr" > li > "~''[.]"' }
+                        prism language=css { 'ul > % each="arr" > li > "~''[.]"' }
                         prism > '{ arr: [1,2,3] }'
                         prism language='markup' > '<ul><li>1</li><li>2</li><li>3</li></ul>'
                     }
                     li {
-                        prism > formatter:pre { '
+                        prism language=css > formatter:pre { '
                             % if="number>10" > h4 > "Under"
                             % else > h3 > "Below"'
                         }

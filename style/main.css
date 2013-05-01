@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Anaheim);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600,700);
 html, body {
     margin: 0;
     padding: 0;
@@ -6,6 +6,7 @@ html, body {
     min-width: 600px;
 
     font-family: 'Segoe UI', 'Helvetica', sans-serif;
+
 	position: relative;
 
 	min-height: 500px;
@@ -372,4 +373,10 @@ li.hr {
 
 ol > li {
 	margin-bottom: 5px;
+}
+
+
+
+.info > h4 {
+	color: #595853;
 }

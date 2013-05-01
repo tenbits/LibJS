@@ -41,8 +41,7 @@
 			title: 'RuqqJS'
 		},
 		'mask-animation': {
-			title: 'Animations',
-			controller: 'mask-animation'
+			title: 'Animations'
 		},
 
 		'compos': {

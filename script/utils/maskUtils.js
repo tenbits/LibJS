@@ -92,11 +92,13 @@
 					}
 
 					var scrolled = this.scrollTop,
-						total = this.scrollHeight - this.offsetHeight,
+						total = this.scrollHeight - this.offsetHeight - 1,
 						time = 200,
 						d = 5;
 
-					if (scrolled === 0 || scrolled === total) {
+					if (scrolled === 0 || scrolled >= total) {
+
+
 
 						if (this.last != null) {
 							var ds = this.last - scrolled;
@@ -108,7 +110,9 @@
 
 						}
 
-						scrolled === total && (d *= -1);
+						scrolled >= total && (d *= -1);
+
+
 
 						mask.animate(this, {
 							model: 'transform | translateY(0px) > translateY(' + d + 'px) | ' + time + 'ms ease-out',
@@ -117,6 +121,8 @@
 					}
 
 					this.last = scrolled;
+
+					console.log(scrolled, total);
 				})
 			}
 		}))
