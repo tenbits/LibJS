@@ -19,7 +19,7 @@ layout:view master='view' {
     @content #content {
         .container.tabPanel {
             .info.active {
-                img src='/images/logos/niob_mask.png' style='float:right';
+                img src='/images/mask.png' style='float:right';
 
                 .info {
                     h4 > 'Syntax'
