@@ -132,29 +132,30 @@ table {
     }
     tr {
         td > textarea {
+            // paths array will be splited each per line
             :dualbind value='paths' bindingProvider='pathsProvider';
         }
         td {
-            '[' span > :bind value='paths'; ']'
+            '[~[bind:paths]]'
         }
     }
 
     tr {
         td > :datePicker {
-                :dualbind value='date' getter='getDate' setter='setDate';
-            }
-        td > div > :bind value='date';
+            :dualbind value='date' getter='getDate' setter='setDate';
+        }
+        td > div > '~[bind: date.getDate() ]'
     }
 
     tr {
         td > input type='text' {
-                :dualbind value='height' {
+                :dualbind value='height' changeEvent='keyup' {
                     :validate match='^([\d]+)$' message='Only digits';
-                    :validate check='<10' message='Min Height is 10px';
-                    :validate check='>500' message='Max Height is 500px';
+                    :validate check='>10' message='Min Height is 10px';
+                    :validate check='<500' message='Max Height is 500px';
                 }
             }
-        td > div style='background:red;'> :dualbind value='height' bindingProvider='heightBinder';
+        td > div style='background:red; height:~[bind:height]px';
     }
 
     h5 > 'Hello ~[bind:name]!'
@@ -174,25 +175,6 @@ mask.registerBinding('pathsProvider', {
     }
 });
 
-mask.registerBinding("heightBinder", {
-    domWay: {
-        set: function(provider,value){
-            provider.element.style.height = value + 'px';
-        }
-    }
-});
-
-mask.registerBinding("datePickerProvider", {
-    domWay: {
-        get: function(provider){
-            return provider.node.parent.getDate();
-        },
-        set: function(provider, value){
-            provider.node.parent.setDate(new Date(value));
-        }
-    }
-});
-
 mask.registerHandler(':customTag',Compo({
     slots: {
         clicked: function(){
@@ -204,7 +186,7 @@ mask.registerHandler(':customTag',Compo({
 ----
 model:
 {
-    name: 'Alex',
+    name: 'Kirk',
     paths: ['path1.html','path2.html'],
     date: new Date,
     height:10
@@ -268,5 +250,95 @@ style:
     margin: 5px;
     font-weight: bold;
 }
- </script></div><script type="text/javascript" src="index.build/script.js"></script></body>
+ </script>
+<script type="include/load" id="includejs-presetstodotxt" data-appuri="preset.todo"> title:
+TODO
+----
+mask:
+
+h2 > "Todo"
+:TodoCompo {
+    div {
+      	span > :bind 
+      				expression='remaining()' 
+      				x-pipe-slot='todo.todoChanged';
+
+		span > ' of ~[bind: todos.length] remaining ['
+		a x-signal="click:archive" style='color:blue;' > 'archive'
+
+		']'
+
+		ul.unstyled {
+			%% each='todos' {
+		        li {
+		        	input type="checkbox" > 
+		                :dualbind value="done"
+		                			x-pipe-signal='todo.todoChanged';
+
+		        	span.done-~[bind:done] > "~[text]"
+		        }
+		    }
+		}
+		form x-signal='submit:addTodo' {
+			input 	type="text" 
+					size="30" 
+					placeholder="add new todo here" > 
+			        	:dualbind value='todoText';
+
+			input 	class="btn-primary" 
+					type="submit" 
+					value="add";
+		}
+    }
+}
+
+----
+javascript:
+
+mask.registerHandler(':TodoCompo', Compo({
+	slots: {
+		addTodo: function(event) {
+			this.model.todos.push({
+				text: this.model.todoText,
+				done: false
+			});
+			this.model.todoText = '';
+
+			event.preventDefault();
+		},
+		archive: function() {
+			ruqq.arr.remove(this.model.todos, function(x){
+				return x.done;
+			});
+			
+		}
+	},
+	remaining: function() {
+		return ruqq.arr.count(this.model.todos, function(x){
+            return !x.done;
+        });
+	}
+}))
+
+----
+model:
+
+{
+	todos: [{
+		text: 'buy milk',
+		done: true
+	}, {
+		text: 'install includejs',
+		done: false
+	}]
+}
+
+----
+style:
+.done-true {
+	background: rgba(0,255,0,.4);
+}
+.done-false {
+	background: rgba(255,0,0,.4);
+} </script></div><script type="text/javascript" src="index.build/script.js"></script></body>
 </html>

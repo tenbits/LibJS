@@ -1,0 +1,90 @@
+title:
+TODO
+----
+mask:
+
+h2 > "Todo"
+:TodoCompo {
+    div {
+      	span > :bind 
+      				expression='remaining()' 
+      				x-pipe-slot='todo.todoChanged';
+
+		span > ' of ~[bind: todos.length] remaining ['
+		a x-signal="click:archive" style='color:blue;' > 'archive'
+
+		']'
+
+		ul.unstyled {
+			%% each='todos' {
+		        li {
+		        	input type="checkbox" > 
+		                :dualbind value="done"
+		                			x-pipe-signal='todo.todoChanged';
+
+		        	span.done-~[bind:done] > "~[text]"
+		        }
+		    }
+		}
+		form x-signal='submit:addTodo' {
+			input 	type="text" 
+					size="30" 
+					placeholder="add new todo here" > 
+			        	:dualbind value='todoText';
+
+			input 	class="btn-primary" 
+					type="submit" 
+					value="add";
+		}
+    }
+}
+
+----
+javascript:
+
+mask.registerHandler(':TodoCompo', Compo({
+	slots: {
+		addTodo: function(event) {
+			this.model.todos.push({
+				text: this.model.todoText,
+				done: false
+			});
+			this.model.todoText = '';
+
+			event.preventDefault();
+		},
+		archive: function() {
+			ruqq.arr.remove(this.model.todos, function(x){
+				return x.done;
+			});
+			
+		}
+	},
+	remaining: function() {
+		return ruqq.arr.count(this.model.todos, function(x){
+            return !x.done;
+        });
+	}
+}))
+
+----
+model:
+
+{
+	todos: [{
+		text: 'buy milk',
+		done: true
+	}, {
+		text: 'install includejs',
+		done: false
+	}]
+}
+
+----
+style:
+.done-true {
+	background: rgba(0,255,0,.4);
+}
+.done-false {
+	background: rgba(255,0,0,.4);
+}

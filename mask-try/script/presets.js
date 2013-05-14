@@ -5,7 +5,7 @@ include //
 }) //
 
 .load({
-	preset: ['simple', 'animate', 'bindings', 'collapse']
+	preset: ['simple', 'animate', 'bindings', 'collapse', 'todo']
 }) //
 
 .done(function(resp) {
