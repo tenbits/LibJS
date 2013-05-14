@@ -256,38 +256,38 @@ TODO
 ----
 mask:
 
-h2 > "Todo"
+h2 > 'Todo'
 :TodoCompo {
     div {
       	span > :bind 
       				expression='remaining()' 
       				x-pipe-slot='todo.todoChanged';
 
-		span > ' of ~[bind: todos.length] remaining ['
-		a x-signal="click:archive" style='color:blue;' > 'archive'
+		span > ' of ~[bind: todos.length] remaining '
+		
+		'[' a x-signal='click:archive' > 'archive' ']'
 
-		']'
-
-		ul.unstyled {
+		ul {
 			%% each='todos' {
 		        li {
-		        	input type="checkbox" > 
-		                :dualbind value="done"
+		        	input type=checkbox > 
+		                :dualbind value='done'
 		                			x-pipe-signal='todo.todoChanged';
 
-		        	span.done-~[bind:done] > "~[text]"
+		        	span.done-~[bind:done] > '~[text]'
 		        }
 		    }
 		}
-		form x-signal='submit:addTodo' {
-			input 	type="text" 
-					size="30" 
-					placeholder="add new todo here" > 
+		p {
+			input 	type = text
+					size = 30
+					placeholder='add new todo here' > 
 			        	:dualbind value='todoText';
 
-			input 	class="btn-primary" 
-					type="submit" 
-					value="add";
+			button.btn-primary
+			        x-signal='click: addTodo'
+					
+						> 'add';
 		}
     }
 }
@@ -305,18 +305,28 @@ mask.registerHandler(':TodoCompo', Compo({
 			this.model.todoText = '';
 
 			event.preventDefault();
+
+			// disable sample
+			var that = this;
+            that.slotState('addTodo', false);
+            
+            setTimeout(function(){
+                that.slotState('addTodo', true);
+            },2000)
 		},
 		archive: function() {
-			ruqq.arr.remove(this.model.todos, function(x){
-				return x.done;
-			});
+			var arr = this.model.todos, 
+				i = arr.length;
+			while(--i !== -1) arr[i].done && arr.splice(i,1);
 			
 		}
 	},
 	remaining: function() {
-		return ruqq.arr.count(this.model.todos, function(x){
-            return !x.done;
-        });
+		var arr = this.model.todos, 
+			i = arr.length, 
+			count = 0;
+		while(--i !== -1) !arr[i].done && count++;
+		return count;
 	}
 }))
 
@@ -340,5 +350,14 @@ style:
 }
 .done-false {
 	background: rgba(255,0,0,.4);
+}
+
+a {
+	color: blue;
+	cursor:pointer;
+}
+
+button:disabled{
+	opacity: .2;
 } </script></div><script type="text/javascript" src="index.build/script.js"></script></body>
 </html>
