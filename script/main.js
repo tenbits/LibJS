@@ -15,8 +15,12 @@ include.routes({
 	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer'],
 	controller: ['viewsManager', 'view', 'default'],
 	uicontrol: ['radioButtons', 'pageActivity'],
+})
 
-}).ready(function() {
+.load('/pages/libs/about/about.mask')
+
+
+.ready(function() {
 
 	var w = window;
 

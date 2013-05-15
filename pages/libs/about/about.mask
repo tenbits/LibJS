@@ -18,44 +18,59 @@ layout:view master='view' {
             h4 > 'Component Composition in HTML5 Application without Javascript'
 
             div style='text-align:justify; padding-right: 15px;' {
-                div > "
-                    This is called a Project, as I don't want to keep things tight together as one monolith framework.
-                    Here are several libraries, which gained to reduce development time, and increase fun a lot.
+                div >
+                    "
+                    This is called a Project, to not keep things tight together as one monolith framework.
+                    Here are several
+                    "
+                    tt > "{frameworks / libraries / tools}"
+                    "
+                    , which gained to make your application more consistent
+                    and to reduce development time.
 
                     At first, you should know, that everything is done with mobile performance in mind."
 
                 p > "Here are first steps to get acquainted with the project."
 
-                ol {
+                ol.about-list {
                     li {
                         a href='#mask' > 'MaskJS'
-                        " — Zen-Coding Dom-Based Template Engine. Render and Build Engine is fast enough, that no template precompile before production
-                            is required. "
-
-                        "  Syntax of Mask Markup is almost completely declarative, means - contains no (or little) javascript logic. The most powerful feature is
-                         the ability to apply custom handlers to your tags. This opens door for such components as Two-Way-DataModel Bindings, Data Validations,
-                         MasterViews. No more placeholders for your widgets — embed them directly."
+                        "
+                        — HMVC Framework.
+                        "
+                        br;
+                        "Mask has in its core newer css/sass alike syntax for your templates, which are parsed into
+                        MaskDOM and then Document Fragment is created. You can extend it with custom tag handlers (controllers),
+                        attributes, etc.  MaskJS contains also jMask, Compo and Bindings libraries,
+                        so that it accomplishes all tasks you would expect from a powerful Javascript Framework.
+                        "
                     }
 
+                   
                     li {
-                        a href='#compo' > "CompoJS" " — this small lib is build on top of MaskJS Custom Tag Feature. It
-                         will bring MVC structure to your views and components. "
-                    }
-
-                    li {
-                        a href='http://github.com/tenbits/Compos' target='_blank' > "Compos" " — there are all my components or wrappers of well known widgets.
-                        Some of them you may need rare, some of them may become integral part of MaskJS. Everything depends on your needs."
+                        a href='http://github.com/tenbits/Compos' target='_blank' > "Compos"
+                        "
+                        — here are some wrappers of well known widgets.
+                        Some of them you may need rare, some of them may become integral part of MaskJS.
+                        Everything depends on your needs.
+                        "
                     }
 
                     li {
                         a href='#include' > "IncludeJS"
-                        " — Resource Loader for your components and models. You will definitely think, that I could use any loader out there,
-                            like RequireJS. But there was plenty of features, that I missed. And I hope, you like them too."
+                        "
+                        — Resource Loader for your components, moduls, styles, templates. You will definitely think, 
+                        that we could use any loader out there, like RequireJS.
+                        But there was plenty of features, that we missed. And I hope, you will like them too.
+                        "
                     }
 
                     li {
-                        a href='#includeBuilder' > 'IncludeJS.Builder' " — a big brother of IncludeJS.
-                            Combines all included resources. It also runs jshint, uglify, css-min and etc."
+                        a href='#includeBuilder' > 'IncludeJS.Builder'
+                        "
+                        — a big brother of IncludeJS. Combines all included resources.
+                        It also runs jshint, uglify, css-min and etc.
+                        "
                     }
 
                     li {
@@ -63,11 +78,17 @@ layout:view master='view' {
                     }
 
                     li {
-                        a href='#ruqq' > 'RuqqJS' " — contains some other helper classes, as routing, Array and Object utils, etc."
+                        a href='#ruqq' > 'RuqqJS'
+                        "
+                        — contains some other helper classes, as routing, Array and Object utils, etc.
+                        "
                     }
 
                     li {
-                        a href='#class' > 'ClassJS' " — yes, this is Class Implementation, but small and very fast one."
+                        a href='#class' > 'ClassJS'
+                        "
+                        — yes, this is Class Implementation, but small and very fast one.
+                        "
                     }
                 }
             }
@@ -214,7 +235,7 @@ layout:view master='view' {
                     .hint {
                         'test: ' code > 'ijs server index.dev.html'
                         p > 'Page should be opened, or navigate to http://localhost:5777/index.dev.html'
-                        p > 'If you see some text on the page, than everything was successfully installed'
+                        p > 'If you see some text on the page, then everything was successfully installed'
                     }
                 }
 

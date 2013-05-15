@@ -49,7 +49,7 @@
 }
 
 
-.api-menu > .api-files, .api-menu > .api-tabs {
+.api-menu > .api-files {
     float:left;
     margin: auto 10px;
 }

@@ -18,6 +18,8 @@ layout:view master='view' {
                     li > 'Signal - Pipe'
                     li { 'Dry & Highly Customizable' }
                 }
+                
+                p > a href='/mask-try/#preset:TODO' > 'TODO sample'
 
                 .hint {
                     'Compo is already part of a default MaskJS Build, access it in '
