@@ -4,39 +4,39 @@ TODO
 mask:
 
 h2 > 'Todo'
-:TodoCompo {
-    div {
-      	span > :bind 
-      				expression='remaining()' 
-      				x-pipe-slot='todo.todoChanged';
+:TodoCompo > div {
+    
+	span > :bind 
+				expression='remaining()' 
+				x-pipe-slot='todo.todoChanged';
 
-		span > ' of ~[bind: todos.length] remaining '
+	span > ' of ~[bind: todos.length] remaining '
+	
+	'[' a x-signal='click:archive' > 'archive' ']'
+
+	ul {
+		%% each='todos' > li {
+			
+			input type=checkbox > 
+				:dualbind 	value='done'
+							x-pipe-signal='todo.todoChanged';
+
+			span.done-~[bind:done] > '~[text]'
 		
-		'[' a x-signal='click:archive' > 'archive' ']'
-
-		ul {
-			%% each='todos' {
-		        li {
-		        	input type=checkbox > 
-		                :dualbind value='done'
-		                			x-pipe-signal='todo.todoChanged';
-
-		        	span.done-~[bind:done] > '~[text]'
-		        }
-		    }
 		}
-		p {
-			input 	type = text
-					size = 30
-					placeholder='add new todo here' > 
-			        	:dualbind value='todoText';
+	}
+	p {
+		input 	type = text
+				size = 30
+				placeholder='add new todo here' > 
+					:dualbind value='todoText';
 
-			button.btn-primary
-			        x-signal='click: addTodo'
-					
-						> 'add';
-		}
-    }
+		button.btn-primary
+				x-signal='click: addTodo'
+				
+					> 'add';
+	}
+
 }
 
 ----
