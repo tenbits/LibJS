@@ -7,9 +7,9 @@
 		Override: {
 			section: function(route) {
 	
-				if (route.category === 'download') {
+				if (route.category === 'download') 
 					this.find(':downloader').initialize();
-				}
+				
 				
 				this.super(route);
 			}

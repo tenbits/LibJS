@@ -382,9 +382,12 @@ layout:view master='view' {
         }
 
         div.com {
-            h4 > 'Custom Tags with MaskJS = Component Oriented Markup (COM)'
-            div > 'With this small note i would like to point out the ability to bind custom handlers to tag names. You become really smart templates
-                where you can take the benefit of old good OOP, and i would call that Component Oriented Programming:'
+            h4 > 'Component Oriented Programming'
+            div > 'Main Feature of MaskJS, beyond its simple markup and fast parsers, is the MaskDOM and Custom Tags. With it you develop not the application,
+            but the Components. In this way, you are concentrated all the time on small discrete parts(components) or delegate the development upon your team. 
+            Once written, you do not need to initialize it itself, or use any placeholders, just load the handler as generic Javascript and you
+            are ready to use it in templates. IncludeJS would help to load all required resources - css, templates and any javascript helpers. Markup becomes more 
+            generic patterns: '
             ul {
                 li {
                     h5 > 'Encapsulation'
@@ -404,14 +407,15 @@ layout:view master='view' {
                 }
                 li {
                     h5 > 'Component Fabric Pattern'
-                    prism > 'screenDependedComponet small="Compo1" big="Compo2" { <!-- content --> }'
-                    'or event better per Javascript'
-                    prism > "mask.registerHandler('myCompo', Info.smallScreen ? Compo1 : Compo2); "
+
+                    'Ex.  Make your app responsible'
+
+                    prism > ':screen small="Compo1" big="Compo2" { <!-- template --> }'
+                    prism > "mask.registerHandler(':myCompo', Info.smallScreen ? Compo1 : Compo2); "
                 }
                 li {
                     h5 > 'Inheritance'
-                    div > 'You need scroller component with additional features? Your markup can stay untouched, just inherit from Scroller Component,
-                        add required features, and finally register that new component as "scroller" tag handler.'
+                    div > 'Inherit from any component controller and override or extend the functionality.'
                 }
                 li {
                     h5 > 'Injection'
@@ -428,29 +432,18 @@ layout:view master='view' {
         div.install {
             ol {
                 li {
-                    'Install nodejs - (* if not installed)'
+                    'Install nodejs environment'
                     div > code > a href='http://nodejs.org' target=_blank > 'NodeJS > Download'
-                }
-                li {
-                    'Install git - (* ..)'
-                    div > code > a href='http://yuilibrary.com/yui/docs/tutorials/git/' target=_blank > 'Setup git env.'
-                }
-
-                li {
-                    'Install Python 2.7 - (* ..)'
-                    div > code > a href='http://www.python.org/getit/releases/2.7.4/' target=_blank> 'Setup python env.'
-                }
-
-                li {
-                    'Install C++ Compiler - (* ..)'
+                    div > code > a href='http://yuilibrary.com/yui/docs/tutorials/git/' target=_blank > 'GIT'
+                    div > code > a href='http://www.python.org/getit/releases/2.7.4/' target=_blank> 'Python'
                     div >
                         code >
                             a
                                 href='http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-products'
                                 target=_blank
-                                    > '(Windows) cpp express'
+                                    > '(Windows) C++ Compiler'
                 }
-
+                
                 li {
                     'Install IncludeJS'
                     div > code > '$ npm install includejs'
@@ -496,9 +489,9 @@ layout:view master='view' {
             }
         }
         
-        .download {
+        .download >
             :downloader;
-        }
+        
     }
 
 }

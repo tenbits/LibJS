@@ -71,7 +71,7 @@
 				style[vendor.Transform] = 'rotate(0deg)';
 
 				setTimeout(function() {
-					style[vendor.Transition] = vendor.cssTransform + ' 5s linear';
+					style[vendor.Transition] = vendor.cssTransform + ' 3s linear';
 					style[vendor.Transform] = 'rotate(720deg)';
 				}, 1);
 
@@ -80,10 +80,10 @@
 					style[vendor.Transform] = 'rotate(0deg)';
 
 					setTimeout(function() {
-						style[vendor.Transition] = vendor.cssTransform + ' 5s linear';
+						style[vendor.Transition] = vendor.cssTransform + ' 3s linear';
 						style[vendor.Transform] = 'rotate(720deg)';
 					}, 0);
-				}, 5000);
+				}, 3000);
 
 			} else {
 				//this.interval = setInterval(function() {

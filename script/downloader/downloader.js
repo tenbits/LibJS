@@ -58,10 +58,12 @@ include //
 				return;
 			}
 			
-			
+			window.app.find(':pageActivity').show();
 			
 			this.$.hide();
 			this.source = new Source().load().done(function(){
+				
+				window.app.find(':pageActivity').hide();
 				stats(this);
 				
 				this.$.show();

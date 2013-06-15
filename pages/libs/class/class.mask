@@ -17,21 +17,21 @@ layout:view master='view' {
 
     @content #content > .container.tabPanel {
         div.info.active {
-            h5 >  'Fastest Class - Model implementation for modern browsers'
+            h5 >  'Class-Model Implementation — creates Business logic Layer'
             p {
                 'Check out speed comparison: '
                 a href='http://jsperf.com/class-libjs-vs-others' target='_blank' > 'jsperf.com'
             }
+            
             ul {
-                li > 'Lightweight'
                 li {
-                    'Proper inheritance initialization with all constructors call'
+                    'Proper inheritance initialization with all constructor calls'
                     div > tt > 'instanceof works' 
                 }
                 li { 'Proper ' tt > 'JSON.stringify' }
                 
-                li > 'Static properties'
-                
+                li > 'Static / Private properties'
+                li > 'Overrides'
                 li > 'Model Storage - AJAX / Localstorage'
                 
                 li {
@@ -39,13 +39,12 @@ layout:view master='view' {
                     ul {
                         li > tt > 'Class.EventEmitter'
                         li > tt > 'Class.Deferred'
-                        li > tt > 'Class.EventEmitter'
                         li > tt > 'Class.Serializable'
                     }
                 }
                 
                 li {
-                    'Collections'
+                    'Collections (with each/where/first/ querying)'
                 }
                 
                 li > 'No Dependencies'

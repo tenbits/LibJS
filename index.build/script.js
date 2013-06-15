@@ -12575,8 +12575,10 @@ include.js("Libraries.js").load("downloader.mask::Template").done(function(resp)
         },
         initialize: function() {
             if (this.source) return;
+            window.app.find(":pageActivity").show();
             this.$.hide();
             this.source = new Source().load().done(function() {
+                window.app.find(":pageActivity").hide();
                 stats(this);
                 this.$.show();
                 observe_enabledStatus();
@@ -13219,17 +13221,17 @@ mask.registerHandler("radioButtons", Compo({
                 style[vendor.TransitionProperty] = "none";
                 style[vendor.Transform] = "rotate(0deg)";
                 setTimeout(function() {
-                    style[vendor.Transition] = vendor.cssTransform + " 5s linear";
+                    style[vendor.Transition] = vendor.cssTransform + " 3s linear";
                     style[vendor.Transform] = "rotate(720deg)";
                 }, 1);
                 this.interval = setInterval(function() {
                     style[vendor.TransitionProperty] = "none";
                     style[vendor.Transform] = "rotate(0deg)";
                     setTimeout(function() {
-                        style[vendor.Transition] = vendor.cssTransform + " 5s linear";
+                        style[vendor.Transition] = vendor.cssTransform + " 3s linear";
                         style[vendor.Transform] = "rotate(720deg)";
                     }, 0);
-                }, 5e3);
+                }, 3e3);
             } else ;
         },
         stop: function() {
