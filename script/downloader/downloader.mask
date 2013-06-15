@@ -1,0 +1,120 @@
+
+.-downloader {
+	
+	button #download x-signal='click:download' > 'Download'
+	
+	i > ' (~[bind:size] KB)'
+	
+	a #download-link download='lib.js' target='_blank'  style='display:none' > 'Download'
+	
+	
+	h4 > 'Environment'
+	select {
+		
+		:dualbind value='env';
+		
+		option name='browser' >
+			'Browser'
+		option name='node' >
+			'node.js'
+	}
+	
+	h4 > 'Compression'
+	select {
+		
+		:dualbind value='compression';
+		
+		option name='min' selected>
+			'Minified'
+		option name='dev' >
+			'Development'
+	}
+	
+	h4 > 'Libraries'
+	% each='libs' >
+		%% visible='env == "both" || env == closest(":downloader").model.env'  >
+			.-lib-item {
+		
+				label {
+					input type='checkbox' > :dualbind value='enabled';
+					'~[name]'
+				}
+				
+				% each=modules {
+					
+						.modules  {
+							label {
+								//%% log='parent.parent.parent.model.enabled';
+								input type='checkbox' disabled='~[bind: parent.parent.model.enabled ? "" : "disabled"]' >
+									:dualbind value='enabled';
+									
+								'~[name]'
+							}
+						}
+				}
+		}
+	
+	h4 > 'Exports'
+	.group {
+		.title > 'Exports'
+		
+		.exports-group {
+			input#exports-globals type=radio name='exports' checked;
+			label for='exports-globals' > 'globals'
+			
+			.libs {
+				% each='libs' {
+					%% visible="enabled && (env == 'both' || env == closest(':downloader').model.env)" {
+						
+						.comment > '// ~[name]'
+						% each='exports' > div > '~[.]'
+					}
+				}
+			}
+		}
+		
+		.exports-group {
+			input#exports-namespace type=radio name='exports';
+			label for='exports-namespace' > 'namespace'
+			input type='text'
+				> :dualbind value='namespace' changeEvent='keyup';
+			
+			
+			.libs {
+				% each='libs' {
+					%% visible="enabled && (env == 'both' || env == closest(':downloader').model.env)" {
+						
+						.comment > '// ~[name]'
+						% each='exports' > div {
+							'~[bind:closest(":downloader").model.namespace].~[.]'
+						}
+					}
+				}
+			}
+		}
+		
+		.exports-group {
+			input#exports-common type=radio name='exports';
+			label for='exports-common' > 'CommonJS'
+			
+			
+			.libs {
+				% each='libs' {
+					%% visible="enabled && (env == 'both' || env == closest(':downloader').model.env)" {
+						
+						.comment > '// ~[name]'
+						% each='exports' > div {
+							'"~[.]"'
+						}
+					}
+				}
+			}
+			
+		}
+		
+	}
+	
+	div style='clear:both; height: 50px;';
+	
+	
+}

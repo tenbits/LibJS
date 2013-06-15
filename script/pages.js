@@ -2,7 +2,8 @@
 
 	var pages = {
 		'about': {
-			title: 'About'
+			title: 'About',
+			controller: 'about'
 		},
 		'feedback': {
 			title: 'Feedback'
@@ -20,6 +21,10 @@
 		},
 		'includeBuilder': {
 			view: 'includeBuilder'
+		},
+		
+		'utest': {
+			view: 'utest'
 		},
 
 		'mask-j': {

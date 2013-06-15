@@ -10,6 +10,7 @@ layout:view master='view' {
             button.active name='info' > 'Info'
             button name='com' > 'COM'
             button name='install' > 'Install'
+            button name='download' > 'Download'
         }
     }
 
@@ -143,17 +144,18 @@ layout:view master='view' {
                 where you can take the benefit of old good OOP, and i would call that Component Oriented Programming:'
             ul {
                 li {
-                    h5 > 'Abstraction'
+                    h5 > 'Encapsulation'
                     'Usually dialogs markup looks as such:'
-                    prism language="markup" {
+                    prism language="markup" > formatter:pre {"
 
-"<div class='overlay'>
-    <div class='container'>
-        <div class='dialog'>
-            <!--content-->
-</div></div></div>"
+                        <div class='overlay'>
+                            <div class='container'>
+                                <div class='dialog'>
+                                    <!--content-->
+                        </div></div></div>
 
-                    }
+                    "}
+                    
                     'With MaskJS it could be:'
                     prism > ":dialog { <!-- content --> }"
                 }
@@ -249,6 +251,10 @@ layout:view master='view' {
                     }
                 }
             }
+        }
+        
+        .download {
+            :downloader;
         }
     }
 

@@ -1,0 +1,30 @@
+layout:view master='view' {
+
+    @content #title {
+        a href='https://github.com/tenbits/utest' target=_blank> 'github@UTest';
+    }
+
+
+
+
+    @content #tabs {
+        radioButtons {
+            button.active name='info' > 'Info'
+            button name='api' > 'API'
+        }
+    }
+
+
+    @content #content > .container.tabPanel {
+        div.info.active {
+            h5 >  'Enpowers Unit Testing and Test Driven Development'
+            p {
+                a href='https://github.com/tenbits/utest' target='_blank' > ':github'
+            }
+            
+			i > 'Doc placeholders'
+        }
+        div.api;
+    }
+
+}

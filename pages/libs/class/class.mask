@@ -17,20 +17,37 @@ layout:view master='view' {
 
     @content #content > .container.tabPanel {
         div.info.active {
-            h5 >  'Fastest Class implementation for modern browsers'
+            h5 >  'Fastest Class - Model implementation for modern browsers'
             p {
                 'Check out speed comparison: '
                 a href='http://jsperf.com/class-libjs-vs-others' target='_blank' > 'jsperf.com'
             }
             ul {
                 li > 'Lightweight'
-                li > 'Proper inheritance initialization with all constructors call'
-                li { tt > 'instanceof works' }
-                li > 'Static properties'
                 li {
-                    'Size'
-                    div.hint > 'Compiled: 1.3KB'
+                    'Proper inheritance initialization with all constructors call'
+                    div > tt > 'instanceof works' 
                 }
+                li { 'Proper ' tt > 'JSON.stringify' }
+                
+                li > 'Static properties'
+                
+                li > 'Model Storage - AJAX / Localstorage'
+                
+                li {
+                    'Some ready classes for inheritance, like'
+                    ul {
+                        li > tt > 'Class.EventEmitter'
+                        li > tt > 'Class.Deferred'
+                        li > tt > 'Class.EventEmitter'
+                        li > tt > 'Class.Serializable'
+                    }
+                }
+                
+                li {
+                    'Collections'
+                }
+                
                 li > 'No Dependencies'
             }
         }

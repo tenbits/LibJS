@@ -1,57 +1,89 @@
+
 global.config = {
-	"file": "index.dev.html",
-	"outputMain": "index.html",
-	"outputSources": "index.build/",
-	"action": "build",
-	"vars": {
-		"prefix": "/.."
+	// 'settings': {
+	// 	io: {
+	// 		extensions: {
+	// 			js: ['condcomments:read', 'importer:read']
+	// 		}
+	// 	}
+	// },
+	'build': {
+		file: "index.dev.html",
+		outputMain: "index.html",
+		outputSources: "index.build/",
+		version: '1.1',
+		minify: false
 	},
-	"version" : "1.1",
-	"minify" : true,
-	"uglify": {
-		"global_defs": {
-			"DEBUG": false
-		}
-	},
-	"jshint": {
-		"options": {
-			"curly": true,
-			"eqeqeq": false,
-			"immed": true,
-			"latedef": true,
-			"newcap": false,
-			"noarg": true,
-			"sub": true,
-			"undef": true,
-			"boss": false,
-			"eqnull": true,
-			"node": true,
-			"es5": true,
-			"strict": false,
-			"smarttabs": true,
-			"expr": true,
-			"evil": true
-		},
+	
+	'libs': [{
+		action: 'copy',
+		files: {
+			'../class/lib/class.js'			: 'libs/class/class.js',
+			'../class/lib/class.min.js'		: 'libs/class/class.min.js',
+			
+			'../include/lib/include.js'		: 'libs/include/include.js',
+			'../include/lib/include.min.js'	: 'libs/include/include.min.js',
+			
+			'../include/lib/include.node.js'	: 'libs/include/include.node.js',
+			
 
-		"globals": {
-			"window": false,
-			"document": false,
-			"XMLHttpRequest": false,
-			"IncludeRewrites": false,
-			"Class": false,
-			"Compo": false,
-			"CompoUtils": false,
-			"mask": false,
-			"ruqq": false,
-			"include": false,
-			"$": false
-		},
-
-		"ignore": {
-			"iscroll-full.js": 1,
-			"mobiscroll.js": 1,
-			"prism.lib.js": 1,
-			"jquery.js": 1
+			'../mask/lib/mask.js'				: 'libs/mask/mask.js',
+			'../mask/lib/mask.min.js'			: 'libs/mask/mask.min.js',
+			'../mask/lib/mask.node.js'			: 'libs/mask/mask.node.js',
+			'../compos/layout/lib/layout.js'	: 'libs/mask/handlers/layout.js',
+			
+			'../mask.animation/lib/mask.animation.js'		: 'libs/mask/mask.animation.js',
+			'../mask.animation/lib/mask.animation.min.js'	: 'libs/mask/mask.animation.min.js',
+			
+			'../ruqq/lib/routes.js'	: 'libs/ruqq/routes.js',
+			'../ruqq/lib/arr.js'	: 'libs/ruqq/arr.js',
+			'../ruqq/lib/utils.js'	: 'libs/ruqq/utils.js',
 		}
-	}
+	}, {
+		action: 'custom',
+		script: 'tools/libs-minify.js'
+	}],
+
+	
+	'defaults': ['build']
+};
+
+
+
+
+function JSHint() {
+
+	return {
+		options: {
+			curly: true,
+			eqeqeq: true,
+			forin: false,
+			immed: true,
+			latedef: true,
+			newcap: true,
+			noarg: true,
+			noempty: true,
+			nonew: true,
+			expr: true,
+			regexp: true,
+			undef: true,
+			unused: true,
+			strict: true,
+			trailing: true,
+
+			boss: true,
+			eqnull: true,
+			es5: true,
+			lastsemic: true,
+			browser: true,
+			node: true,
+			onevar: false,
+			evil: true,
+			sub: true,
+		},
+		globals: {
+			define: true,
+			require: true,
+		}
+	};
 }

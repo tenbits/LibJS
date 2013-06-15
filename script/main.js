@@ -8,11 +8,11 @@ include.routes({
 	uicontrol: '/script/control/{0}.js',
 	script: '/script/{0}.js'
 }).js({
-	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect'],
+	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect', 'arr'],
 	lib: ['mask', 'mask.animation'],
 
 	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list'],
-	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer'],
+	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer', 'downloader/downloader'],
 	controller: ['viewsManager', 'view', 'default'],
 	uicontrol: ['radioButtons', 'pageActivity'],
 })
@@ -75,6 +75,9 @@ include.routes({
 				}, {
 					view: 'includeBuilder',
 					title: 'IncludeJS.Builder'
+				},{
+					view: 'utest',
+					title: 'UTest'
 				}, {
 					view: 'ruqq',
 					title: 'RuqqJS'

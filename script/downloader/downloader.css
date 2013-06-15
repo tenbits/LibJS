@@ -1,0 +1,39 @@
+/**
+ * downloader Styles
+ *
+ * example:
+ *
+ * .-downloader 
+ *
+ */
+
+.-downloader input[type=text] {
+	padding: 0px 5px;
+	margin: 0px 5px;
+	border: 0px;
+	background: none;
+	outline: none;
+	
+	border-bottom: 1px dotted green;
+	
+	text-align: center;
+	width: 50px;
+}
+
+.-downloader .comment {
+	opacity: .5;
+	font-size: .9em;
+}
+
+.-downloader .libs {
+	padding-left: 30px;
+	font-family: monospace
+}
+
+.-downloader .exports-group {
+	float: left;
+	margin-right: 30px;
+}
+
+.-downloader .modules { padding-left: 20px; }
+.-downloader .modules.disabled { opacity: .6; }
