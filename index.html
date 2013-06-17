@@ -277,6 +277,14 @@ layout:view master='view' {
                 p > "Here are first steps to get acquainted with the project."
 
                 ol.about-list {
+                     li {
+                        a href='#class' > 'ClassJS'
+                        "
+                            Class-Model Implementation for Business logic Layer with remote (via RESTful) or local
+                            (LocalStorage) serialization/deserialization. 
+                        "
+                    }
+                    
                     li {
                         a href='#mask' > 'MaskJS'
                         "
@@ -286,7 +294,9 @@ layout:view master='view' {
                         "Mask has in its core newer css/sass alike syntax for your templates, which are parsed into
                         MaskDOM and then Document Fragment is created. You can extend it with custom tag handlers (controllers),
                         attributes, etc.  MaskJS contains also jMask, Compo and Bindings libraries,
-                        so that it accomplishes all tasks you would expect from a powerful Javascript Framework.
+                        so that it accomplishes all tasks you would expect from a powerful Javascript Framework. It is also 
+                        Model agnostic, that means you can use raw objects for the models (Data-Centric) or use any class library,
+                        like ClassJS or others.
                         "
                     }
 
@@ -318,7 +328,7 @@ layout:view master='view' {
                     }
 
                     li {
-                        a href='#ranimate' > "RAnimate" " — a CSS3 Animation Library"
+                        a href='#mask-animation' > "Mask.Animation" " — CSS3 Animation Library"
                     }
 
                     li {
@@ -328,12 +338,7 @@ layout:view master='view' {
                         "
                     }
 
-                    li {
-                        a href='#class' > 'ClassJS'
-                        "
-                        — yes, this is Class Implementation, but small and very fast one.
-                        "
-                    }
+                   
                 }
             }
 
