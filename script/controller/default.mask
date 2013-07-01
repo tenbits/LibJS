@@ -17,6 +17,17 @@ layout:master #view {
 
 			@placeholder #tabs;
 		}
+		
+		@placeholder #side-menu {
+			:tabs .side-menu
+				> @panels
+					> @placeholder;
+			
+			:animation #slide-in-right {
+				'transform | translateX(100%) > translateX(0%) | 200ms ease-in'
+			}
+		}
+		
 		scroller {
 			@placeholder #content;
 		}

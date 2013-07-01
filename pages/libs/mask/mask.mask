@@ -7,7 +7,7 @@ layout:view master='view' {
 
 
     @content #tabs {
-        radioButtons {
+        :radio .radioButtons {
             button.active name='info' > 'Info'
             button name='examples' > 'Examples'
             button name='syntax' > 'Syntax'
@@ -15,10 +15,23 @@ layout:view master='view' {
             button name='snippets' > 'Snippets'
         }
     }
+    
+    @content #side-menu {
+        
+        % if='sideMenu' >
+            % each='sideMenu' >
+                :radio .group name='~[name]' >
+                    % each='list' >
+                        .side-menu-item name='~[name]'
+                                > '~[title]'
+                        
+        
+    }
 
     @content #content {
         .container.tabPanel {
-            .info.active {
+            
+            .info.active data-name='info' {
                 img src='/images/mask.png' style='float:right';
 
                 .info {
@@ -88,10 +101,32 @@ layout:view master='view' {
                     h4 > 'no dependencies'
                 }
             }
-            .examples {
-                maskExamples;
+            
+            .examples data-name='examples' {
+                :tabs #tabs-examples >
+                    @panels >
+                        % each='examples' >
+                            div data-name='~[name]' {
+                            
+                                
+                                a name='~[title]';
+                                .example {
+                                    h4 > '~[title]'
+                                    
+                                    
+                                    h6 > 'Template'
+                                    prism > '~[template]'
+                                    h6 > 'Javascript'
+                                    prism > '~[javascript]'
+                                    h6 > 'Result'
+                                    
+                                    .result > '~[result]'
+                                
+                                }
+                            }
             }
-            .syntax {
+            
+            .syntax data-name='syntax' {
                 h3 > 'Tags'
                 p {
                     h5 > 'Tag Declaration'
@@ -178,12 +213,12 @@ layout:view master='view' {
                     prism > '// this is comment'
                 }
             }
-            .api {
+            .api data-name='api'{
                 apiViewer src='/api/mask.html' base='/mask/api';
             }
 
 
-            .snippets {
+            .snippets data-name='snippets' {
                 ul.tiny {
                     li {
                         prism language=css > 'div'

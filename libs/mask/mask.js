@@ -1,45 +1,60 @@
 // source ../src/umd-head.js
 (function (root, factory) {
     'use strict';
+    
+    var _global, _exports, _document;
 
-    if (root == null && typeof global !== 'undefined'){
-        root = global;
+    
+	if (typeof exports !== 'undefined' && (root === exports || root == null)){
+		// raw nodejs module
+    	_global = global;
     }
+	
+	if (_global == null) {
+		_global = typeof window === 'undefined' || window.document == null ? global : window;
+	}
+    
+    _document = _global.document;
+	_exports = root || _global;
+    
 
-    var doc = typeof document === 'undefined' ? null : document,
-        construct = function(plugins){
+    function construct(plugins){
 
-            if (plugins == null) {
-                plugins = {};
-            }
-            var lib = factory(root, doc, plugins),
-                key;
+        if (plugins == null) {
+            plugins = {};
+        }
+        var lib = factory(_global, plugins, _document),
+            key;
 
-            for (key in plugins) {
-                lib[key] = plugins[key];
-            }
-
-            return lib;
-        };
-
-    if (typeof module !== 'undefined') {
-        module.exports = construct();
-    } else if (typeof define === 'function' && define.amd) {
-        define(construct);
-    } else {
-
-        var plugins = {},
-            lib = construct(plugins);
-
-        root.mask = lib;
-
-        for (var key in plugins) {
-            root[key] = plugins[key];
+        for (key in plugins) {
+            lib[key] = plugins[key];
         }
 
+        return lib;
+    };
+
+    
+    if (typeof module !== 'undefined') {
+        module.exports = construct();
+        return;
+    }
+    if (typeof define === 'function' && define.amd) {
+        define(construct);
+        return;
+    }
+    
+    var plugins = {},
+        lib = construct(plugins);
+
+    _exports.mask = lib;
+
+    for (var key in plugins) {
+        _exports[key] = plugins[key];
     }
 
-}(this, function (global, document, exports) {
+    
+
+}(this, function (global, exports, document) {
     'use strict';
 
 
@@ -3319,6 +3334,14 @@
 			return copy;
 		}
 		
+		// source ../src/util/function.js
+		function fn_proxy(fn, context) {
+			
+			return function(){
+				return fn.apply(context, arguments);
+			};
+			
+		}
 		// source ../src/util/selector.js
 		function selector_parse(selector, type, direction) {
 			if (selector == null){
@@ -3545,7 +3568,7 @@
 							type = EventDecorator(type);
 						}
 		
-						domLib_on($element, type, selector, fn.bind(component));
+						domLib_on($element, type, selector, fn_proxy(fn, component));
 					}
 				}
 			}
@@ -4293,6 +4316,25 @@
 				remove: function() {
 					if (this.$ != null){
 						this.$.remove();
+						
+						var parents = this.parent && this.parent.elements;
+						if (parents != null) {
+							for (var i = 0, x, imax = parents.length; i < imax; i++){
+								x = parents[i];
+								
+								for (var j = 0, jmax = this.$.length; j < jmax; j++){
+									if (x === this.$[j]){
+										parents.splice(i, 1);
+										
+										i--;
+										imax--;
+									}
+									
+								}
+								
+							}
+						}
+			
 						this.$ = null;
 					}
 		
@@ -4309,7 +4351,7 @@
 		
 						components.splice(i, 1);
 					}
-		
+					
 					return this;
 				},
 		
@@ -4386,12 +4428,16 @@
 		
 			// @param sender - event if sent from DOM Event or CONTROLLER instance
 			function _fire(controller, slot, sender, args, direction) {
-		
+				
 				if (controller == null) {
-					return;
+					return false;
 				}
+				
+				var found = false;
 		
 				if (controller.slots != null && typeof controller.slots[slot] === 'function') {
+					found = true;
+					
 					var fn = controller.slots[slot],
 						isDisabled = controller.slots.__disabled != null && controller.slots.__disabled[slot];
 		
@@ -4400,20 +4446,28 @@
 						var result = args == null ? fn.call(controller, sender) : fn.apply(controller, [sender].concat(args));
 		
 						if (result === false) {
-							return;
+							return true;
 						}
 					}
 				}
 		
 				if (direction === -1 && controller.parent != null) {
-					_fire(controller.parent, slot, sender, args, direction);
+					return _fire(controller.parent, slot, sender, args, direction) || found;
 				}
 		
 				if (direction === 1 && controller.components != null) {
-					for (var i = 0, length = controller.components.length; i < length; i++) {
-						_fire(controller.components[i], slot, sender, args, direction);
+					var compos = controller.components,
+						imax = compos.length,
+						i = 0,
+						r;
+					for (; i < imax; i++) {
+						r = _fire(compos[i], slot, sender, args, direction);
+						
+						!found && (found = r);
 					}
 				}
+				
+				return found;
 			}
 		
 			function _hasSlot(controller, slot, direction, isActive) {
@@ -4544,7 +4598,12 @@
 		
 					// to parent
 					emitOut: function(controller, slot, sender, args) {
-						_fire(controller, slot, sender, args, -1);
+						var captured = _fire(controller, slot, sender, args, -1);
+						
+						// if DEBUG
+						!captured && console.warn('Signal %c%s','font-weight:bold;', slot, 'was not captured');
+						// endif
+						
 					},
 					// to children
 					emitIn: function(controller, slot, sender, args) {
@@ -6359,7 +6418,19 @@
 					console.warn('Concurent binder detected', expr);
 					return;
 				}
-				callback(expression_eval(expr, model, cntx, controller));
+				
+				var value = expression_eval(expr, model, cntx, controller);
+				if (arguments.length > 1) {
+					var args = __array_slice.call(arguments);
+					
+					args[0] = value;
+					callback.apply(this, args);
+					
+				}else{
+					
+					callback(value);
+				}
+				
 				lockes--;
 			};
 		}
@@ -7547,7 +7618,8 @@
 							this.nodes = list_prepairNodes(this, array);
 			
 							dom_insertBefore(compo_render(this, this.nodes), this.placeholder);
-			
+							
+							arr_each(this.components, compo_inserted);
 							return;
 						}
 			

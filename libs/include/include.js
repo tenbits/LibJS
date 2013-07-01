@@ -3,16 +3,24 @@
 (function (root, factory) {
     'use strict';
 
-	var doc = typeof document !== 'undefined' ? document : null;
+	var _global, _exports, _document;
 	
-	if (root == null) {
-		root = typeof window === 'undefined' || doc == null ? global : window;
+	if (typeof exports !== 'undefined' && (root === exports || root == null)){
+		// raw nodejs module
+    	_global = global;
+    }
+	
+	if (_global == null) {
+		_global = typeof window === 'undefined' ? global : window;
 	}
 	
+	_document = _global.document;
+	_exports = root || _global;
+    
 	
-	factory(root, doc);
+	factory(_global, _exports, _document);
 
-}(this, function (global, document) {
+}(this, function (global, exports, document) {
     'use strict';
 
 
@@ -998,9 +1006,29 @@
 	// source ../src/7.CustomLoader.js
 	var CustomLoader = (function() {
 	
-		var _loaders = {};
+		// source loader/json.js
+			
+		var JSONParser = {
+			process: function(source, res){
+				try {
+					return JSON.parse(source);
+				} catch(error) {
+					console.error(error, source);
+					return null;
+				}
+			}
+		};
+		
+		
 	
+		var _loaders = {
+			'json': JSONParser
+		};
 	
+		cfg.loader = {
+			json : 1
+		}
+		
 		function createLoader(url) {
 			var extension = url.substring(url.lastIndexOf('.') + 1);
 	
@@ -1022,15 +1050,25 @@
 	
 			return (_loaders[extension] = new Resource('js', Routes.resolve(namespace, path), namespace));
 		}
+		
+		function doLoad(resource, loader, callback) {
+			XHR(resource, function(resource, response) {
+				callback(resource, loader.process(response, resource));
+			});
+		}
 	
 		return {
 			load: function(resource, callback) {
 	
 				var loader = createLoader(resource.url);
+				
+				if (loader.process) {
+					doLoad(resource, loader, callback);
+					return;
+				}
+				
 				loader.done(function() {
-					XHR(resource, function(resource, response) {
-						callback(resource, loader.exports.process(response, resource));
-					});
+					doLoad(resource, loader.exports, callback);
 				});
 			},
 			exists: function(resource) {
@@ -1261,10 +1299,9 @@
 	
 	// source ../src/10.export.js
 	
-	global.include = new Include();
+	exports.include = new Include();
 	
-	global.includeLib = {
-		//Helper: Helper,
+	exports.includeLib = {
 		Routes: RoutesLib,
 		Resource: Resource,
 		ScriptStack: ScriptStack,

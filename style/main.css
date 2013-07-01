@@ -1,11 +1,10 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,600,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600);
+
 html, body {
     margin: 0;
     padding: 0;
     background: rgb(250,253,250);
     min-width: 600px;
-
-    font-family: 'Segoe UI', 'Helvetica', sans-serif;
 
 	position: relative;
 
@@ -13,6 +12,10 @@ html, body {
 	height: 100%;
 
 	cursor: default;
+}
+
+body, button {
+	font-family: 'Open Sans', 'Segoe UI', 'Helvetica', sans-serif;
 }
 
 ul {
@@ -124,12 +127,15 @@ div.footer {
 	min-width: 800px;
 
 	padding-top: 50px;
-	border-left: 250px solid transparent;
+	margin-left: 250px;
 	box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing:border-box;
 
 	background:#2D2C2B url(../images/low_contrast_linen.png) 0 0 repeat;
+	
+	position: relative;
+	z-index: 100;
 }
 .pageWrapper:before{
 	position: absolute;
@@ -138,7 +144,7 @@ div.footer {
 	height: 50px;
 
 	top:0px;
-	left: 250px;
+	left: 0px;
 	border-left: 1px dashed #444;
 	box-shadow: inset 2px 0px 10px #222;
 }
@@ -173,6 +179,7 @@ button{
 	text-overflow: ellipsis;
 	cursor: pointer;
     letter-spacing: 1px;
+	
 }
 button:active {
 	background: -webkit-linear-gradient(top, #aaa, #e1e1e1); top: 1px;
@@ -212,7 +219,7 @@ div.radioButtons > button.active {
     box-shadow: inset 0px 0px 10px #000;
     border-color: rgba(0,0,0,.5);
     background:transparent;
-    color:#fff;
+    color:#A9D7AB;
     text-shadow: 0px 0px 5px #000;
 }
 

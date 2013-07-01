@@ -1,0 +1,29 @@
+
+:template #menuItemTemplate {
+	li.~[class] {
+			% visible='title' >
+				.viewTitle
+					data-view='~[view]'
+					data-navigate='~[navigate]'
+					
+						> .roll-link > span data-title='~[title]' > '~[title]'
+						
+			ul > % each='items' template='#menuItemTemplate';
+		}
+}
+
+
+
+menu {
+	scroller {
+				
+		% each='menuModel' > section {
+			h3.~[class] > '~[title]'
+			ul > % each='items' template='#menuItemTemplate';
+			div style='text-align:right; opacity:.3' > '~[hint]'
+		}
+	
+		div style='height:20px;';
+	}
+}
+

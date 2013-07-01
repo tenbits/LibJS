@@ -1,0 +1,158 @@
+
+@import "style/lesshat.less";
+
+
+menu {
+	
+	.box-sizing(border-box);
+	.box-shadow(inset -10px 0px 20px #000);
+	.size(250px, 100%);
+	.pos();
+	.user-select(none);
+	
+    display: block;
+    position: absolute;
+    
+	margin:0px;
+	padding:0px;
+    
+	z-index: 99;
+
+    background:#2D2C2B url(/images/low_contrast_linen.png) 0 0 repeat;
+    color:rgb(240,245,240);
+    
+	.perspective(500);
+	
+}
+menu:hover {
+    color:rgb(220,225,220);
+    /*z-index: 999;*/
+}
+
+menu.hidden > .scroller{
+	.rotateY(45deg);
+	
+	pointer-events: none;
+	opacity: .8;
+	
+}
+
+menu.closed {
+	-webkit-transform: perspective(400) rotateY(90deg);
+}
+
+.menu-help:after{
+    content:' ';
+    position:absolute;
+    right: -3px;
+    top:0px;
+    width:3px;
+    height:100%;
+    background:rgba(0,0,0,.4);
+
+}
+
+menu > .scroller {
+	height:100%;
+	
+	.transform-origin(0 50%);
+	.rotateY(0deg);
+	.transition(transform 200ms ease-in);
+}
+menu > .scroller > .scroller-container {
+	padding: 0px 40px;
+}
+
+
+
+menu .viewTitle {cursor: pointer; opacity: .7; font-size: .9em;}
+menu .viewTitle:hover {  opacity: 1; }
+
+menu > .menu-help {
+	position:absolute;
+	top:0px; left: 105%;
+	width:100%;
+	height: 100%;
+	z-index: 9999999;
+	background: inherit;
+	opacity: 1;
+	display: none;
+	-webkit-transition: all 100ms linear;
+	font-size: small;
+}
+.menu-help > p {padding: 10px;}
+
+
+.menu-help:before {
+	content:' ';
+    position:absolute;
+    left: -3px;
+    top:0px;
+    width:3px;
+    height:100%;
+    background:rgba(0,0,0,.4);
+}
+
+menu h3 {
+	font-size: 1em;
+	margin:0px;
+	padding: 10px 0px;
+}
+
+menu ul {
+	list-style: none;
+}
+
+menu .selected {
+	font-weight: bold;
+}
+
+
+
+.roll-link {
+	
+	cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+	vertical-align: top;
+	
+	.perspective(600px);
+	.perspective-origin(50% 50%);
+	
+ }
+ .roll-link span {
+	
+	padding: 4px 5px;
+	
+   display: block;
+   position: relative;
+   padding: 0 2px;
+   
+   .transition(all 400ms ease);
+   .transform-origin(50% 0%);
+   .transform-style(preserve-3d);
+   
+ 
+ }
+ .roll-link span::after {
+   content: attr(data-title);
+   display: block;
+   position: absolute;
+   
+   .pos(0,0);
+   
+   width: 100%;
+   padding: 0 2px;
+   color: #fff;
+   background: #3D9B44;
+   
+   .transform-origin(50% 0%);
+   .transform(translate3d( 0px, 105%, 0px ) rotateX( -90deg ));
+   
+ }
+ .roll-link:hover span {
+   color: grey;
+   background: #3D9B44;
+   
+   .transform(translate3d( 0px, 0px, -30px ) rotateX( 90deg ));
+ }

@@ -22,6 +22,8 @@ layout:view master='view' {
                 a href='https://github.com/tenbits/utest' target='_blank' > ':github'
             }
             
+            div > img src='images/libs/utest/screen.png';
+
 			i > 'Doc placeholders'
         }
         div.api;

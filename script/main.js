@@ -6,15 +6,28 @@ window.onerror = function(){
 include.routes({
 	controller: '/script/controller/{0}.js',
 	uicontrol: '/script/control/{0}.js',
-	script: '/script/{0}.js'
+	script: '/script/{0}.js',
+	
+	appcompo: '/script/compo/{0}/{1}.js'
 }).js({
 	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect', 'arr'],
 	lib: ['mask', 'mask.animation'],
 
-	compo: ['scroller', 'prism', 'datePicker', 'timePicker', 'layout', 'list'],
+	compo: [
+		'scroller',
+		'prism',
+		'datePicker',
+		'timePicker',
+		'layout',
+		'list',
+		'tabs',
+		'radio'
+	],
 	script: ['utils/maskUtils', 'pages', 'apiViewer/apiViewer', 'downloader/downloader'],
 	controller: ['viewsManager', 'view', 'default'],
 	uicontrol: ['radioButtons', 'pageActivity'],
+	
+	appcompo: ['menu']
 })
 
 .load('/pages/libs/about/about.mask')
@@ -23,6 +36,8 @@ include.routes({
 .ready(function() {
 
 	var w = window;
+	
+	window.compos = {};
 
 	window.model = {
 
@@ -117,12 +132,13 @@ include.routes({
 			menu: ['$: menu',
 			{
 				'click: .viewTitle': function(e) {
-					var view = $(e.target).data('view');
+					
+					var view = $(e.currentTarget).data('view');
 					if (view){
 						w.routes.navigate(view);
 						return;
 					}
-					var navigate = $(e.target).data('navigate');
+					var navigate = $(e.currentTarget).data('navigate');
 					if (navigate){
 						window.location.href = navigate;
 					}

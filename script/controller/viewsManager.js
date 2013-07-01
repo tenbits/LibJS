@@ -36,10 +36,10 @@ include.js({
 
 			window.Page.resolve(name, function(controller, template){
 
-				controller.prototype.attr = {
+				controller.prototype.attr = Object.extend(controller.prototype.attr, {
 					template: template,
 					id: name
-				};
+				});
 
 				mask.registerHandler(name + 'View', controller);
 
@@ -47,7 +47,7 @@ include.js({
 				activity.hide();
 
 
-				var compo = Compo.find(this,  name + 'View');//'#' + name);
+				var compo = Compo.find(this,  name + 'View');
 				if (compo == null) {
 					console.error('Cannt be loaded', name);
 					return;

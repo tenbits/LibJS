@@ -1,4 +1,4 @@
-include.css('view.css').done(function(resp) {
+include.css('view.less').done(function(resp) {
 
 
    function when(idfrs, callback) {

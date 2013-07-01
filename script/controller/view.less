@@ -1,12 +1,12 @@
+@import "style/lesshat.less";
 
 #views {
 	height: 100%;
 	min-height: 300px;
     line-height: 1.3em;
 
-	font-size:.95em;
+	
     margin:0 auto;
-
 	box-shadow: 0px -10px 30px #000;
 }
 
@@ -16,18 +16,14 @@
     */
 	min-height: 200px;
 	height: 100%;
-    box-sizing: border-box;
-	-moz-box-sizing:border-box;
+	
+	.box-sizing(border-box);
+	
     position: relative;
-
     margin: 0 auto;
 
-
-
     display: none;
-
 	z-index: 999;
-
 }
 
 #views .view.active {
@@ -35,16 +31,17 @@
 }
 
 .view header, .view footer {
-    background:#4C3F33; /*rgb(100,100,100); */
+	.box-sizing(border-box);
+	
+    background:#4C3F33; 
 
     color:rgb(250,255,250);
     padding: 0px 20px;
     text-shadow: 0px 0px 3px #000;
     font-size: .95em;
     letter-spacing: 1px;
-    box-sizing: border-box;
-	-moz-box-sizing: border-box;
-
+    
+	
     height: 40px;
     line-height: 40px;
     position: relative;
@@ -64,6 +61,48 @@
 .view header a {
 	color: #ddd;
 }
+
+
+.view > .side-menu {
+	width: 250px;
+	left: -250px;
+	
+	position: absolute;
+	text-align: right;
+	
+	list-style: none;
+}
+
+.side-menu {
+	overflow: hidden;
+	
+	.group{
+		display: none;
+		
+			
+		> .side-menu-item {
+			.box-sizing(border-box);
+			
+			padding:4px 8px;
+			margin: 3px 3px 3px 40px;
+			
+			background: rgba(210,255,220, .7);
+			
+			cursor: pointer;
+			
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		
+	}
+}
+
+.side-menu > .group.active{
+	display: block;
+}
+
+
 
 /*
 .view > header:after{
@@ -91,12 +130,8 @@
 
 	position: relative;
 	z-index: 9999;
-
-	-webkit-transform: translateY(0px);
-	-moz-transform: translateY(0px);
-	-ms-transform: translateY(0px);
-	-o-transform: translateY(0px);
-	transform: translateY(0px);
+	
+	.translateY(0px);
 }
 
 .view section {
@@ -117,12 +152,12 @@
     border-top:1px solid #333;
 }
 
-.view div.scroller {
+.view > .scroller {
 	opacity: 0.9;
     position: absolute; top:4px; left:0px; right:0px; bottom: 0px;
 }
 
-.view div.scroller.maximized {
+.view > .scroller.maximized {
     top:-50px; left:0px; right:0px; bottom: 0px;
 	opacity: 1;
 }
