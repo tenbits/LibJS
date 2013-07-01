@@ -5,7 +5,9 @@
 menu {
 	
 	.box-sizing(border-box);
-	.box-shadow(inset -10px 0px 20px #000);
+	//.box-shadow(inset -5px 0px 10px #000);
+	border-right: 1px solid rgba(0, 0, 0, 0.5);
+	
 	.size(250px, 100%);
 	.pos();
 	.user-select(none);
@@ -18,22 +20,32 @@ menu {
     
 	z-index: 99;
 
-    background:#2D2C2B url(/images/low_contrast_linen.png) 0 0 repeat;
-    color:rgb(240,245,240);
-    
-	.perspective(500);
+    //background:#2D2C2B url('/images/low_contrast_linen.png') 0 0 repeat;
+	//color:rgb(240,245,240);
 	
+	background: #F3F0ED url(/images/dust2.png) 0 0 repeat;
+	color: rgb(25,25,25);
+	
+	.perspective(500px);
+	
+	.transition(~"transform 200ms ease-in");
 }
 menu:hover {
-    color:rgb(220,225,220);
+   //color:rgb(220,225,220);
     /*z-index: 999;*/
 }
 
-menu.hidden > .scroller{
-	.rotateY(45deg);
+menu.hidden {
+	.translateX(-250px);
+}
+
+xmenu.hidden > .scroller{
+	//.rotateY(45deg);
+	.transform(~"translateX(-10px) scale(.9)");
 	
 	pointer-events: none;
-	opacity: .8;
+	opacity: .5;
+	overflow: hidden;
 	
 }
 
@@ -54,13 +66,19 @@ menu.closed {
 
 menu > .scroller {
 	height:100%;
+	overflow: auto;
 	
 	.transform-origin(0 50%);
 	.rotateY(0deg);
 	.transition(transform 200ms ease-in);
-}
-menu > .scroller > .scroller-container {
-	padding: 0px 40px;
+	-webkit-overflow-scrolling: touch;
+	
+	> .scroller-container {
+		-webkit-transform: translateZ(0px);
+		
+	   padding: 0px 40px;
+   }
+	
 }
 
 

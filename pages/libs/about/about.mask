@@ -1,9 +1,7 @@
 
 layout:view master='view' {
 
-    @content #title {
-        'LibJS Project  道 '
-    }
+    
 
     @content #tabs {
         radioButtons{

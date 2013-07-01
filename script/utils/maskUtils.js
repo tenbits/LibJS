@@ -86,44 +86,43 @@
 
 			onRenderEnd: function() {
 				var that = this;
-				this.$.scroll(function() {
-					if (--that.animateDismiss > -1) {
-						return;
-					}
-
-					var scrolled = this.scrollTop,
-						total = this.scrollHeight - this.offsetHeight - 1,
-						time = 200,
-						d = 5;
-
-					if (scrolled === 0 || scrolled >= total) {
-
-
-
-						if (this.last != null) {
-							var ds = this.last - scrolled;
-
-							ds < 0 && (ds *= -1);
-
-							d += ds;
-							d > 70 && (d = 70);
-
-						}
-
-						scrolled >= total && (d *= -1);
-
-
-
-						mask.animate(this, {
-							model: 'transform | translateY(0px) > translateY(' + d + 'px) | ' + time + 'ms ease-out',
-							next: 'transform | > translateY(0) | ' + time + 'ms ease-in'
-						});
-					}
-
-					this.last = scrolled;
-
-					console.log(scrolled, total);
-				})
+				
+				//////this.$.scroll(function() {
+				//////	if (--that.animateDismiss > -1) {
+				//////		return;
+				//////	}
+				//////
+				//////	var scrolled = this.scrollTop,
+				//////		total = this.scrollHeight - this.offsetHeight - 1,
+				//////		time = 200,
+				//////		d = 5;
+				//////
+				//////	if (scrolled === 0 || scrolled >= total) {
+				//////
+				//////
+				//////
+				//////		if (this.last != null) {
+				//////			var ds = this.last - scrolled;
+				//////
+				//////			ds < 0 && (ds *= -1);
+				//////
+				//////			d += ds;
+				//////			d > 70 && (d = 70);
+				//////
+				//////		}
+				//////
+				//////		scrolled >= total && (d *= -1);
+				//////
+				//////
+				//////
+				//////		mask.animate(this, {
+				//////			model: 'transform | translateY(0px) > translateY(' + d + 'px) | ' + time + 'ms ease-out',
+				//////			next: 'transform | > translateY(0) | ' + time + 'ms ease-in'
+				//////		});
+				//////	}
+				//////
+				//////	this.last = scrolled;
+				//////});
 			}
 		}))
 	}

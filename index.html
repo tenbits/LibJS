@@ -15,7 +15,7 @@
     
 
 	
-	
+	<!--<link rel="stylesheet" href="style/menu.css" />-->
 <link rel="stylesheet" href="index.build/style.css?v=1.1" /></head>
 <body>
 <noscript>Please enable Javascript in your browser</noscript>
@@ -25,41 +25,34 @@
 
 
 
-    menu {
-
-		scroller {
-			% each='menuModel' template='#menuTemplate';
-
-			div style='height:20px;';
-		}
+    :menu {
+		
+		
 
 
-		.menu-help {
-			p.processors {
-				p > 'Tag Processors are like decorators - they change in some how underlined or parents stack'
-				p > code > 'comment > "any comment"'
-				p > 'From this simple example "comment" preprocessor doesnt render itself and any of the child nodes.'
-				hr;
-				div > b > tt style='letter-spacing:1px;' > 'Important!'
-				p { 'Tag Processor is just a name, its '
-					u > 'still the custom handler'' of the MaskJS.
-						I just call them so, while they do specific job - change or extend any render behavior.
-						'
-				}
-			}
-		}
+		//.menu-help {
+		//	p.processors {
+		//		p > 'Tag Processors are like decorators - they change in some how underlined or parents stack'
+		//		p > code > 'comment > "any comment"'
+		//		p > 'From this simple example "comment" preprocessor doesnt render itself and any of the child nodes.'
+		//		hr;
+		//		div > b > tt style='letter-spacing:1px;' > 'Important!'
+		//		p { 'Tag Processor is just a name, its '
+		//			u > 'still the custom handler'' of the MaskJS.
+		//				I just call them so, while they do specific job - change or extend any render behavior.
+		//				'
+		//		}
+		//	}
+		//}
     }
 
 
 	.pageWrapper {
-		.top-stitch;
+		
+		viewsManager #views;
 
-		.page {
-			.top-stitch;
-			viewsManager#views;
-
-			:pageActivity;
-		}
+		:pageActivity;
+	
 	}
 
 
@@ -67,18 +60,24 @@
 </script>
 
 <script type="mask/template" id="menuTemplate">
-
-	section {
-		h3.~[class] > '~[title]'
-		ul > % each='items' template='#menuItemTemplate';
-		div style='text-align:right; opacity:.3' > '~[hint]'
-	}
+	
+section {
+	h3.~[class] > '~[title]'
+	ul > % each='items' template='#menuItemTemplate';
+	div style='text-align:right; opacity:.3' > '~[hint]'
+}
 
 </script>
 
 <script type="mask/template" id="menuItemTemplate">
 	li.~[class] {
-		.viewTitle data-view='~[view]' data-navigate='~[navigate]' > '~[title]'
+		% visible='title' >
+			.viewTitle
+				data-view='~[view]'
+				data-navigate='~[navigate]'
+				
+					> .roll-link > span data-title='~[title]' > '~[title]'
+					
 		ul > % each='items' template='#menuItemTemplate';
 	}
 </script>
@@ -228,25 +227,66 @@ layout:master #viewFull {
 layout:master #view {
 
 		header {
-
-		    .title style='float:right; text-align:right;' {
-				@placeholder #title;
+			.header-content {
+				.title style='float:right; text-align:right;' {
+					@placeholder #title;
+				}
+	
+				@placeholder #tabs;
 			}
-
-			@placeholder #tabs;
 		}
+		
+		@placeholder #side-menu {
+			:tabs .side-menu {
+				@panels
+					> @placeholder;
+			
+				:animation #show {
+					'transform | translateX(100%) > translateX(0%) | 200ms ease-in'
+				}
+			}
+		}
+		
 		scroller {
 			@placeholder #content;
 		}
 
 }
  </script>
+<script type="include/load" id="includejs-scriptcompomenumenumask" data-appuri="/script/compo/menu/menu.mask"> 
+:template #menuItemTemplate {
+	li.~[class] {
+			% visible='title' >
+				.viewTitle
+					data-view='~[view]'
+					data-navigate='~[navigate]'
+					
+						> .roll-link > span data-title='~[title]' > '~[title]'
+						
+			ul > % each='items' template='#menuItemTemplate';
+		}
+}
+
+
+
+menu {
+	scroller {
+				
+		% each='menuModel' > section {
+			h3.~[class] > '~[title]'
+			ul > % each='items' template='#menuItemTemplate';
+			div style='text-align:right; opacity:.3' > '~[hint]'
+		}
+	
+		div style='height:20px;';
+	}
+}
+
+ </script>
 <script type="include/load" id="includejs-pageslibsaboutaboutmask" data-appuri="/pages/libs/about/about.mask"> 
 layout:view master='view' {
 
-    @content #title {
-        'LibJS Project  道 '
-    }
+    
 
     @content #tabs {
         radioButtons{

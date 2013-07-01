@@ -32,7 +32,7 @@ layout:view master='view' {
         .container.tabPanel {
             
             .info.active data-name='info' {
-                img src='/images/mask.png' style='float:right';
+                img src='/images/mask.png' style='float:right; max-height: 150px';
 
                 .info {
                     h4 > 'Syntax'
@@ -106,7 +106,7 @@ layout:view master='view' {
                 :tabs #tabs-examples >
                     @panels >
                         % each='examples' >
-                            div data-name='~[name]' {
+                            div name='~[name]' {
                             
                                 
                                 a name='~[title]';

@@ -10,21 +10,23 @@ layout:master #viewFull {
 layout:master #view {
 
 		header {
-
-		    .title style='float:right; text-align:right;' {
-				@placeholder #title;
+			.header-content {
+				.title style='float:right; text-align:right;' {
+					@placeholder #title;
+				}
+	
+				@placeholder #tabs;
 			}
-
-			@placeholder #tabs;
 		}
 		
 		@placeholder #side-menu {
-			:tabs .side-menu
-				> @panels
+			:tabs .side-menu {
+				@panels
 					> @placeholder;
 			
-			:animation #slide-in-right {
-				'transform | translateX(100%) > translateX(0%) | 200ms ease-in'
+				:animation #show {
+					'transform | translateX(100%) > translateX(0%) | 200ms ease-in'
+				}
 			}
 		}
 		

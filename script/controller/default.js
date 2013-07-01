@@ -8,9 +8,8 @@ include.load('default.mask').done(function(resp) {
 			'class': 'view'
 		},
 		compos: {
-			sideMenu: 'compo: .side-menu',
-			
-			radioButtons: 'compo: .radioButtons'
+			radio_sideMenu: 'compo: .side-menu',
+			radio_radioButtons: 'compo: .radioButtons'
 		},
 		
 		onRenderStart: function(){
@@ -19,17 +18,17 @@ include.load('default.mask').done(function(resp) {
 		
 		events: {
 			'changed: .radioButtons': function(e, target) {
-				var path = this.viewName + '/' + target.name;
+				var path = this.viewName + '/' + target.getAttribute('name');
 				
 				window.routes.navigate(path);
 			},
 			'changed: .group': function(event, target){
 				
-				var category = target.name;
+				var category = target.getAttribute('name');
 				
 				var path = this.viewName
 					+ '/'
-					+ this.compos.radioButtons.getActiveName()
+					+ this.compos.radio_radioButtons.getActiveName()
 					+ '/'
 					+ category;
 				
@@ -43,10 +42,52 @@ include.load('default.mask').done(function(resp) {
 			return $active.data('name');
 		},
 		
-		tab: function(name) {
+		showTab: function(name){
+			if (this.compos.radio_radioButtons) {
+				this.compos.radio_radioButtons.setActive(name);
+			}
+			
+			if (this.compos.radio_sideMenu) {
+				this.compos.radio_sideMenu.setActive(name);
+			}
+			
 			this.$.find('.tabPanel > .active').removeClass('active');
 			this.$.find('.tabPanel > .' + name).addClass('active');
 
+		},
+		
+		showSection: function(name){
+			
+			var $sideMenu = this.$.find('.side-menu');
+		
+			if ($sideMenu.length === 0)
+				return;
+			
+			var $group = $sideMenu.find('.group.-show');
+				
+			
+				
+			if ($group.length === 0) 
+				return;
+			
+			var groupName = $group.attr('name'),
+				group = $group.compo();
+			
+			if (!name) {
+				name = group.getList()[0];
+			}
+			
+			group.setActive(name);
+			
+			this
+				.compos['tabs' + groupName]
+				.setActive(name);
+			
+			return true;
+		},
+		
+		tab: function(name) {
+			
 			var hasCategories;
 			
 			if (this.compos.sideMenu) {
@@ -55,11 +96,6 @@ include.load('default.mask').done(function(resp) {
 				hasCategories = this.compos.sideMenu.has(name);
 			}
 			
-			
-			
-			window
-				.compos
-				.menu[hasCategories ? 'blur' : 'focus']();
 			
 			
 			var scroller = Compo.find(this, 'scroller');
@@ -74,13 +110,22 @@ include.load('default.mask').done(function(resp) {
 			if (!info.category) {
 				info.category = this.defaultCategory || 'info';
 			}
+			
+			this.showTab(info.category);
+			
+			
+			var hasSections = this.showSection(info.anchor);
+			
+			window
+				.compos
+				.menu[hasSections ? 'blur' : 'focus']();
 
-			var buttons = Compo.find(this, '.radioButtons');
-
-			if (buttons) {
-				buttons.setActive(info.category);
-				this.tab(info.category);
-			}
+			//var buttons = Compo.find(this, '.radioButtons');
+			//
+			//if (buttons) {
+			//	buttons.setActive(info.category);
+			//	this.tab(info.category);
+			//}
 
 
 			this.update(info);

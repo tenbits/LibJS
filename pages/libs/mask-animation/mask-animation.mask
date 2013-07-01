@@ -7,7 +7,6 @@ layout:view master='view' {
 	@content #tabs {
 		radioButtons{
 			button.active name='info' > 'Info'
-			//button name='api' > 'API'
 			button name='example' > 'Example'
 		}
 	}
@@ -103,82 +102,73 @@ layout:view master='view' {
 			//div.api > prism src='/api.help/ranimation.api.js';
 
 			div.example {
-				div style='
-						position:absolute;
-						z-index: 0;
-						top:10px;
-						left: 110px;
-						color:#888;
-						font-weight:bold;
-						font-family: monospace;' {
-
-					pre > formatter:pre > "
+					div style='position:relative; z-index:1' {
+						div#ranimateExample style='height:100px; width:100px; background:rgb(240,10,10);' {
 							:animation x-pipes='animation.start' {
-							  @model {
+	
 								@model {
-								  @model > 'transform | translate(0px,0px) > translate(300px,300px) | 1s'
-								  @next {
-									@model > 'transform | scale(1) > translate(200px,200px) scale(.5) | 600ms'
-									@next {
-									  'transform | scale(.5) > scale(1.5) | 900ms'
-									  'opacity | 1 > 0 | 1s'
-									  'background-color | > violet | 1s'
-									}
-								  }
-								}
-
-								@model {
-								  @model > 'background-color | > blue | 1s'
-								  @next > 'background-color | > yellow | 1s'
-								}
-							  }
-
-							  @next {
-								@model > 'opacity | 0 > 1 | 1.5s'
-								@next {
-								  'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s'
-								  'background-color | > rgb(240,10,10) | 2s ease-in'
-								}
-							  }
-
-							}"
-				}
-
-				div style='position:relative; z-index:1' {
-					div#ranimateExample style='height:100px; width:100px; background:rgb(240,10,10);' {
-						:animation x-pipes='animation.start' {
-
-							@model {
-								@model {
-									@model > 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s'
-									@next {
-										@model > 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms'
+									@model {
+										@model > 'transform | translate(0px, 0px) > translate(300px, 300px) | 1s'
 										@next {
-											'transform | scale(.5) > scale(1.5) | 900ms'
-											'opacity | 1 > 0 | 1s'
-											'background-color | > violet | 1s'
+											@model > 'transform | scale(1) > translate(200px, 200px) scale(.5) | 600ms'
+											@next {
+												'transform | scale(.5) > scale(1.5) | 900ms'
+												'opacity | 1 > 0 | 1s'
+												'background-color | > violet | 1s'
+											}
 										}
 									}
+	
+									@model {
+										@model > 'background-color | > blue | 1s'
+										@next > 'background-color | > yellow | 1s'
+									}
 								}
-
-								@model {
-									@model > 'background-color | > blue | 1s'
-									@next > 'background-color | > yellow | 1s'
-								}
-							}
-
-							@next {
-								@model > 'opacity | 0 > 1 | 1.5s'
+	
 								@next {
-									'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s'
-									'background-color | > rgb(240,10,10) | 2s ease-in'
+									@model > 'opacity | 0 > 1 | 1.5s'
+									@next {
+										'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s'
+										'background-color | > rgb(240,10,10) | 2s ease-in'
+									}
 								}
+	
+							}
+						}
+						button x-pipe-signal='click: animation.start' > 'Start'
+					}
+
+					prism > formatter:pre > "
+						:animation x-pipes='animation.start' {
+						  @model {
+							@model {
+							  @model > 'transform | translate(0px,0px) > translate(300px,300px) | 1s'
+							  @next {
+								@model > 'transform | scale(1) > translate(200px,200px) scale(.5) | 600ms'
+								@next {
+								  'transform | scale(.5) > scale(1.5) | 900ms'
+								  'opacity | 1 > 0 | 1s'
+								  'background-color | > violet | 1s'
+								}
+							  }
 							}
 
-						}
-					}
-					button x-pipe-signal='click: animation.start' > 'Start'
-				}
+							@model {
+							  @model > 'background-color | > blue | 1s'
+							  @next > 'background-color | > yellow | 1s'
+							}
+						  }
+
+						  @next {
+							@model > 'opacity | 0 > 1 | 1.5s'
+							@next {
+							  'transform | rotate(0deg) > scale(1) rotate(360deg) translate(0px,0px) | 2s'
+							  'background-color | > rgb(240,10,10) | 2s ease-in'
+							}
+						  }
+
+						}"
+			
 
 			}
 		}

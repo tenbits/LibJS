@@ -46,11 +46,14 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
     "use strict";
     var _Array_slice = Array.prototype.slice, _Array_sort = Array.prototype.sort;
     function arr_each(array, callback) {
-        if (array instanceof Array) {
+        if (arr_isArray(array)) {
             for (var i = 0, imax = array.length; i < imax; i++) callback(array[i], i);
             return;
         }
         callback(array);
+    }
+    function arr_isArray(array) {
+        return null != array && "object" === typeof array && "number" === typeof array.length && "function" === typeof array.splice;
     }
     if ("function" !== typeof Array.isArray) Array.isArray = function(array) {
         if (array instanceof Array) return true;
@@ -69,7 +72,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             return "[object Arguments]" === _toString.call(args);
         };
         function proto_override(proto, key, fn) {
-            var __super = proto[key], __proxy = function(args) {
+            var __super = proto[key], __proxy = null == __super ? function() {} : function(args) {
                 if (_isArguments(args)) return __super.apply(this, args);
                 return __super.apply(this, arguments);
             };
@@ -109,6 +112,10 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
         }
         return true === "__proto__" in Object.prototype ? inherit : inherit_protoLess;
     }();
+    function proto_getProto(mix) {
+        if ("function" === typeof mix) return mix.prototype;
+        return mix;
+    }
     var class_inheritStatics = function(_class, mix) {
         if (null == mix) return;
         if ("function" === typeof mix) {
@@ -126,6 +133,18 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             return;
         }
     };
+    function class_extendProtoObjects(proto, _base, _extends) {
+        var key, protoValue;
+        for (key in proto) {
+            protoValue = proto[key];
+            if (!obj_isRawObject(protoValue)) continue;
+            if (null != _base) if (obj_isRawObject(_base.prototype[key])) obj_defaults(protoValue, _base.prototype[key]);
+            if (null != _extends) arr_each(_extends, function(x) {
+                x = proto_getProto(x);
+                if (obj_isRawObject(x[key])) obj_defaults(protoValue, x[key]);
+            });
+        }
+    }
     function obj_inherit(target) {
         if ("function" === typeof target) target = target.prototype;
         var i = 1, imax = arguments.length, source, key;
@@ -149,6 +168,15 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
             value = value[key];
             if (null == value) return value;
         }
+        return value;
+    }
+    function obj_isRawObject(value) {
+        if (null == value) return false;
+        if ("object" !== typeof value) return false;
+        return value.constructor === Object;
+    }
+    function obj_defaults(value, _defaults) {
+        for (var key in _defaults) if (null == value[key]) value[key] = _defaults[key];
         return value;
     }
     function obj_extend(target, source) {
@@ -535,7 +563,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                 if (null == mix) return false;
                 if ("function" === typeof mix) return mix(x);
                 if ("object" === typeof mix) {
-                    if (x.constructor === mix.constructor) return x === mix;
+                    if (x.constructor === mix.constructor && x.constructor !== Object) return x === mix;
                     var value, matcher;
                     for (var key in mix) {
                         value = x[key];
@@ -861,6 +889,7 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
         if (null != _static) for (key in _static) _class[key] = _static[key];
         if (null != _base) class_inheritStatics(_class, _base);
         if (null != _extends) class_inheritStatics(_class, _extends);
+        class_extendProtoObjects(data, _base, _extends);
         class_inherit(_class, _base, _extends, data, _overrides);
         data = null;
         _static = null;
@@ -972,13 +1001,25 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
         while (url.indexOf("../") !== -1) url = url.replace(reg_subFolder, "");
         return url;
     }
+    function path_isRelative(path) {
+        var c = path.charCodeAt(0);
+        switch (c) {
+          case 47:
+            return false;
+
+          case 102:
+          case 104:
+            return false === /^file:|https?:/.test(path);
+        }
+        return true;
+    }
     var RoutesLib = function() {
         var routes = {}, regexpAlias = /([^\\\/]+)\.\w+$/;
         return {
             register: function(namespace, route, currentInclude) {
-                if ("string" === typeof route && "/" !== route[0]) {
+                if ("string" === typeof route && path_isRelative(route)) {
                     var res = currentInclude || include, location = res.location || path_getDir(res.url || path_resolveCurrent());
-                    if ("/" !== location[0]) location = "/" + location;
+                    if (path_isRelative(location)) location = "/" + location;
                     route = location + route;
                 }
                 routes[namespace] = route instanceof Array ? route : route.split(/[\{\}]/g);
@@ -1261,10 +1302,11 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                     (bin[key] || (bin[key] = {}))[id] = resource;
                 }
             },
-            instance: function() {
+            instance: function(url) {
                 var resource;
                 resource = new Resource();
                 resource.state = 4;
+                if (url) resource.location = path_getDir(url);
                 return resource;
             },
             getResource: function(url, type) {
@@ -1614,21 +1656,23 @@ include.register({
         id: "/.reference/libjs/compos/timePicker/lib/css/mobiscroll.css",
         url: "/.reference/libjs/compos/timePicker/lib/css/mobiscroll.css"
     }, {
+        id: "/.reference/libjs/compos/tabs/lib/tabs.css",
+        url: "/.reference/libjs/compos/tabs/lib/tabs.css"
+    }, {
         id: "/script/apiViewer/apiViewer.css",
         url: "/script/apiViewer/apiViewer.css"
     }, {
         id: "/script/downloader/downloader.css",
         url: "/script/downloader/downloader.css"
     }, {
-        id: "/script/controller/view.css",
-        url: "/script/controller/view.css"
+        id: "/script/controller/view.less",
+        url: "/script/controller/view.less"
     }, {
-        id: "/style/main.css",
-        url: "/style/main.css",
-        namespace: ""
+        id: "/script/compo/menu/menu.less",
+        url: "/script/compo/menu/menu.less"
     }, {
-        id: "/style/menu.css",
-        url: "/style/menu.css",
+        id: "/style/main.less",
+        url: "/style/main.less",
         namespace: ""
     } ],
     load: [ {
@@ -1637,6 +1681,9 @@ include.register({
     }, {
         id: "/script/controller/default.mask",
         url: "/script/controller/default.mask"
+    }, {
+        id: "/script/compo/menu/menu.mask",
+        url: "/script/compo/menu/menu.mask"
     }, {
         id: "/pages/libs/about/about.mask",
         url: "/pages/libs/about/about.mask"
@@ -1726,6 +1773,14 @@ include.register({
         url: "/.reference/libjs/compos/list/lib/list.js",
         namespace: "compo.list"
     }, {
+        id: "/.reference/libjs/compos/tabs/lib/tabs.js",
+        url: "/.reference/libjs/compos/tabs/lib/tabs.js",
+        namespace: "compo.tabs"
+    }, {
+        id: "/.reference/libjs/compos/radio/lib/radio.js",
+        url: "/.reference/libjs/compos/radio/lib/radio.js",
+        namespace: "compo.radio"
+    }, {
         id: "/script/utils/maskUtils.js",
         url: "/script/utils/maskUtils.js",
         namespace: "script.utils/maskUtils"
@@ -1769,6 +1824,10 @@ include.register({
         url: "/script/control/pageActivity.js",
         namespace: "uicontrol.pageActivity"
     }, {
+        id: "/script/compo/menu/menu.js",
+        url: "/script/compo/menu/menu.js",
+        namespace: "appcompo.menu"
+    }, {
         id: "/script/main.js",
         url: "/script/main.js",
         namespace: ""
@@ -1781,7 +1840,8 @@ include.routes({
     compo: "/.reference/libjs/compos/{0}/lib/{1}.js",
     controller: "/script/controller/{0}.js",
     uicontrol: "/script/control/{0}.js",
-    script: "/script/{0}.js"
+    script: "/script/{0}.js",
+    appcompo: "/script/compo/{0}/{1}.js"
 });
 
 include.setCurrent({
@@ -5180,7 +5240,6 @@ include.getResource("/include.routes.js", "js").readystatechanged(3);
         };
         return function(route) {
             var parts = route.match.split("/"), param = "", regexpIndex = 2, prefix, var_, var_index, c, isConditional;
-            console.log(route);
             for (var i = 0, x, length = parts.length; i < length; i++) {
                 x = parts[i];
                 if (!x) {
@@ -5207,8 +5266,6 @@ include.getResource("/include.routes.js", "js").readystatechanged(3);
             }
             route.match = new RegExp("^" + parts.join(""));
             route.param = param;
-            console.log("match", parts.join(""), param);
-            window.r = route.match;
             return route;
         };
     }();
@@ -7609,9 +7666,9 @@ include.setCurrent({
                 var compos = proto.compos, pipes = proto.pipes, attr = proto.attr;
                 if (null == compos && null == pipes && null == proto.attr) return ctor;
                 return function CompoBase() {
-                    if (null != compos) this.compos = obj_copy(compos);
+                    if (null != compos) this.compos = obj_copy(this.compos);
                     if (null != pipes) Pipes.addController(this);
-                    if (null != attr) this.attr = obj_copy(attr);
+                    if (null != attr) this.attr = obj_copy(this.attr);
                     if ("function" === typeof ctor) ctor.call(this);
                 };
             }
@@ -12539,6 +12596,137 @@ include.getResource("/.reference/libjs/compos/prism/lib/prism.js", "js").readyst
     }));
 })();
 
+include.setCurrent({
+    id: "/.reference/libjs/compos/tabs/lib/tabs.js",
+    namespace: "compo.tabs",
+    url: "/.reference/libjs/compos/tabs/lib/tabs.js"
+});
+
+include.css();
+
+mask.registerHandler(":tabs", mask.Compo({
+    tagName: "div",
+    attr: {
+        "class": "-tabs"
+    },
+    _children: function($children) {
+        if (0 === $children.length) return jmask();
+        while (1) {
+            if (1 !== $children.length) break;
+            if ($children[0].type === mask.Dom.NODE) break;
+            if ($children[0].controller && $children[0].controller.prototype.tagName) break;
+            $children = $children.children();
+        }
+        return $children;
+    },
+    _items: function(type) {
+        var klass = ".-tab-" + type;
+        if (null == this.$) {
+            var $children = jmask(this).children(klass).children();
+            return this._children($children);
+        }
+        return this.$.find(klass);
+    },
+    _getHeaders: function() {},
+    renderStart: function() {
+        var $this = jmask(this), $panels = $this.children("@panels"), $header = $this.children("@header");
+        $panels.tag("div").addClass("-tab-panels");
+        $header.tag("div").addClass("-tab-headers");
+        var x = this._children($panels.children());
+        if (0 === x.length) {
+            console.error("[:tabs] > has no panels");
+            debugger;
+        }
+        x.addClass("-tab-panel -hidden");
+        this._children($header.children()).addClass("-tab-header -hidden");
+    },
+    onRenderEnd: function() {
+        var $headers = this.$.find(".-tab-header");
+        if (0 === $headers.length) return;
+        var that = this;
+        $headers.on("click", function(event) {
+            var $this = $(event.currentTarget);
+            if ($this.hasClass("active")) return;
+            var name = $this.attr("name");
+            that.setActive(name);
+            that.$.trigger("change", event.currentTarget);
+        });
+    },
+    animate: function(type, panel) {
+        if (null === panel) return;
+        var animation;
+        for (var i = 0, x, imax = this.components.length; i < imax; i++) {
+            x = this.components[i];
+            if (":animation" === x.compoName && type === x.attr.id) {
+                animation = x;
+                break;
+            }
+        }
+        if (null == animation) return;
+        animation.start(null, panel);
+    },
+    setActive: function(name) {
+        var $panels = this._items("panel"), $headers = this._items("header");
+        var $panel = $panels.filter('[name="' + name + '"]');
+        if ($panel.hasClass("-show")) return;
+        $panels.removeClass("-show");
+        $panel.addClass("-show");
+        this.animate("show", $panel.get(0));
+        $headers.removeClass("-show").children('[name="' + name + '"]').addClass("active");
+    },
+    has: function(name) {
+        return 0 !== this._items("panel").filter('[name="' + name + '"]').length;
+    },
+    getActiveName: function() {
+        return this.$.find(".-tab-panel.-show").attr("name");
+    },
+    getList: function() {
+        var array = [];
+        this._items("panel").each(function($x) {
+            var name = $x.name;
+            if (!name) name = $x.attr && $x.attr.name;
+            if (!name) debugger;
+            array.push(name);
+        });
+        return array;
+    }
+}));
+
+include.getResource("/.reference/libjs/compos/tabs/lib/tabs.js", "js").readystatechanged(3);
+
+mask.registerHandler(":radio", mask.Compo({
+    tagName: "div",
+    attr: {
+        "class": "-radio"
+    },
+    onRenderEnd: function() {
+        this.$.children().on("click", function(event) {
+            var $this = $(event.currentTarget);
+            if ($this.hasClass("active")) return;
+            $this.parent().children(".active").removeClass("active");
+            $this.addClass("active");
+            $this.parent().trigger("changed", event.currentTarget);
+        });
+    },
+    setActive: function(name) {
+        var $el = this.$.find('[name="' + name + '"]');
+        if ($el.hasClass("active")) return;
+        if (0 === $el.length) console.error("[:radio] Item not found", name);
+        $el.parent().children(".active").removeClass("active");
+        $el.addClass("active");
+    },
+    getActiveName: function() {
+        return this.$.find(".active").attr("name");
+    },
+    getList: function() {
+        var array = [];
+        this.$.children().each(function(index, $x) {
+            array.push($x.getAttribute("name"));
+        });
+        return array;
+    }
+}));
+
 (function() {
     var replaces = null;
     mask.registerHandler("formatter:pre", Class({
@@ -12584,25 +12772,6 @@ include.getResource("/.reference/libjs/compos/prism/lib/prism.js", "js").readyst
         },
         onRenderEnd: function() {
             var that = this;
-            this.$.scroll(function() {
-                if (--that.animateDismiss > -1) return;
-                var scrolled = this.scrollTop, total = this.scrollHeight - this.offsetHeight - 1, time = 200, d = 5;
-                if (0 === scrolled || scrolled >= total) {
-                    if (null != this.last) {
-                        var ds = this.last - scrolled;
-                        ds < 0 && (ds *= -1);
-                        d += ds;
-                        d > 70 && (d = 70);
-                    }
-                    scrolled >= total && (d *= -1);
-                    mask.animate(this, {
-                        model: "transform | translateY(0px) > translateY(" + d + "px) | " + time + "ms ease-out",
-                        next: "transform | > translateY(0) | " + time + "ms ease-in"
-                    });
-                }
-                this.last = scrolled;
-                console.log(scrolled, total);
-            });
         }
     }));
 })();
@@ -13297,10 +13466,10 @@ include.getResource("/script/downloader/downloader.js", "js").readystatechanged(
         load: function(info) {
             var activity = Compo.find(window.app, ":pageActivity").show(), name = info.view.replace("View", "");
             window.Page.resolve(name, function(controller, template) {
-                controller.prototype.attr = {
+                controller.prototype.attr = Object.extend(controller.prototype.attr, {
                     template: template,
                     id: name
-                };
+                });
                 mask.registerHandler(name + "View", controller);
                 this.append(name + "View", {});
                 activity.hide();
@@ -13407,21 +13576,55 @@ include.setCurrent({
 include.load("default.mask").done(function(resp) {
     mask.render(resp.load["default"]);
     window.DefaultController = Compo({
-        constructor: function() {
-            (this.attr || (this.attr = {}))["class"] = "view";
+        tagName: "div",
+        attr: {
+            "class": "view"
         },
-        onRenderStart: function(model, cntx, container) {
-            this.tagName = "div";
+        compos: {
+            radio_sideMenu: "compo: .side-menu",
+            radio_radioButtons: "compo: .radioButtons"
+        },
+        onRenderStart: function() {
+            this.viewName = this.attr.id.replace("View", "");
         },
         events: {
             "changed: .radioButtons": function(e, target) {
-                var name = this.attr.id.replace("View", "");
-                window.routes.navigate(name + "/" + target.name);
+                var path = this.viewName + "/" + target.getAttribute("name");
+                window.routes.navigate(path);
+            },
+            "changed: .group": function(event, target) {
+                var category = target.getAttribute("name");
+                var path = this.viewName + "/" + this.compos.radio_radioButtons.getActiveName() + "/" + category;
+                window.routes.navigate(path);
             }
         },
-        tab: function(name) {
+        getCurrentTabName: function() {
+            var $active = this.$.find(".tabPanel > .active");
+            return $active.data("name");
+        },
+        showTab: function(name) {
+            if (this.compos.radio_radioButtons) this.compos.radio_radioButtons.setActive(name);
+            if (this.compos.radio_sideMenu) this.compos.radio_sideMenu.setActive(name);
             this.$.find(".tabPanel > .active").removeClass("active");
             this.$.find(".tabPanel > ." + name).addClass("active");
+        },
+        showSection: function(name) {
+            var $sideMenu = this.$.find(".side-menu");
+            if (0 === $sideMenu.length) return;
+            var $group = $sideMenu.find(".group.-show");
+            if (0 === $group.length) return;
+            var groupName = $group.attr("name"), group = $group.compo();
+            if (!name) name = group.getList()[0];
+            group.setActive(name);
+            this.compos["tabs" + groupName].setActive(name);
+            return true;
+        },
+        tab: function(name) {
+            var hasCategories;
+            if (this.compos.sideMenu) {
+                this.compos.sideMenu.setActive(name);
+                hasCategories = this.compos.sideMenu.has(name);
+            }
             var scroller = Compo.find(this, "scroller");
             if (scroller && (scroller = scroller.scroller)) {
                 scroller.scrollTo(0, 0);
@@ -13430,11 +13633,9 @@ include.load("default.mask").done(function(resp) {
         },
         section: function(info) {
             if (!info.category) info.category = this.defaultCategory || "info";
-            var buttons = Compo.find(this, ".radioButtons");
-            if (buttons) {
-                buttons.setActive(info.category);
-                this.tab(info.category);
-            }
+            this.showTab(info.category);
+            var hasSections = this.showSection(info.anchor);
+            window.compos.menu[hasSections ? "blur" : "focus"]();
             this.update(info);
         },
         update: function(info) {
@@ -13456,6 +13657,10 @@ include.load("default.mask").done(function(resp) {
 include.getResource("/script/controller/default.js", "js").readystatechanged(3);
 
 mask.registerHandler("radioButtons", Compo({
+    tagName: "div",
+    attr: {
+        "class": "radioButtons"
+    },
     events: {
         "click: button:not(.active)": function(e) {
             var $this = $(e.target);
@@ -13464,13 +13669,13 @@ mask.registerHandler("radioButtons", Compo({
             this.$.trigger("changed", e.target);
         }
     },
-    onRenderStart: function() {
-        jmask(this).tag("div").addClass("radioButtons");
-    },
     setActive: function(name) {
-        var button = this.$.find("[name=" + name + "]");
+        var button = this.$.find('[name="' + name + '"]');
         button.parent().children(".active").removeClass("active");
         button.addClass("active");
+    },
+    getActiveName: function() {
+        return this.$.find(".active").attr("name");
     }
 }));
 
@@ -13588,6 +13793,31 @@ mask.registerHandler("radioButtons", Compo({
 })();
 
 include.setCurrent({
+    id: "/script/compo/menu/menu.js",
+    namespace: "appcompo.menu",
+    url: "/script/compo/menu/menu.js"
+});
+
+include.load("menu.mask::Template").done(function(resp) {
+    mask.registerHandler(":menu", Compo({
+        template: resp.load.Template,
+        constructor: function() {
+            window.compos.menu = this;
+        },
+        onRenderStart: function(model, cntx, container) {},
+        onRenderEnd: function(elements, cntx, container) {},
+        focus: function() {
+            this.$.removeClass("hidden");
+        },
+        blur: function() {
+            this.$.addClass("hidden");
+        }
+    }));
+});
+
+include.getResource("/script/compo/menu/menu.js", "js").readystatechanged(3);
+
+include.setCurrent({
     id: "/script/main.js",
     namespace: "",
     url: "/script/main.js"
@@ -13600,13 +13830,16 @@ window.onerror = function() {
 include.routes({
     controller: "/script/controller/{0}.js",
     uicontrol: "/script/control/{0}.js",
-    script: "/script/{0}.js"
+    script: "/script/{0}.js",
+    appcompo: "/script/compo/{0}/{1}.js"
 }).js({
-    compo: [ "prism" ],
+    compo: [ "prism", "tabs" ],
     script: [ "pages", "apiViewer/apiViewer", "downloader/downloader" ],
-    controller: [ "default" ]
+    controller: [ "default" ],
+    appcompo: [ "menu" ]
 }).ready(function() {
     var w = window;
+    window.compos = {};
     window.model = {
         menuModel: [ {
             title: "About",
@@ -13697,12 +13930,12 @@ include.routes({
             menuHelp: "$: .menu-help",
             menu: [ "$: menu", {
                 "click: .viewTitle": function(e) {
-                    var view = $(e.target).data("view");
+                    var view = $(e.currentTarget).data("view");
                     if (view) {
                         w.routes.navigate(view);
                         return;
                     }
-                    var navigate = $(e.target).data("navigate");
+                    var navigate = $(e.currentTarget).data("navigate");
                     if (navigate) window.location.href = navigate;
                 },
                 "click: h3.badge": function() {

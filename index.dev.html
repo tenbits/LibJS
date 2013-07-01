@@ -14,7 +14,7 @@
     <script type="text/javascript" src="include.routes.js"></script>
     <script type="text/javascript" src="script/main.js"></script>
 
-	<link rel="stylesheet" href="style/main.css" />
+	<link rel="stylesheet" href="style/main.less" />
 	<!--<link rel="stylesheet" href="style/menu.css" />-->
 </head>
 <body>
@@ -48,14 +48,11 @@
 
 
 	.pageWrapper {
-		.top-stitch;
+		
+		viewsManager #views;
 
-		.page {
-			.top-stitch;
-			viewsManager#views;
-
-			:pageActivity;
-		}
+		:pageActivity;
+	
 	}
 
 
