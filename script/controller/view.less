@@ -1,32 +1,34 @@
 @import "style/lesshat.less";
+@import "style/global.less";
 
 #views {
 	height: 100%;
 	min-height: 300px;
     line-height: 1.3em;
-
-	margin:0 auto;
 }
 
-#views .view {
+#views > .view {
    
+	margin-left: 250px;
 	//min-height: 200px;
 	//height: 100%;
 	
 	.box-sizing(border-box);
 	
     position: relative;
-    margin: 0 auto;
 	
     display: none;
 	z-index: 999;
 	
 	height: 100%;
-	
 }
 
-#views .view.active {
+#views > .view.active {
     display: block;
+}
+
+#views > .view.fullpage {
+	margin-left: 0;
 }
 
 .view header > .header-content {
@@ -47,7 +49,7 @@
     z-index: 998;
 
 
-	max-width: 800px;
+	max-width: @pageMaxWidth;
 	margin: 0 auto;
 
     display: block;
@@ -56,7 +58,7 @@
 	background: url('/images/dust2-grad.png') 0 0 repeat-x;
 }
 
-.view header {
+.view > header {
 	
     background: none;
 	position: relative;
@@ -67,27 +69,39 @@
 	z-index: 3;
 }
 
-.view header a {
+.view > header a {
 	color: #333;
 }
+
+
 
 
 .view > .side-menu {
 	width: 250px;
 	left: -250px;
-	top: 100px;
+	
+	height: 100%;
+	
 	
 	position: absolute;
 	text-align: right;
 	
 	list-style: none;
+	
+	
+	overflow: hidden;
 }
 
 .side-menu {
-	overflow: hidden;
+	
 	
 	.group {
-			
+		
+		position: absolute;
+		top: 100px;
+		left: 0px;
+		width: 100%;
+		
 		> .side-menu-item {
 			.box-sizing(border-box);
 			
@@ -95,7 +109,7 @@
 			margin: 3px 3px 3px 40px;
 			
 			
-			background: rgba(61, 155, 68, .5);
+			background: fadeout(@color_Selected, 40%);
 			
 			color: #fff;
 			cursor: pointer;
@@ -107,7 +121,7 @@
 			}
 			
 			&.active {
-				background: rgba(61, 155, 68, 1);
+				background: @color_Selected;
 			}
 		}
 		
@@ -130,40 +144,100 @@
 	-webkit-overflow-scrolling: touch;
 	
 	> .scroller-container {
-		max-width: 800px;
-		margin: 0 auto;
+		.box-sizing(border-box);
+		min-height: 100%;
 		padding-top: 50px;
+		padding-bottom: 60px;
 		
 		 -webkit-transform: translateZ(0px);
+		 
+		> .scroller-content {
+			max-width: @pageMaxWidth;
+			margin: 0 auto;
+		}
 	}
 }
 
-
-
-.view section {
-    padding: 10px 20px;
+.fullpage.view > .scroller > .scroller-container > .scroller-content {
+	max-width: none;
 }
 
-.view footer {
-
-
-   /* border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;*/
-
-    /*position: absolute;   */
-    bottom: 0px;
-    width:100%;
-
-    border-bottom:0px solid #333;
-    border-top:1px solid #333;
-}
-
-.view > .scroller {
-	//opacity: 0.9;
-    //position: absolute; top:4px; left:0px; right:0px; bottom: 0px;
-}
 
 .view > .scroller.maximized {
     top:-50px; left:0px; right:0px; bottom: 0px;
 	opacity: 1;
 }
+
+
+.scroller-container > footer {
+	.box-sizing(border-box);
+	.size(50%, 40px);
+	padding: 0 30px;
+	
+	
+	background: fadeout(@color_Selected, 90%);
+	
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	
+	
+	color: #000;
+	font: {
+		weight: 100;
+		size: .9em;
+	}
+	line-height: 40px;
+	
+	&:before {
+		
+		width: 0px;
+		height: 0px;
+		border-style: solid;
+		border-width: 0 0 40px 40px;
+		border-color: transparent;
+		border-bottom-color: fadeout(@color_Selected, 90%);
+		
+		position: absolute;
+		left: -40px;
+		top: 0px;
+		content: ' ';
+		
+		.transition(~"border-color 200ms ease-in");
+	}
+	
+	opacity: .5;
+	
+	.transition(~"opacity 200ms ease-in, background 200ms ease-in, color 200ms linear");
+	&:hover {
+		color: white;
+		opacity: 1;
+		background: fadeout(@color_Selected, 0%);
+	}
+	
+	&:hover:before {
+		border-bottom-color: fadeout(@color_Selected, 0%);
+	}
+}
+
+.footer-left, .footer-right {
+	
+}
+.footer-left {
+	float: left;
+}
+
+.footer-right {
+	text-align: right;
+	> ul {
+		list-style: none;
+		display: inline-block;
+		
+		> li {
+			display: inline-block;
+			padding: 0 10px;
+		}
+	}
+}
+
+

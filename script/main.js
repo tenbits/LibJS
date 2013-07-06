@@ -35,12 +35,22 @@ include.routes({
 
 .ready(function() {
 
-	var w = window;
+	routes.add('/:view/?:category/?:anchor', function(current) {
+		window.viewsManager.show(current);
+	});
+
+
+	var currentRoute = routes.current() || {
+			view: 'about'
+		},
+		pageInfo = Page.getInfo(currentRoute.view);
+		
 	
+		
 	window.compos = {};
 
 	window.model = {
-
+			menuHidden: pageInfo.menuHidden,
 			menuModel: [{
 				title: 'About',
 				items: [{
@@ -135,7 +145,7 @@ include.routes({
 					
 					var view = $(e.currentTarget).data('view');
 					if (view){
-						w.routes.navigate(view);
+						window.routes.navigate(view);
 						return;
 					}
 					var navigate = $(e.currentTarget).data('navigate');
@@ -153,15 +163,10 @@ include.routes({
 		},
 	});
 
-	w.routes.add('/:view/?:category/?:anchor', function(current) {
-		w.viewsManager.show(current);
-	});
 
-	w.app = Compo.initialize(App, model, document.body);
+	window.app = Compo.initialize(App, model, document.body);
 
-	w.viewsManager.show(w.routes.current() || {
-		view: 'about'
-	});
+	window.viewsManager.show(currentRoute);
 
 
 

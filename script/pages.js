@@ -3,7 +3,9 @@
 	var pages = {
 		'about': {
 			title: 'About',
-			controller: 'about'
+			controller: 'about',
+			styles: 'about',
+			menuHidden: true
 		},
 		'feedback': {
 			title: 'Feedback'
@@ -69,15 +71,29 @@
 			}
 
 			var controller = '/script/controller/default.js',
-				template = String.format('/pages/libs/%1/%2.mask', id, id);
+				template = String.format('/pages/libs/%1/%2.mask', id, id),
+				styles;
 
 			if (info.controller){
 				controller = String.format('/pages/libs/#{controller}/#{controller}.js', info);
 			}
+			if (info.styles) {
+				var ext = DEBUG ? 'less' : 'css';
+				styles = String.format('/pages/libs/%1/%1.%2', info.styles, ext);
+			}
 
-			include.instance().js(controller + '::Controller').load(template + '::Template').done(function(resp){
-				callback(resp.Controller, resp.load.Template);
-			});
+			var res = include
+				.instance()
+				.js(controller + '::Controller')
+				.load(template + '::Template');
+				
+			if (info.styles) 
+				res.css(styles);
+			
+				
+			res.done(function(resp){
+					callback(resp.Controller, resp.load.Template);
+				});
 
 		}
 	}

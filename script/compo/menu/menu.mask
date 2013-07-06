@@ -14,8 +14,14 @@
 
 
 
-menu {
+menu.~[: menuHidden ? "hidden"] {
+	
+	.menu-show;
+	
 	scroller {
+		
+		.menu-logo >
+			img src='http://lorempixel.com/200/120/abstract';
 				
 		% each='menuModel' > section {
 			h3.~[class] > '~[title]'

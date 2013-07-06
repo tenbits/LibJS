@@ -3,10 +3,10 @@ include.load('default.mask').done(function(resp) {
 	mask.render(resp.load['default']);
 
 	window.DefaultController = Compo({
-		tagName: 'div',
-		attr: {
-			'class': 'view'
-		},
+		//tagName: 'div',
+		//attr: {
+		//	'class': 'view'
+		//},
 		compos: {
 			radio_sideMenu: 'compo: .side-menu',
 			radio_radioButtons: 'compo: .radioButtons'
@@ -36,6 +36,19 @@ include.load('default.mask').done(function(resp) {
 			}
 		},
 		
+		slots: {
+			'-tabChanged': function(sender, name){
+				
+				var $group = this.$.find('.group.-show'),
+					radio = $group.compo();
+					
+				if (radio) {
+					radio.setActive(name, false);
+				}
+				
+			}
+		},
+		
 		getCurrentTabName: function(){
 			var $active = this.$.find('.tabPanel > .active');
 			
@@ -62,6 +75,11 @@ include.load('default.mask').done(function(resp) {
 		
 			if ($sideMenu.length === 0)
 				return;
+		
+			if (!$sideMenu.compo().getActiveName()) 
+				return;
+			
+			
 			
 			var $group = $sideMenu.find('.group.-show');
 				
@@ -77,6 +95,8 @@ include.load('default.mask').done(function(resp) {
 				name = group.getList()[0];
 			}
 			
+			
+			
 			group.setActive(name);
 			
 			this
@@ -86,26 +106,6 @@ include.load('default.mask').done(function(resp) {
 			return true;
 		},
 		
-		tab: function(name) {
-			
-			var hasCategories;
-			
-			if (this.compos.sideMenu) {
-				this.compos.sideMenu.setActive(name);
-				
-				hasCategories = this.compos.sideMenu.has(name);
-			}
-			
-			
-			
-			var scroller = Compo.find(this, 'scroller');
-			if (scroller && (scroller = scroller.scroller)) {
-				scroller.scrollTo(0, 0);
-				scroller.refresh();
-			}
-
-		},
-
 		section: function(info) {
 			if (!info.category) {
 				info.category = this.defaultCategory || 'info';
@@ -119,14 +119,6 @@ include.load('default.mask').done(function(resp) {
 			window
 				.compos
 				.menu[hasSections ? 'blur' : 'focus']();
-
-			//var buttons = Compo.find(this, '.radioButtons');
-			//
-			//if (buttons) {
-			//	buttons.setActive(info.category);
-			//	this.tab(info.category);
-			//}
-
 
 			this.update(info);
 

@@ -10,15 +10,24 @@
 				if (route.category === 'download') 
 					this.find(':downloader').initialize();
 				
-				
 				this.super(route);
+			},
+			
+			activate: function(){
+				
+				window.compos.menu.blur();
+			},
+			
+			deactivate: function(){
+				
+				window.compos.menu.focus();
 			}
 		},
 		load: function(tag) {
 		
 		},
 		show: function(tag) {
-
+			//window.compos.menu.blur();
 		}
 	});
 

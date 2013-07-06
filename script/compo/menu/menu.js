@@ -10,6 +10,12 @@ include //
 			
 			window.compos.menu = this;
 		},
+		
+		events: {
+			'click: .menu-show': function(){
+				
+			}
+		},
 
         onRenderStart: function(model, cntx, container){
             // ..

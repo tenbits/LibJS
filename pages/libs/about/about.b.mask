@@ -1,126 +1,97 @@
 
-layout:view master='fullpage' {
+layout:view master='view' {
 
     
 
+    @content #tabs {
+        radioButtons{
+            button.active name='info' > 'Info'
+            button name='com' > 'COM'
+            button name='install' > 'Install'
+            button name='download' > 'Download'
+        }
+    }
+
     @content #content > .container.tabPanel{
-        .info.active {
-            
-            .-about-keyvisual > .content {
-                div style='
-                    font-size: 2em;
-                    line-height: 2em;
-                '
-                //> "['ᴧ:ᵻᴧ].js"
-                 {
-                    //span.-i-bracket > "["
-                    //span.-i-atma > "ᐲᒣᗑᐱ"
-                    span.-i-atma- > 'ATMA'
-                    //span.-i-bracket > "]"
-                    span.-i-js > ".js"
-                 }
-                
-                h4 style='padding-left: 50px;'
-                    > blockquote > '„Component Composition in HTML5 Application”'
-                    
-                button > a href='#/about/install' > 'Install'
-                
-            }
-            
-            .-about-content {
-            
+        div.info.active {
+            h4 > 'Component Composition in HTML5 Application without Javascript'
+
             div style='text-align:justify; padding-right: 15px;' {
                 div >
-                    "As we do not want to keep things tight together as one monolith framework,
-                    this Project is split into libraries, which cover all app layers of a modern, scalable and performant
-                    Node.js or HTML5 application.
-                    
                     "
+                    This is called a Project, to not keep things tight together as one monolith framework.
+                    Here are several
+                    "
+                    tt > "{frameworks / libraries / tools}"
+                    "
+                    , which gained to make your application more consistent
+                    and to reduce development time.
+
+                    At first, you should know, that everything is done with mobile performance in mind."
 
                 p > "Here are first steps to get acquainted with the project."
 
                 ol.about-list {
                      li {
-                        .about-title {
-                            a href='#class' > 'ClassJS'
-                        }
-                        .about-description {
-                            "[Business logic Layer]"
-                            br;
-                            "Class-Model Implementation with remote or local serialization/deserialization."
-                        }
+                        a href='#class' > 'ClassJS'
+                        "
+                            Class-Model Implementation for Business logic Layer with remote (via RESTful) or local
+                            (LocalStorage) serialization/deserialization. 
+                        "
                     }
                     
                     li {
-                        .about-title {
-                            a href='#mask' > 'MaskJS'
-                        }
-                        .about-description {
-                            "[HMVC]"
-                            br;
-                            "Mask has in its core newer css/sass alike syntax for your templates, which are parsed into
-                            MaskDOM and then Document Fragment is created. You can extend it with custom tag handlers (controllers),
-                            attributes, etc.  MaskJS contains also jMask, Compo and Bindings libraries,
-                            so that it accomplishes all tasks you would expect from a powerful Javascript Framework. It is also 
-                            Model agnostic, that means you can use raw objects for the models (Data-Centric) or use any class library,
-                            like ClassJS or others.
-                            "
-                        }
+                        a href='#mask' > 'MaskJS'
+                        "
+                        — HMVC Framework.
+                        "
+                        br;
+                        "Mask has in its core newer css/sass alike syntax for your templates, which are parsed into
+                        MaskDOM and then Document Fragment is created. You can extend it with custom tag handlers (controllers),
+                        attributes, etc.  MaskJS contains also jMask, Compo and Bindings libraries,
+                        so that it accomplishes all tasks you would expect from a powerful Javascript Framework. It is also 
+                        Model agnostic, that means you can use raw objects for the models (Data-Centric) or use any class library,
+                        like ClassJS or others.
+                        "
                     }
 
-
+                   
                     li {
-                        .about-title {
-                            a href='#include' > "IncludeJS"
-                        }
-                        .about-description {
-                            "[Resource Loader]"
-                            br;
-                            "Loads components, moduls, styles, templates. You will definitely think, 
-                            that we could use any loader out there, like RequireJS.
-                            But there was plenty of features, that we missed. And we hope, you will like them too.
-                            "
-                        }
-                    }
-                    
-                    li {
-                        .about-title {
-                            a href='#utest' > "UTest"
-                        }
-                        .about-description {
-                            "[Unit Testing and Test Driven Development]"
-                            br;
-                            "Tool, that will help you easily to create unit tests, and start developing in a TDD manner"
-                        }
+                        a href='http://github.com/tenbits/Compos' target='_blank' > "Compos"
+                        "
+                        — here are some wrappers of well known widgets.
+                        Some of them you may need rare, some of them may become integral part of MaskJS.
+                        Everything depends on your needs.
+                        "
                     }
 
                     li {
-                        .about-title {
-                            a href='#includeBuilder' > 'IncludeJS.Builder'
-                        }
-                        .about-description {
-                            "
-                            a big brother of IncludeJS. Combines all included resources.
-                            It also runs jshint, uglify, css-min and etc.
-                            "
-                        }
+                        a href='#include' > "IncludeJS"
+                        "
+                        — Resource Loader for your components, moduls, styles, templates. You will definitely think, 
+                        that we could use any loader out there, like RequireJS.
+                        But there was plenty of features, that we missed. And I hope, you will like them too.
+                        "
                     }
 
                     li {
-                        .about-title {
-                            a href='#mask-animation' > "Mask.Animation"
-                        }
-                        .about-description {
-                            "CSS3 Animation Library"
-                        }
+                        a href='#includeBuilder' > 'IncludeJS.Builder'
+                        "
+                        — a big brother of IncludeJS. Combines all included resources.
+                        It also runs jshint, uglify, css-min and etc.
+                        "
                     }
 
-                    //li {
-                    //    a href='#ruqq' > 'RuqqJS'
-                    //    "
-                    //    — contains some other helper classes, as routing, Array and Object utils, etc.
-                    //    "
-                    //}
+                    li {
+                        a href='#mask-animation' > "Mask.Animation" " — CSS3 Animation Library"
+                    }
+
+                    li {
+                        a href='#ruqq' > 'RuqqJS'
+                        "
+                        — contains some other helper classes, as routing, Array and Object utils, etc.
+                        "
+                    }
 
                    
                 }
@@ -167,7 +138,7 @@ layout:view master='fullpage' {
 
             }
 
-            }
+            h6;
         }
 
         div.com {

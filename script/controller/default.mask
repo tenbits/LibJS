@@ -1,14 +1,32 @@
 
+:template #footer {
+	footer {
+		.footer-left > '@ Made in Germany with Love'
+		.footer-right {
+			ul {
+				li > 'MIT'
+				li > 'Feedback'
+				li > '© niob'
+			}
+		}
+	}
+}
+
 layout:master #viewFull {
+	.view > scroller.maximized > .scroller-content > @placeholder #content;
+}
 
-
-		scroller.maximized > @placeholder #content;
-
-
+layout:master #fullpage {
+	.view.fullpage > scroller.fullpage {
+		.scroller-content > @placeholder #content;
+		
+		:import #footer;
+	}
 }
 
 layout:master #view {
-
+	
+	.view {
 		header {
 			.header-content {
 				.title style='float:right; text-align:right;' {
@@ -25,13 +43,20 @@ layout:master #view {
 					> @placeholder;
 			
 				:animation #show {
-					'transform | translateX(100%) > translateX(0%) | 200ms ease-in'
+					'transform | translateX(250px) > translateX(0px) | 200ms ease-in'
+				}
+				
+				:animation #hide {
+					'transform | translateX(0px) > translateX(250px) | 200ms ease-in'
 				}
 			}
 		}
 		
-		scroller {
-			@placeholder #content;
+		scroller #test dtop=-50 {
+			.scroller-content > @placeholder #content;
+			
+			:import #footer;
 		}
-
+		
+	}
 }

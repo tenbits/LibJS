@@ -24,7 +24,17 @@ layout:view master='view' {
                     % each='list' >
                         .side-menu-item name='~[name]'
                                 > '~[title]'
-                        
+                                
+        :radio .group name='syntax' {
+            .side-menu-item name='tags' > 'Tags'
+            .side-menu-item name='literals' > 'Literals'
+            .side-menu-item name='values' > 'Values'
+            .side-menu-item name='expressions' > 'Expressions'
+            .side-menu-item name='utils' > 'Utils'
+            .side-menu-item name='comments' > 'Comments'
+        }
+        
+       
         
     }
 
@@ -127,90 +137,121 @@ layout:view master='view' {
             }
             
             .syntax data-name='syntax' {
-                h3 > 'Tags'
-                p {
-                    h5 > 'Tag Declaration'
-                    prism > 'tag#id.class{0,} key=[\'"]value[\'"]{0,}'
-                    div.hint > 'Syntax Similar to SASS/Zen Coding'
-                    div.hint > 'Starting from version .5.1 Tag Name can be omitted if class or id declaration is used. Tag Name will be then "div"'
-                    h5 > 'Tags Items'
-                    table style='margin-left:30px;'  {
-                        tr { td > '«;»' td > ' — close tag, if it has no content' }
-                        tr { td > '«>»' td > ' — if it has only one item (tag or literal)' }
-                        tr { td > '«{»' td > ' — if it has one or more items. Then close it with «}».' }
-                    }
-                    p > 'And the content itself is other tags or literals'
-                }
-
-                h3 > 'Literals'
-                p {
-                    h5 > 'Like Javascript strings'
-                    prism > '"Text Node Content"'
-                    prism > "'Text Node Content'"
-                    prism > "'I\'am a quote in literal, and should be escaped as in javascript string'"
-                    .hint {
-                        'If a template is defined in javascript string, then to escape a quote you need to escape the slash also '
-                        'Different quote escaping examples:'
-                        div > prism > ""| var a = "div > ' I\\'am a quote '"; |""
-                        div > prism > ""| var a = "div > \" I\\\"am a quote \""; |""
-                        div > prism > ""| var a = "div > ' I\\\"am a quote '"; |""
-                    }
-
-                    h5 > 'Block Literals'
-
-                    div > code > "''| text |'' "
-                    div > code > '""| text |"" '
-
-
-                    div > 'This allows to write any number of any quotes in literals without the need to escape it.
-                        (But remember about javascript string quote escaping.)'
-                    prism > " ''| Block - can have any amount of quotes \"'\" |'' "
-                }
-
-                h3 > 'Template Values'
-                p {
-                    h5 > 'Values'
-                    prism { '~' '[propertyName.andChainingAlsoPossible]' }
-                    div > small {
-                        '! Mask Default interpolation quotes were changed from #{ } to ~''[ ]. For fallback use:'
-                        code > 'mask.setInterpolationQuotes("#{","}")'
-                    }
-
-                    .hint > 'Property values are resolved from a model only and it is much faster then expressions'
-
-                    h5 > 'Template Value Expressions'
-                    prism { '~' '[:index > 10 ? property : "Some other string"]' }
-                    prism { '~' '[:controllerFunction(user) + "!"]' }
-                    prism { '~' '[: username.toLowerCase() + "!" ]' }
-
-                    .hint {
-                        div > 'Mask uses internal and very fast expression parser / evaluater'
-                        p {
-                            'Variable/Function lookup:'
-                            ol {
-                                li > 'model'
-                                li > 'context'
-                                li > 'controller'
-                                li > 'parents controller'
-                                li > ' .. up in controllers tree'
+                :tabs #tabs-syntax scrollbar {
+                    @panels {
+                        div name='tags' {
+                            h3 > 'Tags'
+                            p {
+                                h5 > 'Declaration'
+                                prism > formatter:pre > '
+                                    tag#id.class
+                                    span
+                                    span.title
+                                    .content
+                                    #content
+                                '
+                                .hint > 'Tag Name can be omitted if class or id is used. Tag Name will be then "div"'
+                                
+                                h5 > 'Attributes'
+                                prism > formatter:pre > '
+                                    tag key=\'value\' ...
+                                    tag key="value" ...
+                                    tag key=value ...
+                                    tag key = value ...
+                                '
+                                .hint > 'Quotes could be omitted if value itself contains no spaces'
+                                
+                                h5 > 'Content'
+                                table style='margin-left:30px;'  {
+                                    tr { td > '«;»' td > ' — close tag, if it has no content' }
+                                    tr { td > '«>»' td > ' — if it has only one item (tag or literal)' }
+                                    tr { td > '«{»' td > ' — if it has one or more items. Then close it with «}».' }
+                                }
+                                p > 'And the content itself is other tags or literals'
                             }
                         }
+        
+                        div name='literals' {
+                            h3 > 'Literals'
+                            p {
+                                h5 > 'Like Javascript strings'
+                                prism > '"Text Node Content"'
+                                prism > "'Text Node Content'"
+                                prism > "'I\'am a quote in literal, and should be escaped as in javascript string'"
+                                .hint {
+                                    'If a template is defined in javascript string, then to escape a quote you need to escape the slash also '
+                                    'Different quote escaping examples:'
+                                    div > prism > ""| var a = "div > ' I\\'am a quote '"; |""
+                                    div > prism > ""| var a = "div > \" I\\\"am a quote \""; |""
+                                    div > prism > ""| var a = "div > ' I\\\"am a quote '"; |""
+                                }
+            
+                                h5 > 'Block Literals'
+            
+                                div > code > "''| text |'' "
+                                div > code > '""| text |"" '
+            
+            
+                                div > 'This allows to write any number of any quotes in literals without the need to escape it.
+                                    (But remember about javascript string quote escaping.)'
+                                prism > " ''| Block - can have any amount of quotes \"'\" |'' "
+                            }
+                        }
+                         
+                        div name='values' {   
+                            h3 > 'Template Values'
+                            prism { '~' '[propertyName.andChainingAlsoPossible]' }
+                            div > small {
+                                'To change interpolation quotes use: '
+                                code > 'mask.setInterpolationQuotes("#{","}")'
+                            }
+                            
+                            .hint > '! Data is resolved from a model object only, as opposed to "expressions"'
+                        }
+                        
+                        div name='expressions'{
+                            h3 > 'Template Value Expressions'
+                            prism { '~' '[:index > 10 ? property : "Some other string"]' }
+                            prism { '~' '[:controllerFunction(user) + "!"]' }
+                            prism { '~' '[: username.toLowerCase() + "!" ]' }
+        
+                            .hint {
+                                div > 'Mask uses internal and very fast expression parser / evaluater'
+                                p {
+                                    'Variable/Function lookup:'
+                                    ol {
+                                        li > 'model'
+                                        li > 'context'
+                                        li > 'controller'
+                                        li > 'parents controller'
+                                        li > ' .. up in controllers tree'
+                                    }
+                                }
+                            }
+                        }
+                        
+                        div name='utils' {
+                            h3 > 'Template Value Utilities'
+                            'Template Values Can be Transformed before inserting'
+                            prism {
+                                '~' '[utilityName:data]'
+                            }
+                            div.hint {
+                                a href='#/mask/api/Mask/registerUtility' > '@see mask.registerUtility'
+                            }
+        
+                        }
+                    
+                        
+                        div name='comments' {
+                            h3 > 'Comments'
+                            p{
+                                'Single Line Comments'
+                                prism > '// this is comment'
+                            }
+                            
+                        }
                     }
-
-                    h5 > 'Template Value Utilities'
-                    'Template Values Can be Transformed before inserting'
-                    prism {
-                        '~' '[utilityName:data]'
-                    }
-                    div.hint {
-                        a href='#/mask/api/registerUtility' > '@see mask.registerUtility'
-                    }
-
-                }
-                h3 > 'Comments'
-                p{
-                    'Single Line Comments'
-                    prism > '// this is comment'
                 }
             }
             .api data-name='api'{
@@ -225,12 +266,12 @@ layout:view master='view' {
                         prism language=markup > '<div></div>'
                     }
                     li {
-                        prism language=css > '.class#id.other'
+                        prism language=css > '.class#id.other;'
                         prism language='markup' > '<div id="id" class="class other"></div>'
                     }
                     li {
-                        prism language=css > '.class#id.other;'
-                        prism language='markup' > '<div id="id" class="class other"></div>'
+                        prism language=css > 'span #id .class.other;'
+                        prism language='markup' > '<span id="id" class="class other"></span>'
                     }
                     li {
                         prism language=css > 'div data-key=value > "hi";'

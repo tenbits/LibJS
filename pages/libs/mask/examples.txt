@@ -3,11 +3,15 @@ title:
 Simple
 ----
 template:
-div.simple style="background:#6BA43C; color:#1E5043;" > "~[text]"
+div style='
+    background:rgb(61, 155, 68);
+    color: LightGreen ;
+    ' >
+        '~[text]'
 ----
 javascript:
-var x = {text: "Hello, World!"};
-mask.render(template, x);
+var model = { text: "Hello, World!" };
+mask.render(template, model);
 ----
 ====
 title:
@@ -21,7 +25,7 @@ h4 > 'Flowers:'
 }
 ----
 javascript:
-var x = {
+var model = {
     flowers: [{
         url: 'images/flowers/Lilie.png', name: 'Lily'
     }, {
@@ -30,11 +34,11 @@ var x = {
         url: 'images/flowers/Rose.png', name: 'Rose'
     }]
 };
-mask.render(template, x);
+mask.render(template, model);
 ----
 ====
 title:
-Custom Control - jmask Dom Builder
+Component
 ----
 template:
 h4 > 'Should we repeat?' flowers;
@@ -43,7 +47,7 @@ javascript:
 /** create custom Control: */
 mask.registerHandler('flowers', Compo({
     constructor: function(){
-        this.flowers = [{
+        this.model = [{
             url: 'images/flowers/Lilie.png', name: 'Lily'
         }, {
             url: 'images/flowers/Nelke.png', name: 'Clove'
@@ -52,7 +56,6 @@ mask.registerHandler('flowers', Compo({
         }];
     },
     renderStart: function(model, cntx, container){
-        this.model = this.flowers;
         this.nodes = jmask("div > % each='.'");
 
         this.nodes

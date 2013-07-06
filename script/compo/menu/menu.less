@@ -1,9 +1,9 @@
 
 @import "style/lesshat.less";
+@import "style/global.less";
 
 
 menu {
-	
 	.box-sizing(border-box);
 	//.box-shadow(inset -5px 0px 10px #000);
 	border-right: 1px solid rgba(0, 0, 0, 0.5);
@@ -18,7 +18,7 @@ menu {
 	margin:0px;
 	padding:0px;
     
-	z-index: 99;
+	z-index: 101;
 
     //background:#2D2C2B url('/images/low_contrast_linen.png') 0 0 repeat;
 	//color:rgb(240,245,240);
@@ -39,21 +39,31 @@ menu.hidden {
 	.translateX(-250px);
 }
 
-xmenu.hidden > .scroller{
-	//.rotateY(45deg);
-	.transform(~"translateX(-10px) scale(.9)");
+menu > .menu-show {
+	opacity: 0;
+	width: 32px;
+	height: 32px;
+	background: url('/images/ico/menu.png') center center no-repeat;
+	
+	position: absolute;
+	
+	right: -40px;
+	top: 10px;
+	.transition(~"opacity 500ms");
 	
 	pointer-events: none;
-	opacity: .5;
-	overflow: hidden;
-	
 }
+menu.hidden > .menu-show {
+	cursor: pointer;
+	opacity: 1;
+}
+
 
 menu.closed {
 	-webkit-transform: perspective(400) rotateY(90deg);
 }
 
-.menu-help:after{
+.menu-help:after {
     content:' ';
     position:absolute;
     right: -3px;
@@ -76,9 +86,14 @@ menu > .scroller {
 	> .scroller-container {
 		-webkit-transform: translateZ(0px);
 		
-	   padding: 0px 40px;
+	   padding: 0px;
    }
 	
+}
+
+.menu-logo {
+	padding-top: 15px;
+	text-align: center;
 }
 
 
@@ -162,7 +177,7 @@ menu .selected {
    width: 100%;
    padding: 0 2px;
    color: #fff;
-   background: #3D9B44;
+   background: @color_Selected;
    
    .transform-origin(50% 0%);
    .transform(translate3d( 0px, 105%, 0px ) rotateX( -90deg ));
@@ -170,7 +185,7 @@ menu .selected {
  }
  .roll-link:hover span {
    color: grey;
-   background: #3D9B44;
+   background: @color_Selected;
    
    .transform(translate3d( 0px, 0px, -30px ) rotateX( 90deg ));
  }

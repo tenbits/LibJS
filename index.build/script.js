@@ -8084,6 +8084,9 @@ include.setCurrent({
             }
             array.splice(index, 1);
         }
+        function arr_isArray(x) {
+            return null != x && "object" === typeof x && null != x.length && "function" === typeof x.slice;
+        }
         var arr_unique = function() {
             var hasDuplicates = false;
             function sort(a, b) {
@@ -8261,7 +8264,7 @@ include.setCurrent({
             add: function(mix) {
                 var i, length;
                 if ("string" === typeof mix) mix = _mask_parse(mix);
-                if (mix instanceof Array) {
+                if (arr_isArray(mix)) {
                     for (i = 0, length = mix.length; i < length; i++) this.add(mix[i]);
                     return this;
                 }
@@ -9822,16 +9825,16 @@ include.setCurrent({
     }
 })(this, function(global, mask) {
     "use strict";
-    var el = document.createElement("div"), prfx = function() {
-        if ("transform" in el.style) return "";
-        if ("webkitTransform" in el.style) return "webkit";
-        if ("MozTransform" in el.style) return "Moz";
-        if ("OTransform" in el.style) return "O";
-        if ("msTransform" in el.style) return "ms";
+    var style = document.createElement("div").style, prfx = function() {
+        if ("transform" in style) return "";
+        if ("webkitTransform" in style) return "webkit";
+        if ("MozTransform" in style) return "Moz";
+        if ("OTransform" in style) return "O";
+        if ("msTransform" in style) return "ms";
         return "";
     }(), supportTransitions = function() {
         var array = [ "transition", "webkitTransition", "MozTransition", "OTransition", "msTransition" ];
-        for (var i = 0, x, imax = array.length; i < imax; i++) if (array[i] in el.style) return true;
+        for (var i = 0, x, imax = array.length; i < imax; i++) if (array[i] in style) return true;
         return false;
     }(), vendorPrfx = prfx ? "-" + prfx.toLowerCase() + "-" : "", getTransitionEndEvent = function() {
         var el = document.createElement("div"), transitions = {
@@ -9841,7 +9844,7 @@ include.setCurrent({
             MozTransition: "transitionend",
             WebkitTransition: "webkitTransitionEnd"
         }, event = null;
-        for (var t in transitions) if (void 0 !== el.style[t]) {
+        for (var t in transitions) if (void 0 !== style[t]) {
             event = transitions[t];
             break;
         }
@@ -9857,6 +9860,7 @@ include.setCurrent({
         timing: vendorPrfx + "transition-timing-function",
         delay: vendorPrfx + "transition-delay"
     };
+    var env_isMoz = "MozTransition" in style;
     var TransformModel = function() {
         var regexp = /([\w]+)\([^\)]+\)/g;
         function extract(str) {
@@ -10079,6 +10083,7 @@ include.setCurrent({
                 startCss[vendorPrfx + "transition"] = "none";
                 var style = this.element.style, element = this.element;
                 if (null != startCss) for (var key in startCss) style.setProperty(key, startCss[key], "");
+                if (true === env_isMoz) getComputedStyle(element).width;
                 setTimeout(function() {
                     var fire;
                     for (var key in css) {
@@ -12604,93 +12609,154 @@ include.setCurrent({
 
 include.css();
 
-mask.registerHandler(":tabs", mask.Compo({
-    tagName: "div",
-    attr: {
-        "class": "-tabs"
-    },
-    _children: function($children) {
-        if (0 === $children.length) return jmask();
-        while (1) {
-            if (1 !== $children.length) break;
-            if ($children[0].type === mask.Dom.NODE) break;
-            if ($children[0].controller && $children[0].controller.prototype.tagName) break;
-            $children = $children.children();
-        }
-        return $children;
-    },
-    _items: function(type) {
-        var klass = ".-tab-" + type;
-        if (null == this.$) {
-            var $children = jmask(this).children(klass).children();
-            return this._children($children);
-        }
-        return this.$.find(klass);
-    },
-    _getHeaders: function() {},
-    renderStart: function() {
-        var $this = jmask(this), $panels = $this.children("@panels"), $header = $this.children("@header");
-        $panels.tag("div").addClass("-tab-panels");
-        $header.tag("div").addClass("-tab-headers");
-        var x = this._children($panels.children());
-        if (0 === x.length) {
-            console.error("[:tabs] > has no panels");
-            debugger;
-        }
-        x.addClass("-tab-panel -hidden");
-        this._children($header.children()).addClass("-tab-header -hidden");
-    },
-    onRenderEnd: function() {
-        var $headers = this.$.find(".-tab-header");
-        if (0 === $headers.length) return;
-        var that = this;
-        $headers.on("click", function(event) {
-            var $this = $(event.currentTarget);
-            if ($this.hasClass("active")) return;
-            var name = $this.attr("name");
-            that.setActive(name);
-            that.$.trigger("change", event.currentTarget);
-        });
-    },
-    animate: function(type, panel) {
-        if (null === panel) return;
-        var animation;
-        for (var i = 0, x, imax = this.components.length; i < imax; i++) {
-            x = this.components[i];
-            if (":animation" === x.compoName && type === x.attr.id) {
-                animation = x;
-                break;
-            }
-        }
-        if (null == animation) return;
-        animation.start(null, panel);
-    },
-    setActive: function(name) {
-        var $panels = this._items("panel"), $headers = this._items("header");
-        var $panel = $panels.filter('[name="' + name + '"]');
-        if ($panel.hasClass("-show")) return;
-        $panels.removeClass("-show");
-        $panel.addClass("-show");
-        this.animate("show", $panel.get(0));
-        $headers.removeClass("-show").children('[name="' + name + '"]').addClass("active");
-    },
-    has: function(name) {
-        return 0 !== this._items("panel").filter('[name="' + name + '"]').length;
-    },
-    getActiveName: function() {
-        return this.$.find(".-tab-panel.-show").attr("name");
-    },
-    getList: function() {
-        var array = [];
-        this._items("panel").each(function($x) {
-            var name = $x.name;
-            if (!name) name = $x.attr && $x.attr.name;
-            if (!name) debugger;
-            array.push(name);
-        });
-        return array;
+(function() {
+    function child_resolve(child) {
+        if (child.type === mask.Dom.NODE) return child;
+        if (child.controller && child.controller.prototype.tagName) return child;
+        var $col = jmask(), $children = jmask(child).children(), imax = $children.length, i = 0;
+        for (;i < imax; i++) $col.add(child_resolve($children[i]));
+        return $col;
     }
-}));
+    mask.registerHandler(":tabs", mask.Compo({
+        tagName: "div",
+        attr: {
+            "class": "-tabs"
+        },
+        _children: function($children) {
+            var $coll = jmask();
+            if (0 === $children.length) return $coll;
+            for (var i = 0, x, imax = $children.length; i < imax; i++) $coll.add(child_resolve($children[i]));
+            return $coll;
+        },
+        _items: function(type) {
+            var klass = ".-tab-" + type;
+            if (null == this.$) {
+                var $children = jmask(this).children(klass).children();
+                return this._children($children);
+            }
+            return this.$.find(klass);
+        },
+        _getHeaders: function() {},
+        renderStart: function() {
+            if (this.attr.scrollbar) this.attr["class"] += " scrollbar";
+            var $this = jmask(this), $panels = $this.children("@panels"), $header = $this.children("@header");
+            $panels.tag("div").addClass("-tab-panels");
+            $header.tag("div").addClass("-tab-headers");
+            var x = this._children($panels.children());
+            if (0 === x.length) {
+                console.error("[:tabs] > has no panels");
+                debugger;
+            }
+            x.addClass("-tab-panel -hidden");
+            this._children($header.children()).addClass("-tab-header -hidden");
+        },
+        onRenderEnd: function() {
+            if (this.attr.scrollbar) {
+                this.scroller = this.closest("scroller");
+                this.scroller.on("scroll", "", this._scrolled.bind(this));
+            }
+            var $headers = this.$.find(".-tab-header");
+            if (0 === $headers.length) return;
+            var that = this;
+            $headers.on("click", function(event) {
+                var $this = $(event.currentTarget);
+                if ($this.hasClass("active")) return;
+                var name = $this.attr("name");
+                that.setActive(name);
+                that.$.trigger("change", event.currentTarget);
+            });
+        },
+        animate: function(type, panel, callback) {
+            if (null == panel) return;
+            var animation = this._getAnimation(type);
+            if (null == animation) return;
+            animation.start(callback, panel);
+        },
+        _getAnimation: function(ani) {
+            var animation;
+            for (var i = 0, x, imax = this.components.length; i < imax; i++) {
+                x = this.components[i];
+                if (":animation" === x.compoName && ani === x.attr.id) {
+                    animation = x;
+                    break;
+                }
+            }
+            return animation;
+        },
+        _hide: function($el) {
+            if (!$el.length) return;
+            if (!this._getAnimation("hide")) {
+                $el.removeClass("-show");
+                return;
+            }
+            this.animate("hide", $el[0], function() {
+                $el.removeClass("-show");
+            });
+        },
+        _show: function($el) {
+            if (!$el.length) {
+                this._activeName = "";
+                return;
+            }
+            $el.addClass("-show");
+            this.animate("show", $el[0]);
+        },
+        _scrolled: function(top, left) {
+            var scrollTop = this.scroller.$[0].scrollTop + (this.attr.dtop << 0);
+            var $panels = this.$.children(".-tab-panels").children(), min = null, $el = null;
+            for (var i = 0, x, imax = $panels.length; i < imax; i++) {
+                x = $panels[i];
+                if (null == min) {
+                    min = scrollTop - x.offsetTop;
+                    $el = x;
+                    continue;
+                }
+                if (Math.abs(x.offsetTop - scrollTop) < min) {
+                    min = scrollTop - x.offsetTop;
+                    $el = x;
+                }
+            }
+            var name = $el.getAttribute("name");
+            if (name && this._activeName !== name) {
+                this._activeName = name;
+                this.emitOut("-tabChanged", name);
+            }
+        },
+        _scrollInto: function($el) {
+            this.scroller.scroller.scrollToElement($el[0]);
+        },
+        _activeName: null,
+        setActive: function(name) {
+            if (this._activeName === name) return;
+            this._activeName = name;
+            var $panels = this._items("panel"), $headers = this._items("header");
+            var $panel = $panels.filter('[name="' + name + '"]');
+            if ($panel.hasClass("-show")) return;
+            this._hide($panels.filter(".-show"));
+            this._show($panel);
+            if (this.attr.scrollbar) this._scrollInto($panel);
+            $headers.removeClass("-show").children('[name="' + name + '"]').addClass("active");
+        },
+        has: function(name) {
+            return 0 !== this._items("panel").filter('[name="' + name + '"]').length;
+        },
+        getActiveName: function() {
+            return this._activeName;
+        },
+        getList: function() {
+            var array = [], $panels = this._items("panel"), name;
+            for (var i = 0, $x, imax = $panels.length; i < imax; i++) {
+                $x = $panels[i];
+                name = null;
+                if ($x.getAttribute) name = $x.getAttribute("name");
+                if (!name) name = $x.attr && $x.attr.name;
+                if (!name) debugger;
+                array.push(name);
+            }
+            return array;
+        }
+    }));
+})();
 
 include.getResource("/.reference/libjs/compos/tabs/lib/tabs.js", "js").readystatechanged(3);
 
@@ -12756,19 +12822,38 @@ mask.registerHandler(":radio", mask.Compo({
         renderStart: function(model, container, cntx) {
             this.animateDismiss = 0;
             jmask(this).tag("div").addClass("scroller").children().wrapAll(".scroller-container");
+            var that = this;
             this.scroller = {
-                refresh: function() {},
+                refresh: function() {
+                    that.inserted = true;
+                    var dfr = that.deferred;
+                    that.deferred = null;
+                    if (dfr) {
+                        var fn = dfr[0], args = dfr[1];
+                        setTimeout(function() {
+                            that.scroller[fn].apply(that, args);
+                        }, 0);
+                    }
+                },
                 scrollToElement: function(element) {
-                    var scrollTo = $(element), container = this.$;
-                    container.scrollTop(scrollTo.offset().top - container.offset().top + container.scrollTop());
-                }.bind(this),
+                    if (true !== that.inserted) {
+                        that.deferred = [ "scrollToElement", [ element ] ];
+                        return;
+                    }
+                    var scrollTo = $(element), container = that.$, scrollTop = scrollTo.offset().top - container.offset().top + container.scrollTop() + (that.attr.dtop << 0);
+                    container.scrollTop(scrollTop);
+                },
                 scrollTo: function(x, y) {
-                    this.animateDismiss = 1;
-                    this.$.scrollTop(y);
-                    this.$.scrollLeft(x);
-                }.bind(this)
+                    that.animateDismiss = 1;
+                    that.$.scrollTop(y);
+                    that.$.scrollLeft(x);
+                }
             };
             return this;
+        },
+        _defer: function(fn, args) {
+            if (null == this.deferred) this.deferred = [];
+            this.deferred.push([ fn, args ]);
         },
         onRenderEnd: function() {
             var that = this;
@@ -12786,7 +12871,9 @@ include.setCurrent({
     var pages = {
         about: {
             title: "About",
-            controller: "about"
+            controller: "about",
+            styles: "about",
+            menuHidden: true
         },
         feedback: {
             title: "Feedback"
@@ -12841,9 +12928,15 @@ include.setCurrent({
                 console.error("No Page with ID:", id);
                 return;
             }
-            var controller = "/script/controller/default.js", template = String.format("/pages/libs/%1/%2.mask", id, id);
+            var controller = "/script/controller/default.js", template = String.format("/pages/libs/%1/%2.mask", id, id), styles;
             if (info.controller) controller = String.format("/pages/libs/#{controller}/#{controller}.js", info);
-            include.instance().js(controller + "::Controller").load(template + "::Template").done(function(resp) {
+            if (info.styles) {
+                var ext = false ? "less" : "css";
+                styles = String.format("/pages/libs/%1/%1.%2", info.styles, ext);
+            }
+            var res = include.instance().js(controller + "::Controller").load(template + "::Template");
+            if (info.styles) res.css(styles);
+            res.done(function(resp) {
                 callback(resp.Controller, resp.load.Template);
             });
         }
@@ -13485,7 +13578,7 @@ include.getResource("/script/downloader/downloader.js", "js").readystatechanged(
             var $menu = $(document.getElementsByTagName("menu"));
             $menu.find(".selected").removeClass("selected");
             $menu.find('[data-view="' + info.view + '"]').addClass("selected");
-            var compo = Compo.find(this, info.view + "View");
+            var compo = this.find(info.view + "View");
             if (null == compo) {
                 this.$.children(".active").removeClass("active");
                 this.load(info);
@@ -13496,6 +13589,7 @@ include.getResource("/script/downloader/downloader.js", "js").readystatechanged(
         performShow: function(compo, info, callback) {
             compo.section(info);
             if (compo == currentCompo) return;
+            if (currentCompo) currentCompo.deactivate && currentCompo.deactivate();
             currentCompo = compo;
             if (this.$) {
                 callback && callback();
@@ -13576,10 +13670,6 @@ include.setCurrent({
 include.load("default.mask").done(function(resp) {
     mask.render(resp.load["default"]);
     window.DefaultController = Compo({
-        tagName: "div",
-        attr: {
-            "class": "view"
-        },
         compos: {
             radio_sideMenu: "compo: .side-menu",
             radio_radioButtons: "compo: .radioButtons"
@@ -13598,6 +13688,12 @@ include.load("default.mask").done(function(resp) {
                 window.routes.navigate(path);
             }
         },
+        slots: {
+            "-tabChanged": function(sender, name) {
+                var $group = this.$.find(".group.-show"), radio = $group.compo();
+                if (radio) radio.setActive(name, false);
+            }
+        },
         getCurrentTabName: function() {
             var $active = this.$.find(".tabPanel > .active");
             return $active.data("name");
@@ -13611,6 +13707,7 @@ include.load("default.mask").done(function(resp) {
         showSection: function(name) {
             var $sideMenu = this.$.find(".side-menu");
             if (0 === $sideMenu.length) return;
+            if (!$sideMenu.compo().getActiveName()) return;
             var $group = $sideMenu.find(".group.-show");
             if (0 === $group.length) return;
             var groupName = $group.attr("name"), group = $group.compo();
@@ -13618,18 +13715,6 @@ include.load("default.mask").done(function(resp) {
             group.setActive(name);
             this.compos["tabs" + groupName].setActive(name);
             return true;
-        },
-        tab: function(name) {
-            var hasCategories;
-            if (this.compos.sideMenu) {
-                this.compos.sideMenu.setActive(name);
-                hasCategories = this.compos.sideMenu.has(name);
-            }
-            var scroller = Compo.find(this, "scroller");
-            if (scroller && (scroller = scroller.scroller)) {
-                scroller.scrollTo(0, 0);
-                scroller.refresh();
-            }
         },
         section: function(info) {
             if (!info.category) info.category = this.defaultCategory || "info";
@@ -13804,6 +13889,9 @@ include.load("menu.mask::Template").done(function(resp) {
         constructor: function() {
             window.compos.menu = this;
         },
+        events: {
+            "click: .menu-show": function() {}
+        },
         onRenderStart: function(model, cntx, container) {},
         onRenderEnd: function(elements, cntx, container) {},
         focus: function() {
@@ -13838,9 +13926,15 @@ include.routes({
     controller: [ "default" ],
     appcompo: [ "menu" ]
 }).ready(function() {
-    var w = window;
+    routes.add("/:view/?:category/?:anchor", function(current) {
+        window.viewsManager.show(current);
+    });
+    var currentRoute = routes.current() || {
+        view: "about"
+    }, pageInfo = Page.getInfo(currentRoute.view);
     window.compos = {};
     window.model = {
+        menuHidden: pageInfo.menuHidden,
         menuModel: [ {
             title: "About",
             items: [ {
@@ -13932,7 +14026,7 @@ include.routes({
                 "click: .viewTitle": function(e) {
                     var view = $(e.currentTarget).data("view");
                     if (view) {
-                        w.routes.navigate(view);
+                        window.routes.navigate(view);
                         return;
                     }
                     var navigate = $(e.currentTarget).data("navigate");
@@ -13947,13 +14041,8 @@ include.routes({
             } ]
         }
     });
-    w.routes.add("/:view/?:category/?:anchor", function(current) {
-        w.viewsManager.show(current);
-    });
-    w.app = Compo.initialize(App, model, document.body);
-    w.viewsManager.show(w.routes.current() || {
-        view: "about"
-    });
+    window.app = Compo.initialize(App, model, document.body);
+    window.viewsManager.show(currentRoute);
     if ("msie" == ruqq.info.browser.name) {
         var version = parseFloat(ruqq.info.browser.version);
         if (version <= 8) {

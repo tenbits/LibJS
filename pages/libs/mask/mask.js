@@ -4,7 +4,8 @@ include.load(['examples.txt::Source','examples.mask::Template']).done(function(r
 		Base: window.DefaultController,
 		
 		compos : {
-			tabsexamples: 'compo: #tabs-examples'
+			tabsexamples: 'compo: #tabs-examples',
+			tabssyntax: 'compo: #tabs-syntax',
 		},
 		
 		Override: {

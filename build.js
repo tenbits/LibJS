@@ -14,7 +14,11 @@ global.config = {
 		version: '1.1',
 		minify: false
 	},
-	
+	'build less': {
+		action: 'custom',
+		script: 'tools/less-convert.js',
+		src: 'pages/**.less'
+	},
 	'libs': [{
 		action: 'copy',
 		files: {
@@ -45,7 +49,7 @@ global.config = {
 	}],
 
 	
-	'defaults': ['build']
+	'defaults': ['build', 'build less']
 };
 
 

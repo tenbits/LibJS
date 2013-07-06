@@ -52,7 +52,7 @@ include.js({
 					console.error('Cannt be loaded', name);
 					return;
 				}
-
+				
 
 				this.performShow(compo, info);
 			}.bind(this));
@@ -67,7 +67,7 @@ include.js({
 
 
 
-			var compo = Compo.find(this, info.view + 'View');
+			var compo = this.find(info.view + 'View');
 			if (compo == null) {
 				this.$.children('.active').removeClass('active');
 				this.load(info);
@@ -83,6 +83,10 @@ include.js({
 			if (compo == currentCompo) {
 				return;
 			}
+			
+			if (currentCompo)
+				currentCompo.deactivate && currentCompo.deactivate();
+				
 
 			currentCompo = compo;
 
