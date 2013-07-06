@@ -1,0 +1,79 @@
+
+layout:view master='view' {
+
+      @content #tabs {
+        radioButtons{
+            button name='install' > 'Install'
+            button name='download' > 'Download'
+        }
+    }
+    
+
+    @content #content > .container.tabPanel{
+
+        .install {
+            ol {
+                li {
+                    'Install nodejs environment'
+                    div > code > a href='http://nodejs.org' target=_blank > 'NodeJS > Download'
+                    div > code > a href='http://yuilibrary.com/yui/docs/tutorials/git/' target=_blank > 'GIT'
+                    div > code > a href='http://www.python.org/getit/releases/2.7.4/' target=_blank> 'Python'
+                    div >
+                        code >
+                            a
+                                href='http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-products'
+                                target=_blank
+                                    > '(Windows) C++ Compiler'
+                }
+                
+                li {
+                    'Install IncludeJS'
+                    div > code > '$ npm install includejs'
+
+                    .hint {
+                        'test: ' code > 'ijs --help'
+                    }
+                }
+                li {
+                    'Install LibJS Libraries'
+                    div > code > '$ cd c:/anyfolder/to/save/libjs_libraries'
+                    div > code > '$ ijs git-clone libjs'
+                    .hint {
+                        'test: ' code > 'ijs globals'
+                        p > 'Should contain in projects.libjs.path = "file:///c:/anyfolder/to/save/libjs_libraries"'
+                    }
+                }
+                li {
+                    h5 > 'Template Project'
+
+                    div > code > '$ cd c:/any/temp/folder'
+                    div > code > '$ ijs template starter'
+
+                    .hint {
+                        'In some case to create symbolic links to installed libjs you have run this command with admin. rights'
+                    }
+                    .hint {
+                        'test: ' code > 'ijs server index.dev.html'
+                        p > 'Page should be opened, or navigate to http://localhost:5777/index.dev.html'
+                        p > 'If you see some text on the page, then everything was successfully installed'
+                    }
+                }
+
+                li {
+                    h5 > 'Todo MVC'
+                    div > code > '$ cd c:/any/temp/folder'
+                    div > code > '$ ijs template todoapp'
+
+                    p {
+                        'Play around with small todo app, to see maskjs/includejs in work'
+                    }
+                }
+            }
+        }
+        
+        .download >
+            :downloader;
+        
+    }
+
+}

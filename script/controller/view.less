@@ -152,14 +152,21 @@
 		 -webkit-transform: translateZ(0px);
 		 
 		> .scroller-content {
+			.box-sizing(border-box);
 			max-width: @pageMaxWidth;
 			margin: 0 auto;
+			
+			padding:{
+				left: 20px;
+				right: 5px;
+			}
 		}
 	}
 }
 
 .fullpage.view > .scroller > .scroller-container > .scroller-content {
 	max-width: none;
+	padding: 0;
 }
 
 

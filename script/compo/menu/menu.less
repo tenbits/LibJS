@@ -54,13 +54,18 @@ menu > .menu-show {
 	pointer-events: none;
 }
 menu.hidden > .menu-show {
-	cursor: pointer;
+	cursor: pointer !important;
 	opacity: 1;
+	pointer-events: auto !important;
 }
 
 
-menu.closed {
-	-webkit-transform: perspective(400) rotateY(90deg);
+menu.hidden.forced {
+	.translateX(0px);
+	.box-shadow(5px 0px 20px rgba(00,00,00,.5));
+}
+menu.hidden.forced > .menu-show {
+	opacity: 0;
 }
 
 .menu-help:after {

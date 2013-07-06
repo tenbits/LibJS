@@ -7,6 +7,10 @@
 			styles: 'about',
 			menuHidden: true
 		},
+		'get': {
+			title: 'Source',
+			controller: 'get'
+		},
 		'feedback': {
 			title: 'Feedback'
 		},

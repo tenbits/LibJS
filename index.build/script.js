@@ -12875,6 +12875,10 @@ include.setCurrent({
             styles: "about",
             menuHidden: true
         },
+        get: {
+            title: "Source",
+            controller: "get"
+        },
         feedback: {
             title: "Feedback"
         },
@@ -13888,9 +13892,17 @@ include.load("menu.mask::Template").done(function(resp) {
         template: resp.load.Template,
         constructor: function() {
             window.compos.menu = this;
+            this.removeForced = this.removeForced.bind(this);
         },
         events: {
-            "click: .menu-show": function() {}
+            "click: .menu-show": function() {
+                this.$.addClass("forced");
+                this.$.on("mouseleave", this.removeForced);
+            }
+        },
+        removeForced: function() {
+            this.$.removeClass("forced");
+            this.$.off("mouseout mouseleave");
         },
         onRenderStart: function(model, cntx, container) {},
         onRenderEnd: function(elements, cntx, container) {},
