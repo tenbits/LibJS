@@ -1,6 +1,21 @@
 include.load('default.mask').done(function(resp) {
 
 	mask.render(resp.load['default']);
+	
+	
+	function when(dfrs, callback) {
+		var count = dfrs.length;
+		
+		for (var i = 0, x, imax = dfrs.length; i < imax; i++){
+			x = dfrs[i];
+			
+			x.done(function(){
+				if (--count === 0) {
+					callback();
+				}
+			});
+		}
+	}
 
 	window.DefaultController = Compo({
 		//tagName: 'div',
@@ -12,8 +27,25 @@ include.load('default.mask').done(function(resp) {
 			radio_radioButtons: 'compo: .radioButtons'
 		},
 		
-		onRenderStart: function(){
+		onRenderStart: function(model, cntx){
 			this.viewName = this.attr.id.replace('View', '');
+			
+			this.cntx = {};
+		},
+		
+		onRenderEnd: function(elements, model, cntx){
+			var $tabs = jmask(this).find(':tabs');
+			
+			var compos = this.compos;
+			
+			$tabs.each(function(x){
+				if (x.attr.id == null)
+					return;
+				
+				compos['tabs' + x.attr.id] = x;
+			});
+			
+			this.cntx = cntx;
 		},
 		
 		events: {
@@ -88,6 +120,18 @@ include.load('default.mask').done(function(resp) {
 			if ($group.length === 0) 
 				return;
 			
+			
+			if (this.cntx && this.cntx.promise && this.cntx.promise.length) {
+				var that = this,
+					dfrs = this.cntx.promise.splice(0);
+				when(dfrs, function(){
+					that.showSection(name);
+				})
+				
+				return true;
+			}
+			
+			
 			var groupName = $group.attr('name'),
 				group = $group.compo();
 			
@@ -99,9 +143,10 @@ include.load('default.mask').done(function(resp) {
 			
 			group.setActive(name);
 			
-			this
-				.compos['tabs' + groupName]
-				.setActive(name);
+			var tabs = this
+				.compos['tabs' + groupName];
+				
+			tabs.setActive(name);
 			
 			return true;
 		},

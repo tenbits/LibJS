@@ -18,8 +18,14 @@ include //
 			'click: .menu-show': function(){
 				this.$.addClass('forced');
 				
-				//this.$.on('mouseout', this.removeForced);
-				this.$.on('mouseleave', this.removeForced);
+				
+				
+				var that = this;
+				setTimeout(function(){
+					//-that.$.on('mouseout', that.removeForced);
+					that.$.on('mouseleave', that.removeForced);
+				}, 300);
+				
 			}
 		},
 		

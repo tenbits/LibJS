@@ -65,6 +65,26 @@ Class({
     // RESTful
     Store: Class.Remote('user/:id'),
     
+    /**
+     *  Define Validation Functions to validate an instance.
+     *
+     *  Validation Function should return a string if object is not valid
+     */
+    
+    Validation: < Function | ValidationObject >
+    // => Function
+    Validation: function(){
+        if (this.number < 10)
+            return 'Number is less then 10';
+    },
+    // => Validation Object
+    //  This validation could be done, before property is set
+    Validation: {
+        number: function(value){
+            if (value < 10) {
+                return 'Number is less then 10';
+        }
+    }
     
     Static: {
         staticFunction: function(){}

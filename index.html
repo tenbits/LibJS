@@ -222,7 +222,7 @@ section {
 		.footer-right {
 			ul {
 				li > 'MIT'
-				li > 'Feedback'
+				li > a href='#/feedback' > 'Feedback'
 				li > '© niob'
 			}
 		}
@@ -337,7 +337,7 @@ layout:view master='fullpage' {
                  }
                 
                 h4 style='padding-left: 50px;'
-                    > blockquote > '„Component Composition in HTML5 Application”'
+                    > blockquote > '„Modern HTML5 Application via Component Composition”'
                     
                 button > a href='#/get/install' > 'Install'
                 
@@ -348,8 +348,8 @@ layout:view master='fullpage' {
             div style='text-align:justify; padding-right: 15px;' {
                 div >
                     "As we do not want to keep things tight together as one monolith framework,
-                    this Project is split into libraries, which cover all app layers of a modern, scalable and performant
-                    Node.js or HTML5 application.
+                    this Project is split into stand-alone libraries, which cover all app layers of scalable and performant
+                    Node.js or HTML5 applications.
                     
                     "
 
@@ -410,18 +410,18 @@ layout:view master='fullpage' {
                         }
                     }
 
-                    li {
-                        .about-title {
-                            a href='#includeBuilder' > 'IncludeJS.Builder'
-                        }
-                        .about-description {
-                            "
-                            a big brother of IncludeJS. Combines all included resources.
-                            It also runs jshint, uglify, css-min and etc.
-                            "
-                        }
-                    }
-
+                    //li {
+                    //    .about-title {
+                    //        a href='#includeBuilder' > 'IncludeJS.Builder'
+                    //    }
+                    //    .about-description {
+                    //        "
+                    //        a big brother of IncludeJS. Combines all included resources.
+                    //        It also runs jshint, uglify, css-min and etc.
+                    //        "
+                    //    }
+                    //}
+                    //
                     li {
                         .about-title {
                             a href='#mask-animation' > "Mask.Animation"
@@ -430,172 +430,65 @@ layout:view master='fullpage' {
                             "CSS3 Animation Library"
                         }
                     }
-
-                    //li {
-                    //    a href='#ruqq' > 'RuqqJS'
-                    //    "
-                    //    — contains some other helper classes, as routing, Array and Object utils, etc.
-                    //    "
-                    //}
-
                    
                 }
             }
 
 
-            div.hint > '∗ Optimized for  ￦ebKit Engine (mobile and desktop)'
-            div.hint > '∗ Almost all libraries could be used in nodejs environment'
-
-            div {
-                h6;
-                'So, what does this mean — "without Javascript"?'
-                ' As for example, lets look at jQuery widget initialization — '
-                ol {
-                    li > code > 'Define placeholder or container in HTML markup'
-                    li > code > '"Somewhere" in code — $("#myCompo").initMyComponent(config)'
-                }
-                'It looks simple — only 2 lines. ' b > i > 'BUT' ', this 2 lines have also 2 Problems.'
-                ol {
-                    li {
-                        div > 'Tao'
-                        div >'You separate this two lines. (1) is in markup and (2) is "somewhere" in javascript file.'
-                        div > 'Smth. must be defined only once - not twice.'
-                    }
-                    li {
-                        div > 'Actual Performance'
-                        div > '(2) line has performance issues - '
-                        ul  {
-                           li > 'additional DOM Querying'
-                           li > 'additional DOM Re-flow and Repaint, while rendering in that HTMLElement'
+                p {
+                    h3 > 'Component Oriented Programming'
+                    div > 'Main Feature of MaskJS, beyond its simple markup and fast parsers, is the MaskDOM and Custom Tags. With it you develop not the application,
+                    but the Components. In this way, you are concentrated all the time on small discrete parts(components) or delegate the development upon your team. 
+                    Once written, you do not need to initialize it itself, or use any placeholders, just load the handler as generic Javascript and you
+                    are ready to use it in templates. IncludeJS would help to load all required resources - css, templates and any javascript helpers. Markup receive more 
+                    generic patterns: '
+                    ul {
+                        li {
+                            h4 > 'Encapsulation'
+                            'Usually dialogs markup looks as such:'
+                            prism language="markup" > formatter:pre {"
+        
+                                <div class='overlay'>
+                                    <div class='container'>
+                                        <div class='dialog'>
+                                            <!--content-->
+                                </div></div></div>
+        
+                            "}
+                            
+                            'With MaskJS it could be:'
+                            prism language="css" > formatter:pre {"
+                                :dialog {
+                                    // content
+                                }
+                            "
+                        }
+                        li {
+                            h4 > 'Component Fabric Pattern'
+        
+                            'E.g. : Additional tool in responsible design'
+        
+                            prism > ':screen small="Compo1" big="Compo2" { <!-- template --> }'
+                            prism > "mask.registerHandler(':myCompo', Info.smallScreen ? Compo1 : Compo2); "
+                        }
+                        li {
+                            h4 > 'Inheritance'
+                            div > 'Inherit from any component controller and override or extend the functionality.'
+                        }
+                        li {
+                            h4 > 'Injection'
+                            div > 'Replace any element (even "div" tag) with your implementation (for tests, debug, release). Wrap any markup parts with your handler
+                                and control any behavior.'
+                        }
+        
+                        li {
+                            '... and much more things you can start with it.'
                         }
                     }
                 }
-
-                'This Project aims to cut off this two problems and the third one — ' b > i > 'Source Code Organization'
-
-                p {
-                    'What is jQuery Widget usually consists of? Right — javascript, css, images ...' br;
-                    'So to use this widget you have to copy images and scripts into project directory, copy css into application styles.' br;
-                    'Comfortable? Definitely no. With IncludeJS you "include" this all with only 1 line of code.'
-                }
-
-                'Interested? Look at the libraries and examples.'
-
-            }
-
             }
         }
 
-        div.com {
-            h4 > 'Component Oriented Programming'
-            div > 'Main Feature of MaskJS, beyond its simple markup and fast parsers, is the MaskDOM and Custom Tags. With it you develop not the application,
-            but the Components. In this way, you are concentrated all the time on small discrete parts(components) or delegate the development upon your team. 
-            Once written, you do not need to initialize it itself, or use any placeholders, just load the handler as generic Javascript and you
-            are ready to use it in templates. IncludeJS would help to load all required resources - css, templates and any javascript helpers. Markup becomes more 
-            generic patterns: '
-            ul {
-                li {
-                    h5 > 'Encapsulation'
-                    'Usually dialogs markup looks as such:'
-                    prism language="markup" > formatter:pre {"
-
-                        <div class='overlay'>
-                            <div class='container'>
-                                <div class='dialog'>
-                                    <!--content-->
-                        </div></div></div>
-
-                    "}
-                    
-                    'With MaskJS it could be:'
-                    prism > ":dialog { <!-- content --> }"
-                }
-                li {
-                    h5 > 'Component Fabric Pattern'
-
-                    'Ex.  Make your app responsible'
-
-                    prism > ':screen small="Compo1" big="Compo2" { <!-- template --> }'
-                    prism > "mask.registerHandler(':myCompo', Info.smallScreen ? Compo1 : Compo2); "
-                }
-                li {
-                    h5 > 'Inheritance'
-                    div > 'Inherit from any component controller and override or extend the functionality.'
-                }
-                li {
-                    h5 > 'Injection'
-                    div > 'Replace any element (even "div" tag) with your implementation (for tests, debug, release). Wrap any markup parts with your handler
-                        and control any behavior.'
-                }
-
-                li {
-                    '... and much more things you can start with it.'
-                }
-            }
-        }
-
-        div.install {
-            ol {
-                li {
-                    'Install nodejs environment'
-                    div > code > a href='http://nodejs.org' target=_blank > 'NodeJS > Download'
-                    div > code > a href='http://yuilibrary.com/yui/docs/tutorials/git/' target=_blank > 'GIT'
-                    div > code > a href='http://www.python.org/getit/releases/2.7.4/' target=_blank> 'Python'
-                    div >
-                        code >
-                            a
-                                href='http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-products'
-                                target=_blank
-                                    > '(Windows) C++ Compiler'
-                }
-                
-                li {
-                    'Install IncludeJS'
-                    div > code > '$ npm install includejs'
-
-                    .hint {
-                        'test: ' code > 'ijs --help'
-                    }
-                }
-                li {
-                    'Install LibJS Libraries'
-                    div > code > '$ cd c:/anyfolder/to/save/libjs_libraries'
-                    div > code > '$ ijs git-clone libjs'
-                    .hint {
-                        'test: ' code > 'ijs globals'
-                        p > 'Should contain in projects.libjs.path = "file:///c:/anyfolder/to/save/libjs_libraries"'
-                    }
-                }
-                li {
-                    h5 > 'Template Project'
-
-                    div > code > '$ cd c:/any/temp/folder'
-                    div > code > '$ ijs template starter'
-
-                    .hint {
-                        'In some case to create symbolic links to installed libjs you have run this command with admin. rights'
-                    }
-                    .hint {
-                        'test: ' code > 'ijs server index.dev.html'
-                        p > 'Page should be opened, or navigate to http://localhost:5777/index.dev.html'
-                        p > 'If you see some text on the page, then everything was successfully installed'
-                    }
-                }
-
-                li {
-                    h5 > 'Todo MVC'
-                    div > code > '$ cd c:/any/temp/folder'
-                    div > code > '$ ijs template todoapp'
-
-                    p {
-                        'Play around with small todo app, to see maskjs/includejs in work'
-                    }
-                }
-            }
-        }
-        
-        .download >
-            :downloader;
         
     }
 

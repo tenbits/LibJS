@@ -138,7 +138,7 @@ layout:view master='view' {
 						button x-pipe-signal='click: animation.start' > 'Start'
 					}
 
-					prism > formatter:pre > "
+					prism language='css' > formatter:pre > "
 						:animation x-pipes='animation.start' {
 						  @model {
 							@model {

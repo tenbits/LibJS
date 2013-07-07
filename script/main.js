@@ -7,12 +7,26 @@ include.routes({
 	controller: '/script/controller/{0}.js',
 	uicontrol: '/script/control/{0}.js',
 	script: '/script/{0}.js',
-	
+	business: '/script/business/{0}.js',
 	appcompo: '/script/compo/{0}/{1}.js'
 }).js({
-	ruqq: ['dom/jquery', 'ruqq.base', 'utils', 'routes', 'browser.detect', 'arr'],
-	lib: ['mask', 'mask.animation'],
-
+	ruqq: [
+		'dom/jquery',
+		'ruqq.base',
+		'utils',
+		'routes',
+		'browser.detect',
+		'arr'
+	],
+	lib: [
+		'mask',
+		'mask.animation'
+	],
+	
+	business: [
+		'Examples',
+	],
+	
 	compo: [
 		'scroller',
 		'prism',
@@ -56,10 +70,6 @@ include.routes({
 				items: [{
 					view: 'about',
 					title: 'About'
-				}, {
-					view: 'feedback',
-					title: 'Feedback',
-					controller: 'default'
 				}]
 			}, {
 				title: 'Library',

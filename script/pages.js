@@ -16,7 +16,8 @@
 		},
 		'class': {
 			view: 'class',
-			title: 'ClassJS'
+			title: 'ClassJS',
+			controller: 'class'
 		},
 		'mask': {
 			title: 'MaskJS',

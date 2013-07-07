@@ -5,7 +5,7 @@
 		.footer-right {
 			ul {
 				li > 'MIT'
-				li > 'Feedback'
+				li > a href='#/feedback' > 'Feedback'
 				li > '© niob'
 			}
 		}

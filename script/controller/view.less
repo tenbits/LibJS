@@ -5,6 +5,7 @@
 	height: 100%;
 	min-height: 300px;
     line-height: 1.3em;
+	font-size: .95em;
 }
 
 #views > .view {
@@ -77,19 +78,18 @@
 
 
 .view > .side-menu {
-	width: 250px;
+	.box-sizing(border-box);
+	
+	.size(250px, 100%);
+	
 	left: -250px;
-	
-	height: 100%;
-	
-	
 	position: absolute;
 	text-align: right;
 	
 	list-style: none;
 	
-	
-	overflow: hidden;
+	overflow: auto;
+	overflow-x: hidden;
 }
 
 .side-menu {

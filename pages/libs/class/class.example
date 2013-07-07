@@ -1,0 +1,408 @@
+
+### Simple
+
+```javascript
+
+var Letter = Class({
+    // default value
+    _char: 'A',
+    
+    Construct: function(Char){
+        if (Char)
+            this._char = Char;
+    },
+    toString: function(){
+        return this._char;
+    }
+});
+
+var nchar;
+
+nchar = new Letter();
+nchar._char  // -> 'A'
+
+nchar = new Letter('C');
+nchar._char  // -> 'C'
+
+
+```
+
+### Static
+
+```javascript
+
+var Letter = Class({
+    // ...
+    Static: {
+        fromCharCode: function(code){
+            
+            return new Letter(String.fromCharCode(code));
+        }
+    }
+});
+
+var code_F = 70,
+    nchar = Letter.fromCharCode(code_F);
+
+nchar._char // -> 'F'
+
+```
+
+### Inheritance
+
+```javascript
+
+var LetterLogger = Class({
+    Construct: function(){
+        this.message = 'Letter is "%s"';
+    },
+    log: function(){
+        console.log(this.message, this._char);
+    }
+});
+
+var LetterUtilsProto = {
+    next: function(){
+        var code = this._char.charCodeAt(0);
+        
+        return Letter.fromCharCode(code++);
+    }
+};
+
+var Letter = Class({
+    Extends: [LetterLogger, LetterUtilsProto]
+    // ... previous
+});
+
+var LetterPanel = Class({
+    Base: Letter,
+    Construct: function(Char, panelBackground){
+        this._background = panelBackground;
+    }
+});
+
+
+var panel = new LetterPanel('A', 'green');
+
+panel._char         // -> A
+panel._background   // -> green
+panel.log()         // -> "Letter is A"
+panel.next()._char  // -> B
+
+panel instanceof LetterPanel    // -> true
+panel instanceof Letter         // -> true
+
+```
+
+### Override
+
+```javascript
+
+var Letter = Class({
+    // ...
+    next: function(){
+        var code = this._letter.charCodeAt(0) + 1;
+        
+        return new Letter(String.fromCharCode(code));
+    }
+});
+
+var LetterPanel = Class({
+    Base: Letter,
+    
+    Override: {
+        next: function(){
+            var letter = this.super();
+            
+            return new LetterPanel(letter._char);
+        }
+    }
+});
+
+```
+
+
+### Singleton
+```javascript
+
+var Earth = Class({
+    Construct: function(){
+        if (Earth.__instance) 
+            return Earth.__instance;
+   
+        Earth.__instance = this;
+        
+        // define properties on first call, e.g
+        this.created = Date.now();
+    },
+    Static: {
+        __instance: null
+    }
+});
+
+new Earth() === new Earth() // -> true
+
+```
+
+
+### Validate
+```javascript
+
+// (1)
+
+var User = Class({
+    name: null,
+    
+    Construct: function(name){
+        this.name = name;
+    },
+    
+    Validate: {
+        name: function(value){
+            if (value == null) 
+                return 'Name should be defined';
+            
+            if (value.length < 2) 
+                return 'Name is to short';
+        },
+        
+        // ... some other properties to validate
+    }
+});
+
+var user;
+
+user = new User('X');
+Class.validate(user); // -> 'Name is to short'
+
+user = new User('John');
+Class.validate(user); // -> undefined | means without error
+
+```
+
+### EventEmitter
+```javascript
+
+var Sun = Class({
+    Base: Class.EventEmitter,
+    increaseSolarWind: function(){
+        // ... calculations
+        this.trigger('solar-wind', newValue);
+    }
+});
+
+var Planet = Class({
+    Construct: function(star){
+        this._star = star;
+    }
+});
+
+var Earth = Class({
+    Base: Planet,
+    Extends: Class.EventEmitter,
+    Construct: function(){
+        this
+            ._star
+            .on('solar-wind', this.onSolarWind.bind(this));
+            .on('solar-wind', this.pipe('solar-wind'));
+    },
+    onSolarWind: function(value){
+        // ... calculations
+        this.trigger('geomagnetic-storm', newValue);
+    },
+});
+
+var sun = new Sun(),
+    earth = new Earth(sun);
+
+earth
+    .on('geomagnetic-storm', function(){
+        // notify every time value changes
+    })
+    .once('geomagnetic-storm', function(){
+        // notify once value starts changing
+    })
+    
+    .on('solar-wind', function(value){
+        // piped event from the sun instance
+    })
+
+sun.increaseSolarWind();
+
+```
+
+### Serializable
+
+```javascript
+var Astronaut = Class({
+    Extends: Class.Serializable
+});
+
+var first = new Astronaut({
+    name: 'Gagarin',
+    flights: 194
+});
+
+first.name // -> 'Gagarin'
+first.flights // -> 194
+
+JSON.stringify(first) === first.serialize() // -> true
+```
+
+### Deferred
+
+```javascript
+
+var Life = Class({
+    Extends: Class.Deferred,
+    
+    molecule: 0,
+    tick: function(){
+        
+        if (++this.molecule === 10){
+            this.resolve();
+            return this;
+        }
+        
+        setTimeout(this.tick.bind(this), 500);
+        return this;
+    },
+    
+    kill: function(){
+        if (this._resolved) 
+            return;
+        
+        this.tick = function(){};
+        this.reject('Aborted');
+    }
+});
+
+var life = new Life()
+    .tick()
+    .done(function(){
+        console.log('Molecule mass riched 1000'); 
+    })
+    .fail(function(message){
+        console.log(message);
+    });
+```
+
+### Save:LocalStorage
+
+```javascript
+
+var Human = Class({
+    Extends: Class.Serializable,
+    Store: Class.LocalStore('/human/:id')
+});
+
+// create and save to localStorage
+new Human({
+        id: 1,
+        name: 'Adam'
+    })
+    .save();
+
+human = Human.fetch({ id:1 });
+human.name // -> 'Adam'
+
+```
+
+### Save:RESTful
+
+```javascript
+
+var Human = Class({
+    Extends: Class.Serializable,
+    Store: Class.Remote('/human/:id')
+});
+
+// create and post to service '/human/'
+new Human({
+        id: 1,
+        name: 'Adam'
+    })
+    .save()
+    .done(function(){
+        
+        // get data from service
+        human = Human.fetch({ id:1 });
+        human.done(function(instance){
+            instance === human  // -> true
+            instance.name       // -> 'Adam'   
+        });       
+    })
+
+```
+
+### Collection
+
+```javascript
+
+var Human = Class({
+    age: 0,
+    Construct: function(DNA){
+        this._DNA = DNA;
+    }
+});
+
+var Humanity = Class.Collection(Human, {
+    birth: function(){
+        // Human constructor is called with this argument
+        // and new instance is added to the collection
+        this.push('ATCGGATTAGCCTA...');
+    },
+    
+    Store: Class.LocalStore('humanity')
+});
+
+// SAVE / RESTORE
+var humanity = new Humanity;
+humanity.length // -> 0
+
+humanity.birth()
+humanity.length // -> 1
+humanity.save();
+
+humanity = Humanity.fetch()
+humanity.length // -> 1
+
+// ARRAY alike
+humanity.pop()
+humanity.unshift(/* Ctor Arguments */)
+humanity.shift();
+humanity.splice(/* Start, RemCount */);
+humanity.slice();
+
+humanity.sort( /* SortFunction */);
+humanity.reverse();
+
+// REMOVE 
+humanity.remove( /* MatchFunction || MatchObject */ );
+humanity.remove(function(item){
+    return item._DNA === 'ATG...';
+});
+humanity.remove({
+    _DNA: 'ATG...'
+});
+
+// QUERY
+humanity.where( /* MatchFunction || MatchObject */ )
+humanity.where(function(item){
+    return item.age >= 18;
+}) //=> Collection
+
+humanity.where({
+    age: '>=18'
+}) //=> Collection
+
+humanity.first( /* MatchFunction || MatchObject */) //=> Human Instance or null
+humanity.last( /* MatchFunction || MatchObject */) //=> Human Instance or null
+
+
+// Itarate
+humanity.each(function(item){ });
+
+```
+
+

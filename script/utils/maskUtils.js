@@ -110,7 +110,7 @@
 						
 					},
 					scrollToElement: function(element) {
-						
+												
 						if (that.inserted !== true) {
 							that.deferred = ['scrollToElement', [element]];
 							return;

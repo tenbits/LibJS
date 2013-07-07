@@ -420,6 +420,7 @@ pre[class*="language-"] {
   height: 100%;
   min-height: 300px;
   line-height: 1.3em;
+  font-size: .95em;
 }
 #views > .view {
   margin-left: 250px;
@@ -467,13 +468,17 @@ pre[class*="language-"] {
   color: #333;
 }
 .view > .side-menu {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   width: 250px;
-  left: -250px;
   height: 100%;
+  left: -250px;
   position: absolute;
   text-align: right;
   list-style: none;
-  overflow: hidden;
+  overflow: auto;
+  overflow-x: hidden;
 }
 .side-menu .group {
   position: absolute;
@@ -870,6 +875,9 @@ button {
 body,
 button {
   font-family: 'Open Sans', 'Segoe UI', 'Helvetica', sans-serif;
+}
+a {
+  color: inherit;
 }
 ul {
   margin: 0px;

@@ -1013,6 +1013,11 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
         }
         return true;
     }
+    function path_getExtension(path) {
+        var query = path.indexOf("?");
+        if (query === -1) return path.substring(path.lastIndexOf(".") + 1);
+        return path.substring(path.lastIndexOf(".", query) + 1, query);
+    }
     var RoutesLib = function() {
         var routes = {}, regexpAlias = /([^\\\/]+)\.\w+$/;
         return {
@@ -1450,22 +1455,23 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                 }
             }
         };
-        var _loaders = {
+        cfg.loader = {
             json: JSONParser
         };
-        cfg.loader = {
-            json: 1
-        };
+        function loader_isInstance(x) {
+            if ("string" === typeof x) return false;
+            return "function" === typeof x.ready || "function" === typeof x.process;
+        }
         function createLoader(url) {
-            var extension = url.substring(url.lastIndexOf(".") + 1);
-            if (_loaders.hasOwnProperty(extension)) return _loaders[extension];
-            var loaderRoute = cfg.loader[extension], path = loaderRoute, namespace = null;
-            if ("object" === typeof loaderRoute) for (var key in loaderRoute) {
+            var loader = cfg.loader[path_getExtension(url)];
+            if (loader_isInstance(loader)) return loader;
+            var path = loader, namespace;
+            if ("object" === typeof path) for (var key in path) {
                 namespace = key;
-                path = loaderRoute[key];
+                path = path[key];
                 break;
             }
-            return _loaders[extension] = new Resource("js", Routes.resolve(namespace, path), namespace);
+            return cfg.loader[extension] = new Resource("js", Routes.resolve(namespace, path), namespace);
         }
         function doLoad(resource, loader, callback) {
             XHR(resource, function(resource, response) {
@@ -1484,9 +1490,12 @@ if ("undefined" === typeof Array.prototype.indexOf) Array.prototype.indexOf = fu
                 });
             },
             exists: function(resource) {
-                if (!(resource.url && cfg.loader)) return false;
-                var url = resource.url, extension = url.substring(url.lastIndexOf(".") + 1);
-                return cfg.loader.hasOwnProperty(extension);
+                if (!resource.url) return false;
+                var ext = path_getExtension(resource.url);
+                return cfg.loader.hasOwnProperty(ext);
+            },
+            register: function(extension, handler) {
+                cfg.loader[extension] = handler;
             }
         };
     }();
@@ -1737,6 +1746,10 @@ include.register({
         url: "/.reference/libjs/mask.animation/lib/mask.animation.js",
         namespace: "lib.mask.animation"
     }, {
+        id: "/script/business/Examples.js",
+        url: "/script/business/Examples.js",
+        namespace: "business.Examples"
+    }, {
         id: "/.reference/libjs/compos/scroller/lib/iscroll-full.js",
         url: "/.reference/libjs/compos/scroller/lib/iscroll-full.js"
     }, {
@@ -1841,6 +1854,7 @@ include.routes({
     controller: "/script/controller/{0}.js",
     uicontrol: "/script/control/{0}.js",
     script: "/script/{0}.js",
+    business: "/script/business/{0}.js",
     appcompo: "/script/compo/{0}/{1}.js"
 });
 
@@ -7021,6 +7035,7 @@ include.setCurrent({
                 console.warn("Args:", arguments);
             }
             if ("string" === typeof template) if (hasOwnProp.call(cache, template)) template = cache[template]; else template = cache[template] = Parser.parse(template);
+            if (null == cntx) cntx = {};
             return builder_build(template, model, cntx, container, controller);
         },
         compile: Parser.parse,
@@ -7163,7 +7178,8 @@ include.setCurrent({
                 "if": null,
                 "else": null,
                 each: null,
-                log: null
+                log: null,
+                visible: null
             };
         }
         mask.registerHandler("%", Sys);
@@ -7177,6 +7193,11 @@ include.setCurrent({
                 }
                 if (null != attr["debugger"]) {
                     debugger;
+                    return;
+                }
+                if (null != attr["visible"]) {
+                    var state = ExpressionUtil.eval(attr.visible, model, cntx, this.parent);
+                    if (!state) this.nodes = null;
                     return;
                 }
                 if (null != attr["log"]) {
@@ -10295,6 +10316,41 @@ include.setCurrent({
 
 include.getResource("/.reference/libjs/mask.animation/lib/mask.animation.js", "js").readystatechanged(3);
 
+var Examples = function() {
+    function parse_Examples(src) {
+        var regexp_Heading = /^[ ]*###/gm, examples = src.split(regexp_Heading);
+        return ruqq.arr.aggr(examples, [], function(example, aggr) {
+            example = example.trim();
+            if (example) aggr.push(parse_Example(example));
+        });
+    }
+    function parse_Example(example) {
+        var group = {
+            title: /[^\n\r]+/.exec(example)[0].trim()
+        };
+        var regexp_Group = /```([\w]+)(((?!```)(.|[\r\n]))*)/g, match, name, src;
+        while (match = regexp_Group.exec(example)) {
+            name = (match[1] || "").trim();
+            src = (match[2] || "").trim();
+            if (!name || !src) console.warn("Group has undefined parts", name, src);
+            group[name] = src;
+        }
+        if (group.template && group.javascript) try {
+            var template = resutl.template;
+            group.group = eval(group.javascript);
+        } catch (e) {
+            console.error("Example Evaluation Error", e, this.javascript);
+        }
+        if (!group.name) group.name = group.title.replace(/[^\w]/g, "").toLowerCase();
+        return group;
+    }
+    includeLib.registerLoader("example", {
+        process: function(source) {
+            return parse_Examples(source);
+        }
+    });
+}();
+
 (function(window, doc) {
     var m = Math, dummyStyle = doc.createElement("div").style, vendor = function() {
         var vendors = "t,webkitT,MozT,msT,OT".split(","), t, i = 0, l = vendors.length;
@@ -11425,23 +11481,24 @@ include.setCurrent({
     }
     mask.registerHandler("prism", Class({
         Base: Compo,
-        Extends: IDeferred,
+        Extends: Class.Deferred,
         Construct: function() {
             this.attr = {
                 language: "javascript"
             };
         },
-        renderStart: function(values, container, cntx) {
+        renderStart: function() {
             var _class = "language-" + this.attr.language;
             this.nodes = jmask("pre.language-" + _class + " > code." + _class).children().mask(this.nodes).end();
         },
-        onRenderEnd: function() {
+        onRenderEnd: function(elements, model, cntx) {
             if (null != this.attr.src) {
-                var _this = this;
-                include.instance().ajax(this.attr.src + "::Data").done(function(r) {
-                    _this.$.find("code").text(r.ajax.Data);
-                    highlight(_this);
+                var that = this;
+                include.instance().ajax(this.attr.src + "::Data").done(function(resp) {
+                    that.$.find("code").text(resp.ajax.Data);
+                    highlight(that);
                 });
+                (cntx.promise || (cntx.promise = [])).push(this);
             } else highlight(this);
         }
     }));
@@ -12634,20 +12691,24 @@ include.css();
                 var $children = jmask(this).children(klass).children();
                 return this._children($children);
             }
+            if (this.attr.anchors) return this.$.find(".-tab-panels").find("a[name]");
             return this.$.find(klass);
         },
         _getHeaders: function() {},
         renderStart: function() {
+            if (this.attr.anchors) this.attr.scrollbar = true;
             if (this.attr.scrollbar) this.attr["class"] += " scrollbar";
             var $this = jmask(this), $panels = $this.children("@panels"), $header = $this.children("@header");
             $panels.tag("div").addClass("-tab-panels");
             $header.tag("div").addClass("-tab-headers");
-            var x = this._children($panels.children());
-            if (0 === x.length) {
-                console.error("[:tabs] > has no panels");
-                debugger;
+            if (null == this.attr.anchors) {
+                var x = this._children($panels.children());
+                if (0 === x.length) {
+                    console.error("[:tabs] > has no panels");
+                    return;
+                }
+                x.addClass("-tab-panel -hidden");
             }
-            x.addClass("-tab-panel -hidden");
             this._children($header.children()).addClass("-tab-header -hidden");
         },
         onRenderEnd: function() {
@@ -12703,7 +12764,7 @@ include.css();
         },
         _scrolled: function(top, left) {
             var scrollTop = this.scroller.$[0].scrollTop + (this.attr.dtop << 0);
-            var $panels = this.$.children(".-tab-panels").children(), min = null, $el = null;
+            var $panels = this._items("panel"), min = null, $el = null;
             for (var i = 0, x, imax = $panels.length; i < imax; i++) {
                 x = $panels[i];
                 if (null == min) {
@@ -12731,10 +12792,14 @@ include.css();
             this._activeName = name;
             var $panels = this._items("panel"), $headers = this._items("header");
             var $panel = $panels.filter('[name="' + name + '"]');
-            if ($panel.hasClass("-show")) return;
-            this._hide($panels.filter(".-show"));
-            this._show($panel);
-            if (this.attr.scrollbar) this._scrollInto($panel);
+            if (this.attr.scrollbar) {
+                if (0 == $panel.length) debugger;
+                this._scrollInto($panel);
+            } else {
+                if ($panel.hasClass("-show")) return;
+                this._hide($panels.filter(".-show"));
+                this._show($panel);
+            }
             $headers.removeClass("-show").children('[name="' + name + '"]').addClass("active");
         },
         has: function(name) {
@@ -12765,8 +12830,12 @@ mask.registerHandler(":radio", mask.Compo({
     attr: {
         "class": "-radio"
     },
+    findItems: function() {
+        if (null == this.attr.selector) return this.$.children();
+        return this.$.find(this.attr.selector);
+    },
     onRenderEnd: function() {
-        this.$.children().on("click", function(event) {
+        this.findItems().on("click", function(event) {
             var $this = $(event.currentTarget);
             if ($this.hasClass("active")) return;
             $this.parent().children(".active").removeClass("active");
@@ -12786,7 +12855,7 @@ mask.registerHandler(":radio", mask.Compo({
     },
     getList: function() {
         var array = [];
-        this.$.children().each(function(index, $x) {
+        this.findItems().each(function(index, $x) {
             array.push($x.getAttribute("name"));
         });
         return array;
@@ -12884,7 +12953,8 @@ include.setCurrent({
         },
         "class": {
             view: "class",
-            title: "ClassJS"
+            title: "ClassJS",
+            controller: "class"
         },
         mask: {
             title: "MaskJS",
@@ -13673,13 +13743,32 @@ include.setCurrent({
 
 include.load("default.mask").done(function(resp) {
     mask.render(resp.load["default"]);
+    function when(dfrs, callback) {
+        var count = dfrs.length;
+        for (var i = 0, x, imax = dfrs.length; i < imax; i++) {
+            x = dfrs[i];
+            x.done(function() {
+                if (0 === --count) callback();
+            });
+        }
+    }
     window.DefaultController = Compo({
         compos: {
             radio_sideMenu: "compo: .side-menu",
             radio_radioButtons: "compo: .radioButtons"
         },
-        onRenderStart: function() {
+        onRenderStart: function(model, cntx) {
             this.viewName = this.attr.id.replace("View", "");
+            this.cntx = {};
+        },
+        onRenderEnd: function(elements, model, cntx) {
+            var $tabs = jmask(this).find(":tabs");
+            var compos = this.compos;
+            $tabs.each(function(x) {
+                if (null == x.attr.id) return;
+                compos["tabs" + x.attr.id] = x;
+            });
+            this.cntx = cntx;
         },
         events: {
             "changed: .radioButtons": function(e, target) {
@@ -13714,10 +13803,18 @@ include.load("default.mask").done(function(resp) {
             if (!$sideMenu.compo().getActiveName()) return;
             var $group = $sideMenu.find(".group.-show");
             if (0 === $group.length) return;
+            if (this.cntx && this.cntx.promise && this.cntx.promise.length) {
+                var that = this, dfrs = this.cntx.promise.splice(0);
+                when(dfrs, function() {
+                    that.showSection(name);
+                });
+                return true;
+            }
             var groupName = $group.attr("name"), group = $group.compo();
             if (!name) name = group.getList()[0];
             group.setActive(name);
-            this.compos["tabs" + groupName].setActive(name);
+            var tabs = this.compos["tabs" + groupName];
+            tabs.setActive(name);
             return true;
         },
         section: function(info) {
@@ -13897,7 +13994,10 @@ include.load("menu.mask::Template").done(function(resp) {
         events: {
             "click: .menu-show": function() {
                 this.$.addClass("forced");
-                this.$.on("mouseleave", this.removeForced);
+                var that = this;
+                setTimeout(function() {
+                    that.$.on("mouseleave", that.removeForced);
+                }, 300);
             }
         },
         removeForced: function() {
@@ -13931,6 +14031,7 @@ include.routes({
     controller: "/script/controller/{0}.js",
     uicontrol: "/script/control/{0}.js",
     script: "/script/{0}.js",
+    business: "/script/business/{0}.js",
     appcompo: "/script/compo/{0}/{1}.js"
 }).js({
     compo: [ "prism", "tabs" ],
@@ -13952,10 +14053,6 @@ include.routes({
             items: [ {
                 view: "about",
                 title: "About"
-            }, {
-                view: "feedback",
-                title: "Feedback",
-                controller: "default"
             } ]
         }, {
             title: "Library",

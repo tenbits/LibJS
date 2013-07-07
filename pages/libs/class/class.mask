@@ -8,15 +8,29 @@ layout:view master='view' {
 
 
     @content #tabs {
-        radioButtons {
+        :radio .radioButtons {
             button.active name='info' > 'Info'
+            button name='examples' > 'Examples'
             button name='api' > 'API'
         }
     }
 
+    
+    @content #side-menu {
+        
+        % if='sideMenu' >
+            % each='sideMenu' >
+                :radio .group name='~[name]' >
+                    % each='list' >
+                        .side-menu-item name='~[name]'
+                                > '~[title]'
+        
+        
+    }
+    
 
     @content #content > .container.tabPanel {
-        div.info.active {
+        .info.active {
             h5 >  'Class-Model Implementation — creates Business logic Layer'
             p {
                 'Check out speed comparison: '
@@ -31,11 +45,12 @@ layout:view master='view' {
                 li { 'Proper ' tt > 'JSON.stringify' }
                 
                 li > 'Static / Private properties'
+                li > 'Validations'
                 li > 'Overrides'
                 li > 'Model Storage - AJAX / Localstorage'
                 
                 li {
-                    'Some ready classes for inheritance, like'
+                    'Some ready to use classes for inheritance, like'
                     ul {
                         li > tt > 'Class.EventEmitter'
                         li > tt > 'Class.Deferred'
@@ -44,13 +59,42 @@ layout:view master='view' {
                 }
                 
                 li {
-                    'Collections (with each/where/first/ querying)'
+                    'Collections (with each/where/first querying)'
                 }
                 
                 li > 'No Dependencies'
             }
         }
-        div.api > prism src='/api.help/class.api.js';
+
+        .examples data-name='examples' {
+            :tabs #tabs-examples >
+                @panels >
+                    % each='examples' >
+                        div name='~[name]' {
+                        
+                            
+                            a name='~[title]';
+                            .example {
+                                h4 > '~[title]'
+                                
+                                % if=template {
+                                    h6 > 'Template'
+                                    prism > '~[template]'
+                                }
+                                
+                                h6 > 'Javascript'
+                                prism > '~[javascript]'
+                                
+                                % if=result {
+                                    h6 > 'Result'
+                                    .result > '~[result]'
+                                }
+                            
+                            }
+                        }
+        }
+
+        .api > prism src='/api.help/class.api.js';
     }
 
 }

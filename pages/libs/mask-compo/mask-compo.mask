@@ -4,6 +4,46 @@ layout:view master='view' {
     @content #title {
         a href='https://github.com/tenbits/mask-compo' target=_blank > 'github@Mask.Compo'
     }
+    
+    @content #side-menu {
+        
+        :radio .group name='api' selector='.side-menu-item' style='top: 20px' {
+            h5 > 'Ṗroperties'
+            .side-menu-item name='events' > 'events'
+            .side-menu-item name='slots' > 'slots'
+            .side-menu-item name='compos' > 'compos'
+            .side-menu-item name='$' > '$'
+        
+            h5 > 'Ċonstructor (Abstract)'
+            .side-menu-item name='Construct' > 'constructor'
+            
+            h5 > 'Ḟunctions (Abstract)'
+            .side-menu-item name='onRenderStart' > 'onRenderStart'
+            .side-menu-item name='render' > 'render'
+            .side-menu-item name='onRenderEnd' > 'onRenderEnd'
+            
+
+            h5 > 'Ḟunctions (Methods)'
+            .side-menu-item name='append' > 'append'
+            .side-menu-item name='on' > 'on'
+            .side-menu-item name='remove' > 'remove'
+            .side-menu-item name='this.find' > 'find'
+            .side-menu-item name='this.closest' > 'closest'
+            .side-menu-item name='slotState' > 'slotState'
+            .side-menu-item name='signalState' > 'signalState'
+            .side-menu-item name='emitIn' > 'emitIn'
+            .side-menu-item name='emitOut' > 'emitOut'
+
+            
+            h5 > 'Ḟunctions (Ṡtatic)'
+            .side-menu-item name='find' > 'find'
+            .side-menu-item name='closest' > 'closest'
+            .side-menu-item name='dispose' > 'dispose'
+            .side-menu-item name='config.setDOMLibrary' > 'config.setDOMLibrary'
+            
+        }
+        
+    }
 
     @content #content {
         .container.tabPanel {
@@ -37,46 +77,10 @@ layout:view master='view' {
 
             }
             div.api {
-                h4 > 'Ṗroperties'
-                ul.anchors {
-                    li > a href='#/mask-compo/api/slots' > '.slots'
-                    li > a href='#/mask-compo/api/events' > '.events'
-                    li > a href='#/mask-compo/api/compos' > '.compos'
-                    li > a href='#/mask-compo/api/$' > '.$'
-                }
-                h4 > 'Ċonstructor (Abstract Constructor)'
-                ul.anchors {
-                    li > a href='#/mask-compo/api/Construct' > 'constructor()'
-                }
-                h4 > 'Ḟunctions (Abstract Methods)'
-                ul.anchors {
-                    li > a href='#/mask-compo/api/onRenderStart' > '.onRenderStart(model, cntx, container)'
-                    li > a href='#/mask-compo/api/render' > '.render(model, cntx, container)'
-                    li > a href='#/mask-compo/api/onRenderEnd' > '.onRenderEnd(elements, model, cntx, container)'
-                }
-
-                h4 > 'Ḟunctions (Methods)'
-                ul.anchors {
-                    li > a href='#/mask-compo/api/append' > '.append(template, model)'
-                    li > a href='#/mask-compo/api/on' > '.on(?type, selector, callback)'
-                    li > a href='#/mask-compo/api/remove' > '.remove()'
-                    li > a href='#/mask-compo/api/this.find' > '.find(selector)'
-                    li > a href='#/mask-compo/api/this.closest' > '.closest(selector)'
-                    li > a href='#/mask-compo/api/slotState' > '.slotState(slotName, isActive)'
-                    li > a href='#/mask-compo/api/signalState' > '.signalState(signalName, isActive)'
-                    li > a href='#/mask-compo/api/emitIn' > '.emitIn(signalName, event, args)'
-                    li > a href='#/mask-compo/api/emitOut' > '.emitOut(signalName, event, args)'
-
-                }
-                h4 > 'Ḟunctions (Ṡtatic)'
-                ul.anchors {
-                    li > a href='#/mask-compo/api/find' > '.find(component, selector)'
-                    li > a href='#/mask-compo/api/closest' > '.closest(component, selector)'
-                    li > a href='#/mask-compo/api/dispose' > '.dispose(component)'
-                    li > a href='#/mask-compo/api/config.setDOMLibrary' > '.config.setDOMLibrary(lib)'
-                }
-
-                prism src='/api.help/compo.api.js';
+              
+                :tabs #api anchors >
+                    @panels >
+                        prism src='/api.help/compo.api.js';
             }
 
             .example {
