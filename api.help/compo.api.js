@@ -4,12 +4,45 @@
 Compo({
 
 /**
+ *  [template](name=template)
+ *  
+ *	Template for the component can be defined direct in parents template,
+ *	where this component is used, e.g:
+ *
+ *	h4 > 'Title'
+ *	:myCompo > div > '~[name]'
+ *
+ *	But usually it is better to split markup into components, where each of them
+ *	has its own template, with (maybe) other components ... and so on.
+ */
+template: <String> 'div > "~[name]"',
+
+/**
+ * [tagName](name=tagName)
+ * 
+ *	Renders not only underlined nodes, but also converts this component instance
+ *	into element with a tag Name 
+ */
+tagName: <String> null,
+
+/**
+ * [attr](name=attr)
+ * 
+ *	If tagName is specified, it also possible to define default attributes object
+ *	for an element
+ */
+attr: {},
+ 
+/**
  *  [events](name=events)  (optional)
  *  Events that should be delegated after DOMInsert,
  *  @event key - 'EventType: Selector'
  */
 events: {
-    'touchstart: a': callbackFunction,
+    'touchstart: a': <Function> callbackFunction,
+	
+	// if selector is not specified, then event is bound direct to this.$ object
+	'touchstart:': <String> 'componentsFnName',
     // ..
 },
 
@@ -20,17 +53,36 @@ events: {
  * 'this' of each function is current controller instance
  */
 slots: {
-	addUser: function(event) { /* .. */ },
+	addUser: <Function> function(event) { /* .. */ },
+	notify: <String> 'componentsFnName',
 
 	/** PREDEFINED SIGNALS */
 
 	/**
-	 * domInsert signal will be send after rendered template is inserted into live DOM
+	 * domInsert signal will be send after rendered template is inserted into live DOM,
+	 * useful to perfom dom-dependent calculations
 	 */
-	domInsert: function(){
-		// Define this slot, and make here some dom dependent calculations
+	domInsert: function(){}
+},
+
+/**
+ * [pipes](name=pipes)
+ *
+ * Bind handlers to pipes, and listen to a singal in it
+ * 'this' of each function is current controller instance
+ *
+ * All functions are unbound, when component is removed, to prevent memory leaks
+ */
+pipes: {
+	
+	pipeName: {
+		
+		/**
+		 *	Compo.pipe('pipeName).emit('someName', args ..);
+		 */
+		someName: function() {}
 	}
-}
+},
 
 
 /**
@@ -213,7 +265,7 @@ Static: {
          *  [.config.setDOMLibrary](name=config.setDOMLibrary)
          *  DOM Manipulation Library.
          *
-         *  used functions:
+         *  uses functions:
          *      lib(Array[HTMLElement])
          *      .on(event, selector, callback) - binding event handlers
          *      .append(HTMLElement)
@@ -223,18 +275,42 @@ Static: {
          *
          *  So any Library can be used that implements that functions
          *
+         *	DOM Library should be include before mask or mask.compo,
+         *	then it will be recognized and taken, but also can be
+         *	directly speciefied via this function.
+         *	
          *	@default: This Library uses $/jQuery/Zepto objects from globals
          *
          */
-        setDOMLibrary: function(lib){ $ = lib;}
+        setDOMLibrary: function(lib){ }
     },
 
 	/**
+	 * [.initialize](name=initialize)
+	 *
 	 * Initialize Component Instance,
 	 * - mix (String|Function) - mix is a component constructor
 	 * or component name (it will look in mask.getHandler() for a constructor)
 	 */
-	initialize: function(mix, model, cntx, container, ?parentController){}
+	initialize: function(mix, model, cntx, container, ?parentController){},
+	
+	/**
+     *[.dispose](name=dispose)
+     * Call .dispose function on compo instance and also in recursion
+     *
+     * @argument compo - {Compo} - Current Component to Star Search From.
+     */
+    dispose: function(compo){},
+	
+	
+	/**
+	 * [Compo.pipe](name=Compo.pipe)
+	 *
+	 * Returns pipe wrapper with the method 'emit'
+	 *
+	 * Compo.pipe('name').emit(signalName, args ...);
+	 */
+	pipe: function(pipeName){}
 }
 
 });

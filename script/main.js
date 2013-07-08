@@ -48,7 +48,7 @@ include.routes({
 
 
 .ready(function() {
-
+	
 	routes.add('/:view/?:category/?:anchor', function(current) {
 		window.viewsManager.show(current);
 	});

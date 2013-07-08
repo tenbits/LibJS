@@ -5248,9 +5248,9 @@ include.getResource("/include.routes.js", "js").readystatechanged(3);
             return line.replace(/([\\\[\]\(\)])/g, "\\$1");
         }
         var part = {
-            ":": "(/([\\w\\.\\-_]+))",
-            "?": "(/([\\w\\.\\-_]+))?",
-            "var": "([\\w\\.\\-_]+)"
+            ":": "(/([^/]+))",
+            "?": "(/([^/]+))?",
+            "var": "([^/]+)"
         };
         return function(route) {
             var parts = route.match.split("/"), param = "", regexpIndex = 2, prefix, var_, var_index, c, isConditional;
@@ -11358,7 +11358,7 @@ include.setCurrent({
     });
     Prism.languages.css = {
         comment: /\/\*[\w\W]*?\*\//g,
-        atrule: /@[\w-]+?(\s+[^;{]+)?(?=\s*{|\s*;)/gi,
+        atrule: /@[\w-]+?(\s+[^'\{]+)?(?=\s*{|\s*')/gi,
         url: /url\((["']?).*?\1\)/gi,
         selector: /[^\{\}\s][^\{\}]*(?=\s*\{)/g,
         property: /(\b|\B)[a-z-]+(?=\s*:)/gi,
@@ -13101,7 +13101,7 @@ include.setCurrent({
 window.L = include.exports = {
     env: "browser",
     compression: "min",
-    namespace: "niob",
+    namespace: "atma",
     size: "-",
     libs: [ {
         env: "both",

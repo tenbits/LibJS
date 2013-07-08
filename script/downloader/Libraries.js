@@ -1,7 +1,7 @@
 window.L = include.exports = {
 	env: 'browser',
 	compression: 'min',
-	namespace: 'niob',
+	namespace: 'atma',
 	
 	size: '-',
 	

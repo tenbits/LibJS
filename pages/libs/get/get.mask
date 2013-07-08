@@ -13,18 +13,7 @@ layout:view master='view' {
 
         .install {
             ol {
-                li {
-                    'Install nodejs environment'
-                    div > code > a href='http://nodejs.org' target=_blank > 'NodeJS > Download'
-                    div > code > a href='http://yuilibrary.com/yui/docs/tutorials/git/' target=_blank > 'GIT'
-                    div > code > a href='http://www.python.org/getit/releases/2.7.4/' target=_blank> 'Python'
-                    div >
-                        code >
-                            a
-                                href='http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-products'
-                                target=_blank
-                                    > '(Windows) C++ Compiler'
-                }
+               
                 
                 li {
                     'Install IncludeJS'
@@ -32,6 +21,21 @@ layout:view master='view' {
 
                     .hint {
                         'test: ' code > 'ijs --help'
+                    }
+                    
+                    .hint {
+                        'Could not install? Ensure to have proper node.js enviroment'
+                         p {
+                          div > code > a href='http://nodejs.org' target=_blank > 'NodeJS > Download'
+                          div > code > a href='http://yuilibrary.com/yui/docs/tutorials/git/' target=_blank > 'GIT'
+                          div > code > a href='http://www.python.org/getit/releases/2.7.4/' target=_blank> 'Python'
+                          div >
+                              code >
+                                  a
+                                      href='http://www.microsoft.com/visualstudio/eng/products/visual-studio-express-products'
+                                      target=_blank
+                                          > '(Windows) C++ Compiler'
+                       }
                     }
                 }
                 li {
@@ -43,11 +47,17 @@ layout:view master='view' {
                         p > 'Should contain in projects.libjs.path = "file:///c:/anyfolder/to/save/libjs_libraries"'
                     }
                 }
+            }
+            
+            'Now, you can play around with some ready projects'
+            ol {
                 li {
                     h5 > 'Template Project'
 
-                    div > code > '$ cd c:/any/temp/folder'
-                    div > code > '$ ijs template starter'
+                    prism language='css' > formatter:pre > '
+                      $ cd c:/any/temp/folder
+                      $ ijs template starter
+                    '
 
                     .hint {
                         'In some case to create symbolic links to installed libjs you have run this command with admin. rights'
@@ -61,11 +71,13 @@ layout:view master='view' {
 
                 li {
                     h5 > 'Todo MVC'
-                    div > code > '$ cd c:/any/temp/folder'
-                    div > code > '$ ijs template todoapp'
-
+                     prism language='css' > formatter:pre > '
+                      $ cd c:/any/temp/folder
+                      $ ijs template todoapp
+                    '
+                    
                     p {
-                        'Play around with small todo app, to see maskjs/includejs in work'
+                        'Play around with small todo app, to see libs in work'
                     }
                 }
             }

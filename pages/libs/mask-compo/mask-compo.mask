@@ -9,8 +9,12 @@ layout:view master='view' {
         
         :radio .group name='api' selector='.side-menu-item' style='top: 20px' {
             h5 > 'Ṗroperties'
+            .side-menu-item name='template' > 'template'
+            .side-menu-item name='tagName' > 'tagName'
+            .side-menu-item name='attr' > 'attr'
             .side-menu-item name='events' > 'events'
             .side-menu-item name='slots' > 'slots'
+            .side-menu-item name='pipes' > 'pipes'
             .side-menu-item name='compos' > 'compos'
             .side-menu-item name='$' > '$'
         
@@ -38,9 +42,19 @@ layout:view master='view' {
             h5 > 'Ḟunctions (Ṡtatic)'
             .side-menu-item name='find' > 'find'
             .side-menu-item name='closest' > 'closest'
-            .side-menu-item name='dispose' > 'dispose'
             .side-menu-item name='config.setDOMLibrary' > 'config.setDOMLibrary'
+            .side-menu-item name='initialize' > 'initialize'
             
+            .side-menu-item name='dispose' > 'dispose'
+            .side-menu-item name='Compo.pipe' > 'pipe'
+            
+            
+        }
+        
+        :radio .group name='example' selector='.side-menu-item' {
+            
+            .side-menu-item name='radioButtons' > 'Radio Buttons'
+            .side-menu-item name='prism' > 'Prism'
         }
         
     }
@@ -84,66 +98,61 @@ layout:view master='view' {
             }
 
             .example {
-
-                ul.anchors {
-                    li > a href='#/mask-compo/example/radioButtons' > 'Radio Buttons'
-                    li > a href='#/mask-compo/example/prismjs' > 'PrismJS'
-                    li > a href='#/mask-compo/example/complex' > 'Complex Example'
-                }
-
-                hr;
-                h3 > a name='radioButtons' > 'RadioButtons Implementation'
-
-                prism src='/api.help/radioButtons.source.js';
-
-                'As the result, we can just write in our mask markup:'
-
-                prism > formatter:pre > "
-                    :radioButtons {
-                        button.active > 'Info'
-                        button > 'API'
-                        button > 'Example'
-                    }"
-
-                'We need no more javascript to apply mouse events, everything is done under the hood.'
-
-                div {
-                    div > 'Listen to radiobuttons change from parent component:'
-                    prism > formatter:pre {
-                        ''|
-                        Compo({
-                            events: {
-                                'changed: .radioButtons': function(sender){
-                                    // do smth
-                                }
+ 
+                :tabs #example > @panels {
+                
+                    div name='radioButtons' {
+                        h3 > 'RadioButtons Implementation'
+        
+                        prism src='/api.help/radioButtons.source.js';
+        
+                        'As the result, we can just write in our mask markup:'
+        
+                        prism > formatter:pre > "
+                            :radioButtons {
+                                button.active > 'Info'
+                                button > 'API'
+                                button > 'Example'
+                            }"
+        
+                        'We need no more javascript to apply mouse events, everything is done under the hood.'
+        
+                        div {
+                            div > 'Listen to radiobuttons change from parent component:'
+                            prism > formatter:pre {
+                                ''|
+                                Compo({
+                                    events: {
+                                        'changed: .radioButtons': function(sender){
+                                            // do smth
+                                        }
+                                    }
+                                });
+        
+                                |''
                             }
-                        });
-
-                        |''
+                        }
+        
+                        'So developed once radioButton Handler, we can use it everywhere in our project'
+                    }
+    
+                    div name='prism' {
+                        h3 >  'PrismJS Wrapper'
+                        p > 'MaskJS plays perfect with other libraries'
+        
+                        'As an example, all sources on this site is highlighted with ' a href='http://prismjs.com/' > 'PrismJS'
+        
+                        prism > "var a = 10;" 'is'
+                        prism > ':prism > "var a = 10;"'
+        
+                        div > 'No more javascript for highlighting - render mask markup anytime and insert into DOM'
+        
+                        div > 'The source code of a Prism Control Handler is:'
+                        prism src='/api.help/prism.source.js';
                     }
                 }
 
-                'So developed once radioButton Handler, we can use it everywhere in our project'
-
-                hr;
-                h3 > a name='prismjs' > 'PrismJS Wrapper'
-                p > 'MaskJS plays perfect with other libraries'
-
-                'As an example, all sources on this site is highlighted with ' a href='http://prismjs.com/' > 'PrismJS'
-
-                prism > "var a = 10;" 'is'
-                prism > ':prism > "var a = 10;"'
-
-                div > 'No more javascript for highlighting - render mask markup anytime and insert into DOM'
-
-                div > 'The source code of a Prism Control Handler is:'
-                prism src='/api.help/prism.source.js';
-
-
-                hr;
-                h4 > a name='complex' > 'Another big example is the source code of this page, or current View'
-
-                div > a href='pages/libs/mask-compo/mask-compo.mask' target='_blank' > 'Current Mask'
+ 
             }
 
             div.visual style='text-align: center'{
