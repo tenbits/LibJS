@@ -8,15 +8,21 @@
 		 * Load javascript files
 		 * @argument
 		 * 		1. String - IncludeUrl:
-		 * 			a) "folder/file.js" - relative to current included javascript file
+		 * 			a) 	"folder/file.js",
+		 * 				"./folder/file.js"
+		 * 				- relative to current included javascript file
+		 * 			
+		 * 			
 		 * 			b) "/folder/file.js" - relative to current loaded html file
 		 * 		2. [String,...] - IncludedUrl, @see &uarr;
-		 * 		3. { route: String|[String,...] } - @see .cfg, if route == '' @see 1. and 2. &uarr;
+		 * 		3. { route: String|[String,...] } - @see .cfg,
+		 * 			if route == '' @see 1. and 2. &uarr;
 		 */
 		.js({
 			lib: ['linq','mask'],
-			'': ['/builder.js','helper.js']
 		})
+		
+		.js('/builder.js','helper.js')
 		
 		/**
 		 *	[.css](name=css)
@@ -104,9 +110,8 @@
 			 *		path '/script.js' means -> '/folder/second/script.js',
 			 *		and not '{domain}/script.js'
 			 */
-			lockedToFolder: true,
+			lockedToFolder: false,
 			/**
-			 *	@default browser:= true, nodejs:=false
 			 *	with FALSE - scripts will be loaded with script tag
 			 *		this is slower, but best for development, as by errors
 			 *		you see the file and line number
@@ -128,6 +133,11 @@
 				 */
 				coffee: {
 					lib: 'include/loader/coffee/loader'
+				},
+				json: {
+					process: function(fileContent){
+						return JSON.parse(fileContent);
+					}
 				}
 			},
 			

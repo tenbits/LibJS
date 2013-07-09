@@ -760,8 +760,13 @@ menu h3 {
 menu ul {
   list-style: none;
 }
-menu .selected {
+.viewTitle.selected {
   font-weight: bold;
+  opacity: 1;
+}
+.viewTitle.selected > .roll-link {
+  background: #3d9b44;
+  color: white;
 }
 .roll-link {
   cursor: pointer;
@@ -881,6 +886,13 @@ a {
 }
 ul {
   margin: 0px;
+}
+ul.-ul-features {
+  padding: 0;
+}
+ul.-ul-features > li {
+  list-style: none;
+  margin: 10px 0px;
 }
 div {
   cursor: inherit;

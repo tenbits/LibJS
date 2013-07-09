@@ -1,7 +1,8 @@
 layout:view master='view' {
 
 	@content #title {
-		a href='https://github.com/tenbits/IncludeJS' target=_blank > 'github@IncludeJS';
+		a href='https://github.com/tenbits/IncludeJS' target=_blank >
+			'github@IncludeJS';
 	}
 
 	@content #tabs {
@@ -12,77 +13,105 @@ layout:view master='view' {
 	}
 	@content #content {
 		p.container.tabPanel{
-			div.info.active {
+			.info.active {
 				div {
-					ul {
+					ul.-ul-features {
 						li {
-							'Resource Loader'
-							div.hint > 'Javascript, Style, HTML, Ajax, Image'
-							div.hint > 'Javascript can be loaded using XMLHttpRequest with eval() and also by embedding script tags with "src=%path%" attribute'
+							'Resource loader'
+							.hint > 'Javascript, Style, HTML, Ajax, Image'
+							.hint > 'Javascript can be loaded using XMLHttpRequest with eval() and also by embedding script tags with "src=%path%" attribute'
 						}
-						li { 'Inline Declaration' div.hint > 'No external files (such as "package.json")' }
+						li {
+							'Works same in browser and node.js'
+						}
+						li {
+							'Inline declaration'
+							.hint > 'No external files (such as "config.json")'
+						}
 						li {
 							'No prerequest for module definitions'
-							div.hint > 'Can load any javascript file'
+							.hint > 'Can load any javascript file'
 						}
 						li {
 							'Namespaced Routing'
-							prism > 'include.routes({ lib: "/src/myLib/{0}.js" }); /*...*/ include.js({ lib:"myScript"})'
+							prism > formatter:pre > "
+								include.routes({ lib: '/src/myLib/{0}.js' });
+								// ...
+								include.js({ lib: 'myScript' })
+							"
 						}
 						li {
-							'Parameterized Include'
-							prism > 'include.js({compo: "myComponent?color=white"})'
-							'And ' tt > 'myComponent.js'  ' could be as such:'
-							prism > 'document.body.style.backgroundColor = include.iparams.color'
+							'Parameterized include - args then are available in included resource'
+							prism > "include.js({ compo: 'myComponent?color=white' })"
+							
 						}
 						li {
-							'Module Exports. Example: myScript.js'
+							'Exports. Example: myScript.js'
 							prism > 'include.exports = { someFunction: function(){ console.log("hey"); } }'
-							div.hint {
-								'It is also possible to use nodejs module exports patterns (but it should be enabled globally before in include.js config).'
+							.hint {
+								'It is also possible to use CommonJS modules'
 								div > code > 'exports.someFunction = function(){ ... }'
 							}
 						}
 						li {
-							'Javascript Aliases'
-							prism > 'include.js("myScript.js::MyObj").done(function(resp){ resp.MyObj.someFunction(); })'
-							'or without alias'
-							prism > 'include.js("myScript.js").done(function(resp){ resp.myScript.someFunction(); })'
+							'Javascript aliases'
+							prism > formatter:pre > "
+								include
+									.js('myScript.js::MyObj')
+									.done(function(resp){
+										resp.MyObj.someFunction();
+										
+										// or when without alias
+										// resp.myScript.someFunction();
+									});
+							"
 						}
 						li {
-							'Custom Loader. Already supports: *.coffee, *.less'
-							div.hint {
+							'User defined loaders'
+							tt > 'Already supports: *.coffee, *.less, *.json'
+							.hint {
 								div > 'Best to use in development - no more need to build coffee or less resources before test it'
 								div > 'Any *.js can be replaced with *.coffee equivalent, and you do not even notice this'
 								div > 'IncludeJS.Builder will compile/parse that resources for better performance'
 							}
 						}
-						li { 'Callbacks' div.hint > 'Sub- and ResourceLoaded and DOMContentLoaded' }
-						li { 'Lazy Modules' div.hint > 'Parse(eval) Scripts only when they are needed' }
 						li {
-							'Stand alone'
+							'Callbacks'
+							.hint > 'Sub- and ResourceLoaded and DOMContentLoaded'
+						}
+						li {
+							'Lazy Modules'
+							.hint > 'Parse(eval) Scripts only when they are needed'
+						}
+						li {
+							'Stand-alone'
 						}
 						li {
 							'Performance '
-							div.hint > 'Loading with script tag is slower, as XMLHttpRequest,
+							.hint > 'Loading with script tag is slower, as XMLHttpRequest,
 											but good for development, as by exceptions file name and line number are shown.'
-							div.hint > 'After IncludeJS.Builder builds the project no more needed'
-							div.hint > 'We use it for Mobile Development mainly'
+							.hint > 'After IncludeJS.Builder builds the project no more needed'
+							.hint > 'We use it for Mobile Development mainly'
 						}
 
 						li {
-							'"module" and "exports" can be enabled with .cfg({modules:true})'
-							div.hint > 'That objects are aliases for include.exports'
-							div.hint > '.defineProperty is required'
+							'CommonJS Modules. In browser feature is disabled per default,
+							but can be enabled with'
+							
+							prism > 'include.cfg({ modules:true })'
+							.hint > 'That objects are aliases for include.exports'
+							.hint > '.defineProperty is required'
 						}
-
-						li { 'Size ' div.hint > 'Uglified 11KB' }
-						li > 'Browser and NodeJS environment'
+						
+						li {
+							'That are only stand-alone features, but using Atma node.js tool, there much more things to enjoy.'
+						}
 					}
-					'No Dependencies'
+					
 				}
 			}
-			div.api {
+			.api {
+				
 				ul.anchors {
 					li > a href='#/include/api/js' > '.js(package)'
 					li > a href='#/include/api/css' > '.css(package)'

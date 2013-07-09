@@ -48,7 +48,6 @@ layout:view master='view' {
             .side-menu-item name='dispose' > 'dispose'
             .side-menu-item name='Compo.pipe' > 'pipe'
             
-            
         }
         
         :radio .group name='example' selector='.side-menu-item' {
